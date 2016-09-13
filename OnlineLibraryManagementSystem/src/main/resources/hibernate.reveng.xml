@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="onlinelibrary" match-name="address_details"/>
+  <table-filter match-catalog="onlinelibrary" match-name="books"/>
+  <table-filter match-catalog="onlinelibrary" match-name="item_format"/>
+  <table-filter match-catalog="onlinelibrary" match-name="library_items"/>
+  <table-filter match-catalog="onlinelibrary" match-name="liked_list"/>
+  <table-filter match-catalog="onlinelibrary" match-name="login_audit"/>
+  <table-filter match-catalog="onlinelibrary" match-name="login_details"/>
+  <table-filter match-catalog="onlinelibrary" match-name="member_details"/>
+  <table-filter match-catalog="onlinelibrary" match-name="membership_details"/>
+  <table-filter match-catalog="onlinelibrary" match-name="movies"/>
+  <table-filter match-catalog="onlinelibrary" match-name="music"/>
+  <table-filter match-catalog="onlinelibrary" match-name="rating_table"/>
+  <table-filter match-catalog="onlinelibrary" match-name="subscribed_list"/>
+  <table-filter match-catalog="onlinelibrary" match-name="user_contact_details"/>
+  <table-filter match-catalog="onlinelibrary" match-name="user_details"/>
+  <table-filter match-catalog="onlinelibrary" match-name="wish_list"/>
+</hibernate-reverse-engineering>
