@@ -39,33 +39,33 @@ public class Books implements Serializable {
 	private BigDecimal editionNo;
 	private Date releaseDate;
 	private String genre;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 
 	public Books() {
 	}
 
 	public Books(LibraryItems libraryItems, String author, String publishers, BigDecimal editionNo, Date releaseDate,
-			Date CTime, Date MTime) {
+			Date cTime, Date mTime) {
 		this.libraryItems = libraryItems;
 		this.author = author;
 		this.publishers = publishers;
 		this.editionNo = editionNo;
 		this.releaseDate = releaseDate;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	public Books(LibraryItems libraryItems, String author, String publishers, BigDecimal editionNo, Date releaseDate,
-			String genre, Date CTime, Date MTime) {
+			String genre, Date cTime, Date mTime) {
 		this.libraryItems = libraryItems;
 		this.author = author;
 		this.publishers = publishers;
 		this.editionNo = editionNo;
 		this.releaseDate = releaseDate;
 		this.genre = genre;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "libraryItems"))
@@ -139,22 +139,22 @@ public class Books implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 }

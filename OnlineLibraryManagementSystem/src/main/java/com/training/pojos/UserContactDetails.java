@@ -40,29 +40,29 @@ public class UserContactDetails implements Serializable {
 	private String emailId;
 	private int mobileNo;
 	private Integer alternateContactNo;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 	private Set<?> addressDetailses = new HashSet<Object>(0);
 
 	public UserContactDetails() {
 	}
 
-	public UserContactDetails(UserDetails userDetails, String emailId, int mobileNo, Date CTime, Date MTime) {
+	public UserContactDetails(UserDetails userDetails, String emailId, int mobileNo, Date cTime, Date mTime) {
 		this.userDetails = userDetails;
 		this.emailId = emailId;
 		this.mobileNo = mobileNo;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	public UserContactDetails(UserDetails userDetails, String emailId, int mobileNo, Integer alternateContactNo,
-			Date CTime, Date MTime, Set<?> addressDetailses) {
+			Date cTime, Date mTime, Set<?> addressDetailses) {
 		this.userDetails = userDetails;
 		this.emailId = emailId;
 		this.mobileNo = mobileNo;
 		this.alternateContactNo = alternateContactNo;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 		this.addressDetailses = addressDetailses;
 	}
 
@@ -118,22 +118,22 @@ public class UserContactDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userContactDetails")

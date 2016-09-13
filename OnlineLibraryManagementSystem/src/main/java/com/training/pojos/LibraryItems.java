@@ -35,8 +35,8 @@ public class LibraryItems implements Serializable {
 	private String description;
 	private String itemType;
 	private Date dateAdded;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 	private Set<?> ratingTables = new HashSet<Object>(0);
 	private Set<?> likedLists = new HashSet<Object>(0);
 	private Set<?> wishLists = new HashSet<Object>(0);
@@ -50,19 +50,19 @@ public class LibraryItems implements Serializable {
 	}
 
 	public LibraryItems(String itemId, String itemName, int price, String description, String itemType, Date dateAdded,
-			Date CTime, Date MTime) {
+			Date cTime, Date mTime) {
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.price = price;
 		this.description = description;
 		this.itemType = itemType;
 		this.dateAdded = dateAdded;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	public LibraryItems(String itemId, String itemName, Integer year, int price, String description, String itemType,
-			Date dateAdded, Date CTime, Date MTime, Set<?> ratingTables, Set<?> likedLists, Set<?> wishLists, Books books,
+			Date dateAdded, Date cTime, Date mTime, Set<?> ratingTables, Set<?> likedLists, Set<?> wishLists, Books books,
 			Music music, Movies movies, Set<?> subscribedLists, Set<?> itemFormats) {
 		this.itemId = itemId;
 		this.itemName = itemName;
@@ -71,8 +71,8 @@ public class LibraryItems implements Serializable {
 		this.description = description;
 		this.itemType = itemType;
 		this.dateAdded = dateAdded;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 		this.ratingTables = ratingTables;
 		this.likedLists = likedLists;
 		this.wishLists = wishLists;
@@ -151,22 +151,22 @@ public class LibraryItems implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")

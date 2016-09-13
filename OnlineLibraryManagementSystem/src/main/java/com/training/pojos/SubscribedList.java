@@ -34,22 +34,22 @@ public class SubscribedList implements Serializable {
 	private Date startDate;
 	private Date endDate;
 	private String returnStatus;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 
 	public SubscribedList() {
 	}
 
 	public SubscribedList(SubscribedListId id, LibraryItems libraryItems, MemberDetails memberDetails, Date startDate,
-			Date endDate, String returnStatus, Date CTime, Date MTime) {
+			Date endDate, String returnStatus, Date cTime, Date mTime) {
 		this.id = id;
 		this.libraryItems = libraryItems;
 		this.memberDetails = memberDetails;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.returnStatus = returnStatus;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	@EmbeddedId
@@ -115,22 +115,22 @@ public class SubscribedList implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 }

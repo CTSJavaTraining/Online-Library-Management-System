@@ -33,21 +33,21 @@ public class RatingTable implements Serializable {
 	private UserDetails userDetails;
 	private int rating;
 	private String review;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 
 	public RatingTable() {
 	}
 
 	public RatingTable(RatingTableId id, LibraryItems libraryItems, UserDetails userDetails, int rating, String review,
-			Date CTime, Date MTime) {
+			Date cTime, Date mTime) {
 		this.id = id;
 		this.libraryItems = libraryItems;
 		this.userDetails = userDetails;
 		this.rating = rating;
 		this.review = review;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	@EmbeddedId
@@ -103,22 +103,22 @@ public class RatingTable implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 }

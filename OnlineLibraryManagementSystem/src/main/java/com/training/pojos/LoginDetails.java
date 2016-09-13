@@ -33,17 +33,17 @@ public class LoginDetails implements Serializable {
 	private String userId;
 	private UserDetails userDetails;
 	private String password;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 
 	public LoginDetails() {
 	}
 
-	public LoginDetails(UserDetails userDetails, String password, Date CTime, Date MTime) {
+	public LoginDetails(UserDetails userDetails, String password, Date cTime, Date mTime) {
 		this.userDetails = userDetails;
 		this.password = password;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "userDetails"))
@@ -80,22 +80,22 @@ public class LoginDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 }

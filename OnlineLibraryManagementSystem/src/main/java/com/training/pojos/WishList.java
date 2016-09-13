@@ -32,20 +32,20 @@ public class WishList implements Serializable {
 	private LibraryItems libraryItems;
 	private MemberDetails memberDetails;
 	private int wishStatus;
-	private Date CTime;
-	private Date MTime;
+	private Date cTime;
+	private Date mTime;
 
 	public WishList() {
 	}
 
-	public WishList(WishListId id, LibraryItems libraryItems, MemberDetails memberDetails, int wishStatus, Date CTime,
-			Date MTime) {
+	public WishList(WishListId id, LibraryItems libraryItems, MemberDetails memberDetails, int wishStatus, Date cTime,
+			Date mTime) {
 		this.id = id;
 		this.libraryItems = libraryItems;
 		this.memberDetails = memberDetails;
 		this.wishStatus = wishStatus;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.cTime = cTime;
+		this.mTime = mTime;
 	}
 
 	@EmbeddedId
@@ -91,22 +91,22 @@ public class WishList implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcTime() {
+		return this.cTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmTime() {
+		return this.mTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
 	}
 
 }
