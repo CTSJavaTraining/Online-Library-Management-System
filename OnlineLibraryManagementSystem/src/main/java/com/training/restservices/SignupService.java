@@ -28,6 +28,7 @@ public class SignupService {
 	@ResponseBody
 	private String setBasicDetails(@RequestBody UserDetails userdetails) {
 
+		// First level Validation
 		if (!userdetails.getUserName().trim().isEmpty()) {
 
 			return "Success userbasic details";
@@ -37,6 +38,8 @@ public class SignupService {
 
 			return "Username should not be empty";
 		}
+		
+		//Passing user inputs to DTO
 
 	}
 
@@ -44,6 +47,7 @@ public class SignupService {
 	@ResponseBody
 	private String setContactDetails(@RequestBody UserContactDetails contactDetails) {
 
+		// First level Validation
 		if (!contactDetails.getEmailId().trim().isEmpty()) {
 
 			return "Success user contact details";
@@ -60,6 +64,7 @@ public class SignupService {
 	@ResponseBody
 	private String setLoginPassword(@RequestBody LoginDetails loginDetails) {
 
+		// First level Validation
 		if (!loginDetails.getPassword().trim().isEmpty()) {
 
 			return "Success password type";
