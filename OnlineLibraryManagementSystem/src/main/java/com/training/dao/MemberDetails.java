@@ -38,8 +38,8 @@ public class MemberDetails implements Serializable {
 	private Date enrolledDate;
 	private Date endDate;
 	private Date renewalDate;
-	private Date CTime;
-	private Date MTime;
+	private Date createdTime;
+	private Date modifiedTime;
 	private Set<?> wishLists = new HashSet<Object>(0);
 	private Set<?> subscribedLists = new HashSet<Object>(0);
 
@@ -47,25 +47,25 @@ public class MemberDetails implements Serializable {
 	}
 
 	public MemberDetails(MembershipDetails membershipDetails, UserDetails userDetails, Date enrolledDate, Date endDate,
-			Date renewalDate, Date CTime, Date MTime) {
+			Date renewalDate, Date createdTime, Date modifiedTime) {
 		this.membershipDetails = membershipDetails;
 		this.userDetails = userDetails;
 		this.enrolledDate = enrolledDate;
 		this.endDate = endDate;
 		this.renewalDate = renewalDate;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.createdTime = createdTime;
+		this.modifiedTime = modifiedTime;
 	}
 
 	public MemberDetails(MembershipDetails membershipDetails, UserDetails userDetails, Date enrolledDate, Date endDate,
-			Date renewalDate, Date CTime, Date MTime, Set<?> wishLists, Set<?> subscribedLists) {
+			Date renewalDate, Date createdTime, Date modifiedTime, Set<?> wishLists, Set<?> subscribedLists) {
 		this.membershipDetails = membershipDetails;
 		this.userDetails = userDetails;
 		this.enrolledDate = enrolledDate;
 		this.endDate = endDate;
 		this.renewalDate = renewalDate;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.createdTime = createdTime;
+		this.modifiedTime = modifiedTime;
 		this.wishLists = wishLists;
 		this.subscribedLists = subscribedLists;
 	}
@@ -134,22 +134,22 @@ public class MemberDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcreatedTime() {
+		return this.createdTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmodifiedTime() {
+		return this.modifiedTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmodifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "memberDetails")

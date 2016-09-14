@@ -28,59 +28,52 @@ public class UserDetails implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String userId;
-	private String userName;
-	private String role;
-	private int age;
-	private String gender;
-	private String languages;
-	private String preferredNotify;
-	private Date CTime;
-	private Date MTime;
-	private UserContactDetails userContactDetails;
-	private Set<?> likedLists = new HashSet<Object>(0);
-	private Set<?> ratingTables = new HashSet<Object>(0);
-	private LoginDetails loginDetails;
-	private Set<?> memberDetailses = new HashSet<Object>(0);
-
-	public UserDetails() {
-	}
-
-	public UserDetails(String userId, String userName, String role, int age, String gender, String languages,
-			String preferredNotify, Date CTime, Date MTime) {
-		this.userId = userId;
-		this.userName = userName;
-		this.role = role;
-		this.age = age;
-		this.gender = gender;
-		this.languages = languages;
-		this.preferredNotify = preferredNotify;
-		this.CTime = CTime;
-		this.MTime = MTime;
-	}
-
-	public UserDetails(String userId, String userName, String role, int age, String gender, String languages,
-			String preferredNotify, Date CTime, Date MTime, UserContactDetails userContactDetails, Set<?> likedLists,
-			Set<?> ratingTables, LoginDetails loginDetails, Set<?> memberDetailses) {
-		this.userId = userId;
-		this.userName = userName;
-		this.role = role;
-		this.age = age;
-		this.gender = gender;
-		this.languages = languages;
-		this.preferredNotify = preferredNotify;
-		this.CTime = CTime;
-		this.MTime = MTime;
-		this.userContactDetails = userContactDetails;
-		this.likedLists = likedLists;
-		this.ratingTables = ratingTables;
-		this.loginDetails = loginDetails;
-		this.memberDetailses = memberDetailses;
-	}
-
+	
 	@Id
-
 	@Column(name = "user_id", unique = true, nullable = false, length = 6)
+	private String userId;
+	
+	@Column(name = "user_name", nullable = false, length = 20)
+	private String userName;
+	
+	@Column(name = "role", nullable = false, length = 1)
+	private String role;
+	
+	@Column(name = "age", nullable = false)
+	private int age;
+	
+	@Column(name = "gender", nullable = false, length = 1)
+	private String gender;
+	
+	@Column(name = "languages", nullable = false, length = 100)
+	private String languages;
+	
+	@Column(name = "preferred_notify", nullable = false, length = 5)
+	private String preferredNotify;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "c_time", nullable = false, length = 19)
+	private Date createdTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "m_time", nullable = false, length = 19)
+	private Date modifiedTime;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private UserContactDetails userContactDetails;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private Set<?> likedLists = new HashSet<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private Set<?> ratingTables = new HashSet<>();
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private LoginDetails loginDetails;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private Set<?> memberDetailses = new HashSet<>();
+
 	public String getUserId() {
 		return this.userId;
 	}
@@ -89,7 +82,7 @@ public class UserDetails implements Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "user_name", nullable = false, length = 20)
+	
 	public String getUserName() {
 		return this.userName;
 	}
@@ -98,7 +91,7 @@ public class UserDetails implements Serializable {
 		this.userName = userName;
 	}
 
-	@Column(name = "role", nullable = false, length = 1)
+	
 	public String getRole() {
 		return this.role;
 	}
@@ -107,7 +100,7 @@ public class UserDetails implements Serializable {
 		this.role = role;
 	}
 
-	@Column(name = "age", nullable = false)
+	
 	public int getAge() {
 		return this.age;
 	}
@@ -116,7 +109,7 @@ public class UserDetails implements Serializable {
 		this.age = age;
 	}
 
-	@Column(name = "gender", nullable = false, length = 1)
+	
 	public String getGender() {
 		return this.gender;
 	}
@@ -125,7 +118,7 @@ public class UserDetails implements Serializable {
 		this.gender = gender;
 	}
 
-	@Column(name = "languages", nullable = false, length = 100)
+	
 	public String getLanguages() {
 		return this.languages;
 	}
@@ -134,7 +127,7 @@ public class UserDetails implements Serializable {
 		this.languages = languages;
 	}
 
-	@Column(name = "preferred_notify", nullable = false, length = 5)
+	
 	public String getPreferredNotify() {
 		return this.preferredNotify;
 	}
@@ -143,27 +136,25 @@ public class UserDetails implements Serializable {
 		this.preferredNotify = preferredNotify;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	
+	public Date getcreatedTime() {
+		return this.createdTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	
+	public Date getmodifiedTime() {
+		return this.modifiedTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmodifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	
 	public UserContactDetails getUserContactDetails() {
 		return this.userContactDetails;
 	}
@@ -172,7 +163,7 @@ public class UserDetails implements Serializable {
 		this.userContactDetails = userContactDetails;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	
 	public Set<?> getLikedLists() {
 		return this.likedLists;
 	}
@@ -181,7 +172,7 @@ public class UserDetails implements Serializable {
 		this.likedLists = likedLists;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	
 	public Set<?> getRatingTables() {
 		return this.ratingTables;
 	}
@@ -190,7 +181,7 @@ public class UserDetails implements Serializable {
 		this.ratingTables = ratingTables;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	
 	public LoginDetails getLoginDetails() {
 		return this.loginDetails;
 	}
@@ -199,7 +190,7 @@ public class UserDetails implements Serializable {
 		this.loginDetails = loginDetails;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	
 	public Set<?> getMemberDetailses() {
 		return this.memberDetailses;
 	}

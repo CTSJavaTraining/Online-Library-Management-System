@@ -33,31 +33,31 @@ public class MembershipDetails implements Serializable {
 	private int maxPriceLimit;
 	private int validityDays;
 	private int membershipCost;
-	private Date CTime;
-	private Date MTime;
+	private Date createdTime;
+	private Date modifiedTime;
 	private Set<?> memberDetailses = new HashSet<Object>(0);
 
 	public MembershipDetails() {
 	}
 
 	public MembershipDetails(MembershipDetailsId id, int maxPriceLimit, int validityDays, int membershipCost,
-			Date CTime, Date MTime) {
+			Date createdTime, Date modifiedTime) {
 		this.id = id;
 		this.maxPriceLimit = maxPriceLimit;
 		this.validityDays = validityDays;
 		this.membershipCost = membershipCost;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.createdTime = createdTime;
+		this.modifiedTime = modifiedTime;
 	}
 
 	public MembershipDetails(MembershipDetailsId id, int maxPriceLimit, int validityDays, int membershipCost,
-			Date CTime, Date MTime, Set<?> memberDetailses) {
+			Date createdTime, Date modifiedTime, Set<?> memberDetailses) {
 		this.id = id;
 		this.maxPriceLimit = maxPriceLimit;
 		this.validityDays = validityDays;
 		this.membershipCost = membershipCost;
-		this.CTime = CTime;
-		this.MTime = MTime;
+		this.createdTime = createdTime;
+		this.modifiedTime = modifiedTime;
 		this.memberDetailses = memberDetailses;
 	}
 
@@ -103,22 +103,22 @@ public class MembershipDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getCTime() {
-		return this.CTime;
+	public Date getcreatedTime() {
+		return this.createdTime;
 	}
 
-	public void setCTime(Date CTime) {
-		this.CTime = CTime;
+	public void setcreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getMTime() {
-		return this.MTime;
+	public Date getmodifiedTime() {
+		return this.modifiedTime;
 	}
 
-	public void setMTime(Date MTime) {
-		this.MTime = MTime;
+	public void setmodifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "membershipDetails")
