@@ -1,9 +1,9 @@
-package com.training.application;
+package com.training.factory;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class Application {
+public class ApplicationSessionFactory {
 
 	public static void main(String[] args) {
 
