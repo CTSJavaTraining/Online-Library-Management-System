@@ -1,5 +1,5 @@
-package com.training.pojos;
-
+package com.training.DAO;
+// default package
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.io.Serializable;
@@ -35,35 +35,19 @@ public class UserDetails implements Serializable {
 	private String gender;
 	private String languages;
 	private String preferredNotify;
-	private Date cTime;
-	private Date mTime;
+	private Date CTime;
+	private Date MTime;
 	private UserContactDetails userContactDetails;
 	private Set<?> likedLists = new HashSet<Object>(0);
 	private Set<?> ratingTables = new HashSet<Object>(0);
 	private LoginDetails loginDetails;
 	private Set<?> memberDetailses = new HashSet<Object>(0);
 
-	
 	public UserDetails() {
-		/*
-		 * This method is empty because it is empty constructor
-		 */
 	}
 
-	/**
-	 * 
-	 * @param userId
-	 * @param userName
-	 * @param role
-	 * @param age
-	 * @param gender
-	 * @param languages
-	 * @param preferredNotify
-	 * @param cTime
-	 * @param mTime
-	 */
 	public UserDetails(String userId, String userName, String role, int age, String gender, String languages,
-			String preferredNotify, Date cTime, Date mTime) {
+			String preferredNotify, Date CTime, Date MTime) {
 		this.userId = userId;
 		this.userName = userName;
 		this.role = role;
@@ -71,29 +55,12 @@ public class UserDetails implements Serializable {
 		this.gender = gender;
 		this.languages = languages;
 		this.preferredNotify = preferredNotify;
-		this.cTime = cTime;
-		this.mTime = mTime;
+		this.CTime = CTime;
+		this.MTime = MTime;
 	}
 
-	/**
-	 * 
-	 * @param userId
-	 * @param userName
-	 * @param role
-	 * @param age
-	 * @param gender
-	 * @param languages
-	 * @param preferredNotify
-	 * @param cTime
-	 * @param mTime
-	 * @param userContactDetails
-	 * @param likedLists
-	 * @param ratingTables
-	 * @param loginDetails
-	 * @param memberDetailses
-	 */
 	public UserDetails(String userId, String userName, String role, int age, String gender, String languages,
-			String preferredNotify, Date cTime, Date mTime, UserContactDetails userContactDetails, Set<?> likedLists,
+			String preferredNotify, Date CTime, Date MTime, UserContactDetails userContactDetails, Set<?> likedLists,
 			Set<?> ratingTables, LoginDetails loginDetails, Set<?> memberDetailses) {
 		this.userId = userId;
 		this.userName = userName;
@@ -102,8 +69,8 @@ public class UserDetails implements Serializable {
 		this.gender = gender;
 		this.languages = languages;
 		this.preferredNotify = preferredNotify;
-		this.cTime = cTime;
-		this.mTime = mTime;
+		this.CTime = CTime;
+		this.MTime = MTime;
 		this.userContactDetails = userContactDetails;
 		this.likedLists = likedLists;
 		this.ratingTables = ratingTables;
@@ -178,22 +145,22 @@ public class UserDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getcTime() {
-		return this.cTime;
+	public Date getCTime() {
+		return this.CTime;
 	}
 
-	public void setcTime(Date cTime) {
-		this.cTime = cTime;
+	public void setCTime(Date CTime) {
+		this.CTime = CTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getmTime() {
-		return this.mTime;
+	public Date getMTime() {
+		return this.MTime;
 	}
 
-	public void setmTime(Date mTime) {
-		this.mTime = mTime;
+	public void setMTime(Date MTime) {
+		this.MTime = MTime;
 	}
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")

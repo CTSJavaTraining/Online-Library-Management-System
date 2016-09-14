@@ -1,4 +1,4 @@
-package com.training.pojos;
+package com.training.DAO;
 // default package
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
@@ -40,29 +40,29 @@ public class UserContactDetails implements Serializable {
 	private String emailId;
 	private int mobileNo;
 	private Integer alternateContactNo;
-	private Date cTime;
-	private Date mTime;
+	private Date CTime;
+	private Date MTime;
 	private Set<?> addressDetailses = new HashSet<Object>(0);
 
 	public UserContactDetails() {
 	}
 
-	public UserContactDetails(UserDetails userDetails, String emailId, int mobileNo, Date cTime, Date mTime) {
+	public UserContactDetails(UserDetails userDetails, String emailId, int mobileNo, Date CTime, Date MTime) {
 		this.userDetails = userDetails;
 		this.emailId = emailId;
 		this.mobileNo = mobileNo;
-		this.cTime = cTime;
-		this.mTime = mTime;
+		this.CTime = CTime;
+		this.MTime = MTime;
 	}
 
 	public UserContactDetails(UserDetails userDetails, String emailId, int mobileNo, Integer alternateContactNo,
-			Date cTime, Date mTime, Set<?> addressDetailses) {
+			Date CTime, Date MTime, Set<?> addressDetailses) {
 		this.userDetails = userDetails;
 		this.emailId = emailId;
 		this.mobileNo = mobileNo;
 		this.alternateContactNo = alternateContactNo;
-		this.cTime = cTime;
-		this.mTime = mTime;
+		this.CTime = CTime;
+		this.MTime = MTime;
 		this.addressDetailses = addressDetailses;
 	}
 
@@ -118,22 +118,22 @@ public class UserContactDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getcTime() {
-		return this.cTime;
+	public Date getCTime() {
+		return this.CTime;
 	}
 
-	public void setcTime(Date cTime) {
-		this.cTime = cTime;
+	public void setCTime(Date CTime) {
+		this.CTime = CTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getmTime() {
-		return this.mTime;
+	public Date getMTime() {
+		return this.MTime;
 	}
 
-	public void setmTime(Date mTime) {
-		this.mTime = mTime;
+	public void setMTime(Date MTime) {
+		this.MTime = MTime;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userContactDetails")

@@ -1,4 +1,4 @@
-package com.training.pojos;
+package com.training.DAO;
 // default package
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
@@ -34,22 +34,22 @@ public class SubscribedList implements Serializable {
 	private Date startDate;
 	private Date endDate;
 	private String returnStatus;
-	private Date cTime;
-	private Date mTime;
+	private Date CTime;
+	private Date MTime;
 
 	public SubscribedList() {
 	}
 
 	public SubscribedList(SubscribedListId id, LibraryItems libraryItems, MemberDetails memberDetails, Date startDate,
-			Date endDate, String returnStatus, Date cTime, Date mTime) {
+			Date endDate, String returnStatus, Date CTime, Date MTime) {
 		this.id = id;
 		this.libraryItems = libraryItems;
 		this.memberDetails = memberDetails;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.returnStatus = returnStatus;
-		this.cTime = cTime;
-		this.mTime = mTime;
+		this.CTime = CTime;
+		this.MTime = MTime;
 	}
 
 	@EmbeddedId
@@ -115,22 +115,22 @@ public class SubscribedList implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getcTime() {
-		return this.cTime;
+	public Date getCTime() {
+		return this.CTime;
 	}
 
-	public void setcTime(Date cTime) {
-		this.cTime = cTime;
+	public void setCTime(Date CTime) {
+		this.CTime = CTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getmTime() {
-		return this.mTime;
+	public Date getMTime() {
+		return this.MTime;
 	}
 
-	public void setmTime(Date mTime) {
-		this.mTime = mTime;
+	public void setMTime(Date MTime) {
+		this.MTime = MTime;
 	}
 
 }

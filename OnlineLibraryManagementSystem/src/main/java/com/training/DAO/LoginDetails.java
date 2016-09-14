@@ -1,4 +1,4 @@
-package com.training.pojos;
+package com.training.DAO;
 // default package
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
@@ -33,17 +33,17 @@ public class LoginDetails implements Serializable {
 	private String userId;
 	private UserDetails userDetails;
 	private String password;
-	private Date cTime;
-	private Date mTime;
+	private Date CTime;
+	private Date MTime;
 
 	public LoginDetails() {
 	}
 
-	public LoginDetails(UserDetails userDetails, String password, Date cTime, Date mTime) {
+	public LoginDetails(UserDetails userDetails, String password, Date CTime, Date MTime) {
 		this.userDetails = userDetails;
 		this.password = password;
-		this.cTime = cTime;
-		this.mTime = mTime;
+		this.CTime = CTime;
+		this.MTime = MTime;
 	}
 
 	@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "userDetails"))
@@ -80,22 +80,22 @@ public class LoginDetails implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
-	public Date getcTime() {
-		return this.cTime;
+	public Date getCTime() {
+		return this.CTime;
 	}
 
-	public void setcTime(Date cTime) {
-		this.cTime = cTime;
+	public void setCTime(Date CTime) {
+		this.CTime = CTime;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
-	public Date getmTime() {
-		return this.mTime;
+	public Date getMTime() {
+		return this.MTime;
 	}
 
-	public void setmTime(Date mTime) {
-		this.mTime = mTime;
+	public void setMTime(Date MTime) {
+		this.MTime = MTime;
 	}
 
 }
