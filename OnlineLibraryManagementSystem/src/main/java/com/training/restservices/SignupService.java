@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.training.entity.LoginDetails;
 import com.training.entity.UserContactDetails;
 import com.training.entity.UserDetails;
 
@@ -22,24 +23,53 @@ import com.training.entity.UserDetails;
 @EnableAutoConfiguration
 @RequestMapping("/signup")
 public class SignupService {
- 
-	
+
 	@RequestMapping(name = "new user details", value = "/newuser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	private void setBasicDetails(@RequestBody UserDetails userdetails) {
-		userdetails.getUserName().isEmpty();
+	private String setBasicDetails(@RequestBody UserDetails userdetails) {
+
+		if (!userdetails.getUserName().trim().isEmpty()) {
+
+			return "Success userbasic details";
+		}
+
+		else {
+
+			return "Username should not be empty";
+		}
+
 	}
-	
+
 	@RequestMapping(name = "new user contact details", value = "/newuser/contact", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	private void setContactDetails(@RequestBody UserContactDetails contactDetails) {
-		
+	private String setContactDetails(@RequestBody UserContactDetails contactDetails) {
+
+		if (!contactDetails.getEmailId().trim().isEmpty()) {
+
+			return "Success user contact details";
+		}
+
+		else {
+
+			return "Email id should not be empty";
+		}
+
 	}
-	
+
 	@RequestMapping(name = "new user contact details", value = "/newuser/logindetails", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	private void setLoginPassword(@RequestBody UserContactDetails contactDetails) {
-		
+	private String setLoginPassword(@RequestBody LoginDetails loginDetails) {
+
+		if (!loginDetails.getPassword().trim().isEmpty()) {
+
+			return "Success password type";
+		}
+
+		else {
+
+			return "Password should not be empty";
+		}
+
 	}
 
 }
