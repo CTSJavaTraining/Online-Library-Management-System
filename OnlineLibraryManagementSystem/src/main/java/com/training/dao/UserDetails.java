@@ -63,16 +63,16 @@ public class UserDetails implements Serializable {
 	private UserContactDetails userContactDetails;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<?> likedLists = new HashSet<>();
+	private Set<UserDetails> likedLists = new HashSet<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<?> ratingTables = new HashSet<>();
+	private Set<UserDetails> ratingTables = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private LoginDetails loginDetails;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<?> memberDetailses = new HashSet<>();
+	private Set<UserDetails> memberDetailses = new HashSet<>();
 
 	public String getUserId() {
 		return this.userId;
@@ -168,8 +168,9 @@ public class UserDetails implements Serializable {
 		return this.likedLists;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setLikedLists(Set<?> likedLists) {
-		this.likedLists = likedLists;
+		this.likedLists = (Set<UserDetails>) likedLists;
 	}
 
 	
@@ -177,8 +178,9 @@ public class UserDetails implements Serializable {
 		return this.ratingTables;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setRatingTables(Set<?> ratingTables) {
-		this.ratingTables = ratingTables;
+		this.ratingTables = (Set<UserDetails>) ratingTables;
 	}
 
 	
@@ -195,8 +197,9 @@ public class UserDetails implements Serializable {
 		return this.memberDetailses;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setMemberDetailses(Set<?> memberDetailses) {
-		this.memberDetailses = memberDetailses;
+		this.memberDetailses = (Set<UserDetails>) memberDetailses;
 	}
 
 }
