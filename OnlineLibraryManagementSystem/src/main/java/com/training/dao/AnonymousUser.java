@@ -1,4 +1,4 @@
-package com.training.logic;
+package com.training.dao;
 
 public class AnonymousUser {
 
