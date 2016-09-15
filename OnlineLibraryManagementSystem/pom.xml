@@ -113,7 +113,7 @@
 			<artifactId>jackson-core</artifactId>
 		</dependency>
 
-		<!-- SL4J Dependencies -->
+		<!-- SL4J Dependencies by 447383-->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
