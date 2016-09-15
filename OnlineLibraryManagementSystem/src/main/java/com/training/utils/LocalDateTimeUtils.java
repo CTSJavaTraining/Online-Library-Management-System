@@ -14,7 +14,7 @@ public class LocalDateTimeUtils {
 	 * 
 	 * @return
 	 */
-	public LocalDateTime getLocalDateTime() {
+	public static LocalDateTime getLocalDateTime() {
 
 		return LocalDateTime.now();
 
