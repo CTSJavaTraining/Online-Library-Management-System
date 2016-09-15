@@ -1,5 +1,6 @@
 package com.training.entity;
 // default package
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.io.Serializable;
@@ -30,27 +31,29 @@ public class LoginDetails implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String userId;
-	private UserDetails userDetails;
-	private String password;
-	private Date createdTime;
-	private Date modifiedTime;
-
-	public LoginDetails() {
-	}
-
-	public LoginDetails(UserDetails userDetails, String password, Date createdTime, Date modifiedTime) {
-		this.userDetails = userDetails;
-		this.password = password;
-		this.createdTime = createdTime;
-		this.modifiedTime = modifiedTime;
-	}
 
 	@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "userDetails"))
 	@Id
 	@GeneratedValue(generator = "generator")
 
 	@Column(name = "user_id", unique = true, nullable = false, length = 6)
+	private String userId;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	private UserDetails userDetails;
+	
+	@Column(name = "password", nullable = false, length = 16)
+	private String password;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "c_time", nullable = false, length = 19)
+	private Date createdTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "m_time", nullable = false, length = 19)
+	private Date modifiedTime;
+
 	public String getUserId() {
 		return this.userId;
 	}
@@ -59,8 +62,6 @@ public class LoginDetails implements Serializable {
 		this.userId = userId;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
 	public UserDetails getUserDetails() {
 		return this.userDetails;
 	}
@@ -69,7 +70,7 @@ public class LoginDetails implements Serializable {
 		this.userDetails = userDetails;
 	}
 
-	@Column(name = "password", nullable = false, length = 16)
+	
 	public String getPassword() {
 		return this.password;
 	}
@@ -78,8 +79,7 @@ public class LoginDetails implements Serializable {
 		this.password = password;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "c_time", nullable = false, length = 19)
+	
 	public Date getcreatedTime() {
 		return this.createdTime;
 	}
@@ -88,8 +88,7 @@ public class LoginDetails implements Serializable {
 		this.createdTime = createdTime;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "m_time", nullable = false, length = 19)
+	
 	public Date getmodifiedTime() {
 		return this.modifiedTime;
 	}

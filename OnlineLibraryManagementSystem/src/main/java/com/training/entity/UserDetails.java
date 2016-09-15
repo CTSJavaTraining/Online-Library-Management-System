@@ -5,6 +5,7 @@ package com.training.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -60,7 +61,7 @@ public class UserDetails implements Serializable {
 	private Date modifiedTime;
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private UserContactDetails userContactDetails;
+	private List<UserContactDetails> userContactDetails;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private Set<UserDetails> likedLists = new HashSet<>();
@@ -69,7 +70,7 @@ public class UserDetails implements Serializable {
 	private Set<UserDetails> ratingTables = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private LoginDetails loginDetails;
+	private List<LoginDetails> loginDetails;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private Set<UserDetails> memberDetailses = new HashSet<>();
@@ -155,11 +156,11 @@ public class UserDetails implements Serializable {
 	}
 
 	
-	public UserContactDetails getUserContactDetails() {
+	public List<UserContactDetails> getUserContactDetails() {
 		return this.userContactDetails;
 	}
 
-	public void setUserContactDetails(UserContactDetails userContactDetails) {
+	public void setUserContactDetails(List<UserContactDetails> userContactDetails) {
 		this.userContactDetails = userContactDetails;
 	}
 
@@ -184,11 +185,11 @@ public class UserDetails implements Serializable {
 	}
 
 	
-	public LoginDetails getLoginDetails() {
+	public List<LoginDetails> getLoginDetails() {
 		return this.loginDetails;
 	}
 
-	public void setLoginDetails(LoginDetails loginDetails) {
+	public void setLoginDetails(List<LoginDetails> loginDetails) {
 		this.loginDetails = loginDetails;
 	}
 

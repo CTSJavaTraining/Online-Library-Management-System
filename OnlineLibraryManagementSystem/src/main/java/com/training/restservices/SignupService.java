@@ -1,5 +1,11 @@
 package com.training.restservices;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
@@ -9,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.entity.LoginDetails;
 import com.training.entity.UserContactDetails;
 import com.training.entity.UserDetails;
+import com.training.factory.ApplicationSessionFactory;
 
 /**
  * 
@@ -21,60 +27,59 @@ import com.training.entity.UserDetails;
 @ComponentScan
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/signup")
+@RequestMapping("/home")
 public class SignupService {
 
-	@RequestMapping(name = "new user details", value = "/newuser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	Logger logger = Logger.getLogger(SignupService.class);
+	private static SessionFactory factory = ApplicationSessionFactory.factoryProvider();
+
+	@RequestMapping(name = "new user details", value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	private String setBasicDetails(@RequestBody UserDetails userdetails) {
 
 		// First level Validation
 		if (!userdetails.getUserName().trim().isEmpty()) {
 
-			return "Success userbasic details";
+			// Method
+			String username = userdetails.getUserName();
+
+			try (Session session = factory.openSession()) {
+				session.beginTransaction();
+				logger.debug("User entered username is " + username);
+				System.out.println("User enterted usernaem is " + username);
+				
+				String hql = "FROM UserDetails WHERE userName = :uName";
+
+				Query query = session.createQuery(hql);
+				query.setParameter("uName", username);
+
+				if (query.list().isEmpty()) {
+					System.out.println("Query list is empty so trying to commit ");
+					List<UserContactDetails> contactDetails = userdetails.getUserContactDetails();
+
+					for (UserContactDetails enterContactDetails : contactDetails) {
+						enterContactDetails.setUserDetails(userdetails);
+					}
+
+					session.persist(userdetails);
+					System.out.println("Persisted user details ");
+					session.getTransaction().commit();
+					System.out.println("Commited");
+
+					return "Successfully saved your information";
+				}
+
+				else {
+					return "Please try again!!";
+				}
+			}
+
 		}
 
 		else {
 
 			return "Username should not be empty";
 		}
-		
-		//Passing user inputs to DTO
-
-	}
-
-	@RequestMapping(name = "new user contact details", value = "/newuser/contact", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	private String setContactDetails(@RequestBody UserContactDetails contactDetails) {
-
-		// First level Validation
-		if (!contactDetails.getEmailId().trim().isEmpty()) {
-
-			return "Success user contact details";
-		}
-
-		else {
-
-			return "Email id should not be empty";
-		}
-
-	}
-
-	@RequestMapping(name = "new user contact details", value = "/newuser/logindetails", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	private String setLoginPassword(@RequestBody LoginDetails loginDetails) {
-
-		// First level Validation
-		if (!loginDetails.getPassword().trim().isEmpty()) {
-
-			return "Success password type";
-		}
-
-		else {
-
-			return "Password should not be empty";
-		}
-
 	}
 
 }
