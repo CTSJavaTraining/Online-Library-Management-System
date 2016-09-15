@@ -1,5 +1,7 @@
 package com.training.restservices;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.training.entity.UserContactDetails;
 import com.training.entity.UserDetails;
 import com.training.factory.ApplicationSessionFactory;
+import com.training.utils.LocalDateTimeUtils;
 
 /**
  * 
@@ -60,7 +63,10 @@ public class SignupService {
 					for (UserContactDetails enterContactDetails : contactDetails) {
 						enterContactDetails.setUserDetails(userdetails);
 					}
-
+					
+					LocalDateTime testDate=LocalDateTimeUtils.getLocalDateTime();
+					
+ 
 					session.persist(userdetails);
 					System.out.println("Persisted user details ");
 					session.getTransaction().commit();
