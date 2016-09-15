@@ -41,26 +41,4 @@ public class AddressDetailsId implements Serializable {
 		this.doorno = doorno;
 	}
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof AddressDetailsId))
-			return false;
-		AddressDetailsId castOther = (AddressDetailsId) other;
-
-		return ((this.getUserId() == castOther.getUserId()) || (this.getUserId() != null
-				&& castOther.getUserId() != null && this.getUserId().equals(castOther.getUserId())))
-				&& (this.getDoorno() == castOther.getDoorno());
-	}
-
-	public int hashCode() {
-		int result = 17;
-
-		result = 37 * result + (getUserId() == null ? 0 : this.getUserId().hashCode());
-		result = 37 * result + this.getDoorno();
-		return result;
-	}
-
 }

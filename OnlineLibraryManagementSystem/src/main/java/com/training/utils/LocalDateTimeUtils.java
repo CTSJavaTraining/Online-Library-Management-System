@@ -2,6 +2,7 @@ package com.training.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
@@ -44,5 +45,6 @@ public class LocalDateTimeUtils implements AttributeConverter<LocalDateTime, Tim
 
 		return (dbData == null ? null : dbData.toLocalDateTime());
 	}
+
 
 }

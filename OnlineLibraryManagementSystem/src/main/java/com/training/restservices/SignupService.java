@@ -1,6 +1,6 @@
 package com.training.restservices;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +34,8 @@ import com.training.utils.LocalDateTimeUtils;
 public class SignupService {
 
 	Logger logger = Logger.getLogger(SignupService.class);
+	LocalDateTimeUtils timeStampObj = new LocalDateTimeUtils();
+
 	private static SessionFactory factory = ApplicationSessionFactory.factoryProvider();
 
 	@RequestMapping(name = "new user details", value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -50,7 +52,7 @@ public class SignupService {
 				session.beginTransaction();
 				logger.debug("User entered username is " + username);
 				System.out.println("User enterted usernaem is " + username);
-				
+
 				String hql = "FROM UserDetails WHERE userName = :uName";
 
 				Query query = session.createQuery(hql);
@@ -62,11 +64,10 @@ public class SignupService {
 
 					for (UserContactDetails enterContactDetails : contactDetails) {
 						enterContactDetails.setUserDetails(userdetails);
+						enterContactDetails.setcreatedTime(utilTimeStamp());
+						enterContactDetails.setmodifiedTime(utilTimeStamp());
 					}
-					
-					LocalDateTime testDate=LocalDateTimeUtils.getLocalDateTime();
-					
- 
+
 					session.persist(userdetails);
 					System.out.println("Persisted user details ");
 					session.getTransaction().commit();
@@ -86,6 +87,10 @@ public class SignupService {
 
 			return "Username should not be empty";
 		}
+	}
+
+	private Timestamp utilTimeStamp() {
+		return timeStampObj.convertToDatabaseColumn(LocalDateTime.now());
 	}
 
 }
