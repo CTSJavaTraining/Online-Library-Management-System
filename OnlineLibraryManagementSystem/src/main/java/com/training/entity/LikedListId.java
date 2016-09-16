@@ -1,5 +1,6 @@
 package com.training.entity;
 // default package
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.io.Serializable;
@@ -17,18 +18,13 @@ public class LikedListId implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String userId;
-	private String itemId;
-
-	public LikedListId() {
-	}
-
-	public LikedListId(String userId, String itemId) {
-		this.userId = userId;
-		this.itemId = itemId;
-	}
 
 	@Column(name = "user_id", nullable = false, length = 6)
+	private String userId;
+
+	@Column(name = "item_id", nullable = false, length = 8)
+	private String itemId;
+
 	public String getUserId() {
 		return this.userId;
 	}
@@ -37,7 +33,6 @@ public class LikedListId implements Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "item_id", nullable = false, length = 8)
 	public String getItemId() {
 		return this.itemId;
 	}
