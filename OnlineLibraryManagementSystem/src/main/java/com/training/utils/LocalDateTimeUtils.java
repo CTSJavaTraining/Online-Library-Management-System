@@ -18,7 +18,7 @@ import javax.persistence.Converter;
 @Converter(autoApply = true)
 public class LocalDateTimeUtils implements AttributeConverter<LocalDateTime, Timestamp> {
 	/**
-	 * this method is used to return system date and time
+	 * this method is used to return system date and time to be updated in DB
 	 * 
 	 * @return
 	 */
@@ -45,6 +45,5 @@ public class LocalDateTimeUtils implements AttributeConverter<LocalDateTime, Tim
 
 		return (dbData == null ? null : dbData.toLocalDateTime());
 	}
-
 
 }

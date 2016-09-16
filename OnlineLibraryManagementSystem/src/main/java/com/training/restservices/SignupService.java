@@ -51,7 +51,7 @@ public class SignupService {
 			try (Session session = factory.openSession()) {
 				session.beginTransaction();
 				logger.debug("User entered username is " + username);
-				System.out.println("User enterted usernaem is " + username);
+				System.out.println("User enterted username is " + username);
 
 				String hql = "FROM UserDetails WHERE userName = :uName";
 
