@@ -1,7 +1,6 @@
 package com.training.restservices;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -90,7 +89,7 @@ public class SignupService {
 	}
 
 	private Timestamp utilTimeStamp() {
-		return timeStampObj.convertToDatabaseColumn(LocalDateTime.now());
+		return timeStampObj.convertToDatabaseColumn(LocalDateTimeUtils.getLocalDateTime());
 	}
 
 }
