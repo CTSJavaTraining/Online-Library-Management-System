@@ -22,7 +22,7 @@ public class LocalDateTimeUtils implements AttributeConverter<LocalDateTime, Tim
 	 * 
 	 * @return
 	 */
-	public static LocalDateTime getLocalDateTime() {
+	public LocalDateTime getLocalDateTime() {
 
 		return LocalDateTime.now();
 

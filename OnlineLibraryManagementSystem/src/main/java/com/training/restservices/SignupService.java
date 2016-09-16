@@ -89,7 +89,7 @@ public class SignupService {
 	}
 
 	private Timestamp utilTimeStamp() {
-		return timeStampObj.convertToDatabaseColumn(LocalDateTimeUtils.getLocalDateTime());
+		return timeStampObj.convertToDatabaseColumn(timeStampObj.getLocalDateTime());
 	}
 
 }
