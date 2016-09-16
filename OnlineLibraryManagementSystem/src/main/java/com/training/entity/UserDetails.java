@@ -47,6 +47,15 @@ public class UserDetails implements Serializable {
 	@Column(name = "gender", nullable = false, length = 1)
 	private String gender;
 
+	@Column(name = "email_id", unique = true, nullable = false, length = 35)
+	private String emailId;
+
+	@Column(name = "mobile_no", unique = true, nullable = false)
+	private int mobileNo;
+
+	@Column(name = "alternate_contact_no")
+	private Integer alternateContactNo;
+
 	@Column(name = "languages", nullable = false, length = 100)
 	private String languages;
 
@@ -61,20 +70,20 @@ public class UserDetails implements Serializable {
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private List<UserContactDetails> userContactDetails;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<UserDetails> likedLists = new HashSet<>();
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<UserDetails> ratingTables = new HashSet<>();
+	@OneToMany(mappedBy = "userDetails", fetch = FetchType.LAZY)
+	private List<AddressDetails> addressDetails;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private List<LoginDetails> loginDetails;
+	private LoginDetails loginDetails;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<UserDetails> memberDetailses = new HashSet<>();
+	private Set<?> likedLists = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private Set<?> ratingTables = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	private Set<?> memberDetailses = new HashSet<>();
 
 	public String getUserId() {
 		return this.userId;
@@ -85,11 +94,11 @@ public class UserDetails implements Serializable {
 	}
 
 	public String getUserName() {
-		return this.userName;
+		return this.userName.trim();
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.userName = userName.trim().toLowerCase();
 	}
 
 	public String getRole() {
@@ -116,6 +125,30 @@ public class UserDetails implements Serializable {
 		this.gender = gender;
 	}
 
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public int getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(int mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public Integer getAlternateContactNo() {
+		return alternateContactNo;
+	}
+
+	public void setAlternateContactNo(Integer alternateContactNo) {
+		this.alternateContactNo = alternateContactNo;
+	}
+
 	public String getLanguages() {
 		return this.languages;
 	}
@@ -132,28 +165,62 @@ public class UserDetails implements Serializable {
 		this.preferredNotify = preferredNotify;
 	}
 
+	/**
+	 * 
+	 * @return To get the record created time
+	 */
 	public Date getcreatedTime() {
 		return this.createdTime;
 	}
 
+	/**
+	 * To insert record created time into DB
+	 * 
+	 * @param createdTime
+	 */
 	public void setcreatedTime(Date createdTime) {
 		this.createdTime = createdTime;
 	}
 
+	/**
+	 * 
+	 * @return To get the modified time
+	 */
 	public Date getmodifiedTime() {
 		return this.modifiedTime;
 	}
 
+	/**
+	 * To set the record modified time
+	 * 
+	 * @param modifiedTime
+	 */
 	public void setmodifiedTime(Date modifiedTime) {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public List<UserContactDetails> getUserContactDetails() {
-		return this.userContactDetails;
+	public Date getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setUserContactDetails(List<UserContactDetails> userContactDetails) {
-		this.userContactDetails = userContactDetails;
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public Date getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
+	}
+
+	public List<AddressDetails> getAddressDetails() {
+		return addressDetails;
+	}
+
+	public void setAddressDetails(List<AddressDetails> addressDetails) {
+		this.addressDetails = addressDetails;
 	}
 
 	public Set<?> getLikedLists() {
@@ -174,11 +241,11 @@ public class UserDetails implements Serializable {
 		this.ratingTables = (Set<UserDetails>) ratingTables;
 	}
 
-	public List<LoginDetails> getLoginDetails() {
+	public LoginDetails getLoginDetails() {
 		return this.loginDetails;
 	}
 
-	public void setLoginDetails(List<LoginDetails> loginDetails) {
+	public void setLoginDetails(LoginDetails loginDetails) {
 		this.loginDetails = loginDetails;
 	}
 

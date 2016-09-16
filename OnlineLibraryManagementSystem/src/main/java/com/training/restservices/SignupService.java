@@ -1,6 +1,6 @@
 package com.training.restservices;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.entity.UserContactDetails;
+import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
 import com.training.factory.ApplicationSessionFactory;
-import com.training.utils.LocalDateTimeUtils;
 
 /**
  * 
@@ -32,41 +31,43 @@ import com.training.utils.LocalDateTimeUtils;
 @RequestMapping("/home")
 public class SignupService {
 
-	Logger logger = Logger.getLogger(SignupService.class);
-	LocalDateTimeUtils timeStampObj = new LocalDateTimeUtils();
+	private static final Logger logger = Logger.getLogger(SignupService.class);
 
 	private static SessionFactory factory = ApplicationSessionFactory.factoryProvider();
-
-	@RequestMapping(name = "new user details", value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	private String setBasicDetails(@RequestBody UserDetails userdetails) {
 
 		// First level Validation
-		if (!userdetails.getUserName().trim().isEmpty()) {
+		// Method
+		String username = userdetails.getUserName();
 
-			// Method
-			String username = userdetails.getUserName();
+		if (!username.isEmpty()) {
 
 			try (Session session = factory.openSession()) {
 				session.beginTransaction();
+				
 				logger.debug("User entered username is " + username);
 				System.out.println("User enterted username is " + username);
 
-				String hql = "FROM UserDetails WHERE userName = :uName";
-
-				Query query = session.createQuery(hql);
+				Query query = session.createQuery("FROM UserDetails WHERE userName = :uName");
 				query.setParameter("uName", username);
 
 				if (query.list().isEmpty()) {
-					System.out.println("Query list is empty so trying to commit ");
-					List<UserContactDetails> contactDetails = userdetails.getUserContactDetails();
+					System.out.println("Query list is empty(No user in that name) so trying to commit ");
 
-					for (UserContactDetails enterContactDetails : contactDetails) {
-						enterContactDetails.setUserDetails(userdetails);
-						enterContactDetails.setcreatedTime(utilTimeStamp());
-						enterContactDetails.setmodifiedTime(utilTimeStamp());
+					List<AddressDetails> addressList = userdetails.getAddressDetails();
+
+					for (AddressDetails address : addressList) {
+						address.setUserDetails(userdetails);
+						address.setCreatedTime(getCurrentDateTime());
+						address.setModifiedTime(getCurrentDateTime());
 					}
-
+					
+					userdetails.setcreatedTime(getCurrentDateTime());
+					userdetails.setmodifiedTime(getCurrentDateTime());
+					
 					session.persist(userdetails);
 					System.out.println("Persisted user details ");
 					session.getTransaction().commit();
@@ -88,8 +89,9 @@ public class SignupService {
 		}
 	}
 
-	private Timestamp utilTimeStamp() {
-		return timeStampObj.convertToDatabaseColumn(timeStampObj.getLocalDateTime());
+	// Utility Method fot getting current date and time to store into Db
+	private Date getCurrentDateTime() {
+		return new Date();
 	}
-
+	
 }

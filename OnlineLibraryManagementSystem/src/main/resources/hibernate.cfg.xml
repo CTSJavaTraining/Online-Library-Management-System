@@ -3,11 +3,20 @@
 		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">CDPff123</property>
-        <property name="hibernate.connection.url">jdbc:mysql://10.242.133.139:3306/onlinelibrary</property>
-        <property name="hibernate.connection.username">olms</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    </session-factory>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.password">CDPff123</property>
+		<property name="hibernate.connection.url">jdbc:mysql://10.242.133.139:3306/onlinelibrary</property>
+		<property name="hibernate.connection.username">olms</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.hbm2ddl.auto">validate</property>
+		<property name="hibernate.show_sql">false</property>
+		<property name="format_sql">true</property>
+		<property name="use_sql_comments">false</property>
+
+		<!-- List of XML mapping files -->
+		<mapping class="com.training.entity.UserDetails" />
+		<mapping class="com.training.entity.AddressDetails" />
+		<mapping class="com.training.entity.LoginDetails" />
+	</session-factory>
 </hibernate-configuration>
