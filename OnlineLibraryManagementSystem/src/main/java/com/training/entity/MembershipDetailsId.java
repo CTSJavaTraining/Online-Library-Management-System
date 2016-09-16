@@ -1,5 +1,6 @@
 package com.training.entity;
 // default package
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.io.Serializable;
@@ -17,18 +18,13 @@ public class MembershipDetailsId implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int memberTypeId;
-	private String membershipType;
-
-	public MembershipDetailsId() {
-	}
-
-	public MembershipDetailsId(int memberTypeId, String membershipType) {
-		this.memberTypeId = memberTypeId;
-		this.membershipType = membershipType;
-	}
 
 	@Column(name = "member_type_id", nullable = false)
+	private int memberTypeId;
+
+	@Column(name = "membership_type", nullable = false, length = 6)
+	private String membershipType;
+
 	public int getMemberTypeId() {
 		return this.memberTypeId;
 	}
@@ -37,7 +33,6 @@ public class MembershipDetailsId implements Serializable {
 		this.memberTypeId = memberTypeId;
 	}
 
-	@Column(name = "membership_type", nullable = false, length = 6)
 	public String getMembershipType() {
 		return this.membershipType;
 	}

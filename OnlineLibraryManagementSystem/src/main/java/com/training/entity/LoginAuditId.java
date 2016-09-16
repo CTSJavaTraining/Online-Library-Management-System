@@ -1,5 +1,6 @@
 package com.training.entity;
 // default package
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.io.Serializable;
@@ -18,18 +19,13 @@ public class LoginAuditId implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String userId;
-	private Date lastLoginTime;
-
-	public LoginAuditId() {
-	}
-
-	public LoginAuditId(String userId, Date lastLoginTime) {
-		this.userId = userId;
-		this.lastLoginTime = lastLoginTime;
-	}
 
 	@Column(name = "user_id", nullable = false, length = 6)
+	private String userId;
+
+	@Column(name = "last_login_time", nullable = false, length = 19)
+	private Date lastLoginTime;
+
 	public String getUserId() {
 		return this.userId;
 	}
@@ -38,7 +34,6 @@ public class LoginAuditId implements Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "last_login_time", nullable = false, length = 19)
 	public Date getLastLoginTime() {
 		return this.lastLoginTime;
 	}
