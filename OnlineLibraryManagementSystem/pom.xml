@@ -12,7 +12,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.0.RELEASE</version>
 	</parent>
-
+	
 	<repositories>
 		<repository>
 			<id>id1</id>
@@ -21,7 +21,9 @@
 	</repositories>
 	<properties>
 		<sonar.host.url>http://10.242.133.153:9000/</sonar.host.url>
-		
+		<hibernate.version>5.2.0.Final</hibernate.version>
+		<start-class>com.training.entity.SignupService</start-class>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 
@@ -73,12 +75,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
+<!-- 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions> -->
 		</dependency>
 
 		<!-- Logging dependency -->
