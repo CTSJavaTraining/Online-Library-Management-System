@@ -4,10 +4,12 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Query;
-import javax.transaction.Transaction;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.training.factory.ApplicationSessionFactory;
 import com.training.utils.LocalDateTimeUtils;
@@ -21,7 +23,7 @@ import com.training.utils.LocalDateTimeUtils;
  */
 public class SignedUser extends AnonymousUser {
 
-	private static final Logger logger = Logger.getLogger(SignedUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
 	LocalDateTimeUtils dateTimeUtils = new LocalDateTimeUtils();
 
 	/**
@@ -71,25 +73,33 @@ public class SignedUser extends AnonymousUser {
 	 * @return
 	 */
 	public boolean findExistanceLikedItems(String userId, String itemId) {
+		boolean status = false;
 		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		String hqlQuery = "from LikedList where item_id = :itemId and user_id= :userId";
 		try {
-			String hqlQuery = "from liked_list where item_id = :itemId and user_id= :userId";
+
+			SessionFactory factory = ApplicationSessionFactory.returnFactory();
+			Session session = factory.openSession();
+			session.beginTransaction();
+
 			query = session.createQuery(hqlQuery);
-			query.setParameter("user_id", userId);
-			query.setParameter("item_id", itemId);
+			query.setParameter("userId", userId);
+			query.setParameter("itemId", itemId);
 			List<?> listResult = query.getResultList();
-			transaction.commit();
+
 			if (listResult == null) {
-				return false;
+
+				status = false;
+			} else {
+				status = true;
+
 			}
 		} catch (Exception e) {
 			logger.error(e
 					+ "Failed to hit the database to check for the existance of the item liked by the same user in DB");
 		}
 
-		return true;
+		return status;
 	}
 
 	/**
@@ -101,18 +111,24 @@ public class SignedUser extends AnonymousUser {
 	 * @return
 	 */
 	public boolean findExistanceRatings(String userId, String itemId) {
+		boolean status = true;
 		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		try {
-			String hqlQuery = "from rating_table where item_id = :itemId and user_id= :userId";
+			String hqlQuery = "from RatingTable where item_id = :item_id and user_id= :user_id";
 			query = session.createQuery(hqlQuery);
 			query.setParameter("user_id", userId);
 			query.setParameter("item_id", itemId);
 			List<?> listResult = query.getResultList();
 			transaction.commit();
 			if (listResult == null) {
-				return false;
+
+				status = false;
+			} else {
+				status = true;
+
 			}
 		} catch (Exception e) {
 			logger.error(e
@@ -131,10 +147,11 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void insertLikeItems(String userId, String itemId, int likeStatus) {
 		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		try {
-			String hqlQuery = "INSERT INTO liked_list(user_id, item_id, like_status, c_time, m_time)";
+			String hqlQuery = "INSERT INTO LikedList(user_id, item_id, like_status, c_time, m_time)";
 			query = session.createQuery(hqlQuery);
 			query.setParameter("user_id", userId);
 			query.setParameter("item_id", itemId);
@@ -163,10 +180,11 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void insertRateItems(String userId, String itemId, int rating, String review) {
 		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		try {
-			String hqlQuery = "INSERT INTO rating_table(user_id, item_id, rating, review, c_time, m_time)";
+			String hqlQuery = "INSERT INTO RatingTable(userId, itemId, rating, review, createdTime, modifiedTime)";
 			query = session.createQuery(hqlQuery);
 			query.setParameter("user_id", userId);
 			query.setParameter("item_id", itemId);
@@ -195,11 +213,12 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void updateRateItems(String userId, String itemId, int rating, String review) {
 		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		Timestamp dateModified = dateTimeUtils.convertToDatabaseColumn((dateTimeUtils.getLocalDateTime()));
 		try {
-			String hqlQuery = "UPDATE rating_table set rating= :rating, review =:review, m_time :dateModified where item_id = :itemId and user_id= :userId";
+			String hqlQuery = "UPDATE RatingTable set rating= :rating, review =:review, m_time :m_time where item_id = :item_id and user_id= :user_id";
 			query = session.createQuery(hqlQuery);
 			query.setParameter("user_id", userId);
 			query.setParameter("item_id", itemId);
@@ -226,11 +245,12 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void updateLikeItems(String userId, String itemId, int likeStatus) {
 		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
 		Timestamp dateModified = dateTimeUtils.convertToDatabaseColumn((dateTimeUtils.getLocalDateTime()));
 		try {
-			String hqlQuery = "UPDATE liked_list set like_status= :likeStatus, m_time :dateModified where item_id = :itemId and user_id= :userId";
+			String hqlQuery = "UPDATE LikedList set like_status= :like_status, m_time :m_time where item_id = :item_id and user_id= :user_id";
 			query = session.createQuery(hqlQuery);
 			query.setParameter("user_id", userId);
 			query.setParameter("item_id", itemId);
@@ -248,5 +268,9 @@ public class SignedUser extends AnonymousUser {
 		}
 	}
 
-	
+	public static void main(String args[]) {
+		SignedUser su = new SignedUser();
+		su.rateItems("123", "123", 4, "null");
+		su.likeItems("123", "123", 4);
+	}
 }
