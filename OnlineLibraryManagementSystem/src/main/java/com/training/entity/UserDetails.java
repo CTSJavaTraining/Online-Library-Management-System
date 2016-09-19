@@ -188,28 +188,7 @@ public class UserDetails implements Serializable {
 		return this.modifiedTime;
 	}
 
-	/**
-	 * To set the record modified time
-	 * 
-	 * @param modifiedTime
-	 */
 	public void setmodifiedTime(Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-	public Date getCreatedTime() {
-		return createdTime;
-	}
-
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
-	}
-
-	public Date getModifiedTime() {
-		return modifiedTime;
-	}
-
-	public void setModifiedTime(Date modifiedTime) {
 		this.modifiedTime = modifiedTime;
 	}
 

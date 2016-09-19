@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-import org.springframework.boot.SpringApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,106 +29,65 @@ import com.training.entity.UserDetails;
  */
 
 @ComponentScan
-@EnableAutoConfiguration
-@SpringBootApplication
 @RestController
+@EnableAutoConfiguration
+@RequestMapping("/new")
 public class SignupService {
 
-	private static final Logger logger = Logger.getLogger(SignupService.class);
+	private static final Logger logger = LoggerFactory.getLogger(SignupService.class);
 
-	SessionFactory factory = returnFactory();
+	SessionFactory factory = BootApplication.factory;
 
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String setBasicDetails(@RequestBody UserDetails userdetails) {
 
-		// First level Validation
-		// Method
-		String username = userdetails.getUserName();
+		try (Session session = factory.openSession()) {
+			session.beginTransaction();
 
-		if (!username.isEmpty()) {
+			List<AddressDetails> addressList = userdetails.getAddressDetails();
 
-			try (Session session = factory.openSession()) {
-				session.beginTransaction();
-				logger.debug("User entered username is " + username);
-				System.out.println("User enterted username is " + username);
+			for (AddressDetails address : addressList) {
+				address.setUserDetails(userdetails);
+				address.setCreatedTime(getCurrentDateTime());
+				address.setModifiedTime(getCurrentDateTime());
 
-				@SuppressWarnings("unchecked")
-				Query<UserDetails> query = session.createQuery("FROM UserDetails WHERE userName = :uName");
-				query.setParameter("uName", username);
+				userdetails.setcreatedTime(getCurrentDateTime());
+				userdetails.setmodifiedTime(getCurrentDateTime());
 
-				if (query.list().isEmpty()) {
-					System.out.println("Query list is empty(No user in that name) so trying to commit ");
-
-					List<AddressDetails> addressList = userdetails.getAddressDetails();
-
-					for (AddressDetails address : addressList) {
-						address.setUserDetails(userdetails);
-						address.setCreatedTime(getCurrentDateTime());
-						address.setModifiedTime(getCurrentDateTime());
-					}
-
-					userdetails.setcreatedTime(getCurrentDateTime());
-					userdetails.setmodifiedTime(getCurrentDateTime());
-
-					session.persist(userdetails);
-					System.out.println("Persisted user details ");
-					session.getTransaction().commit();
-					System.out.println("Commited");
-
-					return "Successfully saved your information";
-				}
-
-				else {
-					return "Please try again!!";
-				}
+				session.persist(userdetails);
+				logger.info("Persisted user details ");
+				session.getTransaction().commit();
+				logger.info("Commited");
 			}
-
 		}
-
-		else {
-
-			return "Username should not be empty";
-		}
+		return "Successfully saved your information";
 	}
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    private Response loginService(@RequestBody UserDetails userdetails) {
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	private Response loginService(@RequestBody UserDetails userdetails) {
 
-                    return Response.status(Response.Status.OK).entity(new UserDetails()).build();
-    }
+		return Response.status(Response.Status.OK).entity(new UserDetails()).build();
+	}
 
-    @RequestMapping(value = "/ ", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    private Response userNameExistance(@RequestParam("username") String username) {
+	@RequestMapping(value = "/ ", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	private Response userNameExistance(@RequestParam("username") String username) {
 
-                    System.out.println("welcomr");
-                    return Response.status(Response.Status.OK).entity("user namae exists").build();
+		logger.info("welcome");
+		return Response.status(Response.Status.OK).entity("user namae exists").build();
 
-    }
+	}
 
-    @RequestMapping("/test")
-    String home() {
-                    return "Hello World!";
-    }
-
-
+	@RequestMapping("/test")
+	String home() {
+		return "Hello World!";
+	}
 
 	// Utility Method fot getting current date and time to store into Db
 	private Date getCurrentDateTime() {
 		return new Date();
-	}
-
-	public static SessionFactory returnFactory() {
-		logger.info("Loading sessiong factory");
-		return new Configuration().configure().buildSessionFactory();
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(SignupService.class, args);
-		logger.info("_---------------------- Application starts--------------------");
 	}
 
 }
