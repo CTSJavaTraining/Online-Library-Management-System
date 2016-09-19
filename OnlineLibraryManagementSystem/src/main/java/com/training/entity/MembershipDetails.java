@@ -5,15 +5,13 @@ package com.training.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,12 +29,13 @@ public class MembershipDetails implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
+	@Id
+	@GeneratedValue
+	@Column(name = "member_type_id", nullable = false)
+	private int memberTypeId;
 
-	@AttributeOverrides({
-			@AttributeOverride(name = "memberTypeId", column = @Column(name = "member_type_id", nullable = false)),
-			@AttributeOverride(name = "membershipType", column = @Column(name = "membership_type", nullable = false, length = 6)) })
-	private MembershipDetailsId id;
+	@Column(name = "membership_type", nullable = false, unique = true, length = 6)
+	private String membershipType;
 
 	@Column(name = "max_price_limit", nullable = false)
 	private int maxPriceLimit;
@@ -56,15 +55,7 @@ public class MembershipDetails implements Serializable {
 	private Date modifiedTime;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "membershipDetails")
-	private Set<?> memberDetailses = new HashSet<Object>(0);
-
-	public MembershipDetailsId getId() {
-		return this.id;
-	}
-
-	public void setId(MembershipDetailsId id) {
-		this.id = id;
-	}
+	private Set<MemberDetails> memberDetailses;
 
 	public int getMaxPriceLimit() {
 		return this.maxPriceLimit;
@@ -106,11 +97,11 @@ public class MembershipDetails implements Serializable {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public Set<?> getMemberDetailses() {
+	public Set<MemberDetails> getMemberDetailses() {
 		return this.memberDetailses;
 	}
 
-	public void setMemberDetailses(Set<?> memberDetailses) {
+	public void setMemberDetailses(Set<MemberDetails> memberDetailses) {
 		this.memberDetailses = memberDetailses;
 	}
 

@@ -6,7 +6,7 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/testonline</property>
+		<property name="hibernate.connection.url">jdbc:mysql://10.242.133.139:3306/testonline</property>
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.connection.password">CDPff123</property>
 		<property name="hibernate.hbm2ddl.auto">create</property>
@@ -27,7 +27,6 @@
 		<mapping class="com.training.entity.LoginDetails" />
 		<mapping class="com.training.entity.MemberDetails" />
 		<mapping class="com.training.entity.MembershipDetails" />
-		<mapping class="com.training.entity.MembershipDetailsId" />
 		<mapping class="com.training.entity.Movies" />
 		<mapping class="com.training.entity.Music" />
 		<mapping class="com.training.entity.RatingTable" />

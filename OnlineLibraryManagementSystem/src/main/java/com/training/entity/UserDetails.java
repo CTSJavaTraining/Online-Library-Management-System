@@ -75,13 +75,13 @@ public class UserDetails implements Serializable {
 	private LoginDetails loginDetails;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private List<UserDetails> likedLists;
+	private List<LikedList> likedLists;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private List<UserDetails> ratingTables;
+	private List<RatingTable> ratingTables;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private List<UserDetails> memberDetailses;
+	private List<MemberDetails> memberDetailses;
 
 	public String getUserId() {
 		return this.userId;
@@ -221,19 +221,19 @@ public class UserDetails implements Serializable {
 		this.addressDetails = addressDetails;
 	}
 
-	public List<UserDetails> getLikedLists() {
+	public List<LikedList> getLikedLists() {
 		return this.likedLists;
 	}
 
-	public void setLikedLists(List<UserDetails> likedLists) {
+	public void setLikedLists(List<LikedList> likedLists) {
 		this.likedLists = likedLists;
 	}
 
-	public List<UserDetails> getRatingTables() {
+	public List<RatingTable> getRatingTables() {
 		return this.ratingTables;
 	}
 
-	public void setRatingTables(List<UserDetails> ratingTables) {
+	public void setRatingTables(List<RatingTable> ratingTables) {
 		this.ratingTables = ratingTables;
 	}
 
@@ -245,11 +245,11 @@ public class UserDetails implements Serializable {
 		this.loginDetails = loginDetails;
 	}
 
-	public List<UserDetails> getMemberDetailses() {
+	public List<MemberDetails> getMemberDetailses() {
 		return this.memberDetailses;
 	}
 
-	public void setMemberDetailses(List<UserDetails> memberDetailses) {
+	public void setMemberDetailses(List<MemberDetails> memberDetailses) {
 		this.memberDetailses = memberDetailses;
 	}
 
