@@ -31,10 +31,9 @@ public class Music implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="music_id")
+	@Column(name = "music_id", length = 8)
 	private String musicId;
-	
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = "music_id")
 	@JsonIgnore

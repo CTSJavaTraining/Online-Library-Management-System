@@ -32,7 +32,7 @@ public class Books implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "book_id")
+	@Column(name = "book_id", length = 8)
 	private String bookId;
 
 	@ManyToOne(fetch = FetchType.LAZY)

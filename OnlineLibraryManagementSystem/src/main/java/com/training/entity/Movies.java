@@ -31,9 +31,9 @@ public class Movies implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="movie_id")
+	@Column(name = "movie_id", length = 8)
 	private String movieId;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = "movie_id")
 	@JsonIgnore

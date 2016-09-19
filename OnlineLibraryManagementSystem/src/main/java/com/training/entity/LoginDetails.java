@@ -31,7 +31,7 @@ public class LoginDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "user_id")
+	@Column(name = "user_id", length = 6)
 	private String userId;
 
 	@OneToOne(fetch = FetchType.LAZY)
