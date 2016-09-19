@@ -2,6 +2,7 @@ package com.training.restservices;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import com.training.entity.UserDetails;
 public class UserValidationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserValidationService.class);
-	SessionFactory factory = BootApplication.factory;
+	SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
 	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -40,6 +41,7 @@ public class UserValidationService {
 				@SuppressWarnings("unchecked")
 				Query<UserDetails> query = session.createQuery("FROM UserDetails WHERE userName = :uName");
 				query.setParameter("uName", username);
+				query.setMaxResults(1);
 
 				if (query.getResultList().isEmpty()) {
 					return "User does not exist";

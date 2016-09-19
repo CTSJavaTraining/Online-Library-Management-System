@@ -19,7 +19,7 @@
 			<url>http://repo.maven.apache.org/maven2</url>
 		</repository>
 	</repositories>
-	
+
 	<properties>
 		<sonar.host.url>http://10.242.133.153:9000/</sonar.host.url>
 		<hibernate.version>5.2.0.Final</hibernate.version>

@@ -10,8 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,8 +31,11 @@ public class LoginDetails implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "user_id")
+	private String userId;
+
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	@PrimaryKeyJoinColumn(name = "user_id")
 	@JsonIgnore
 	private UserDetails userDetails;
 
@@ -46,6 +49,14 @@ public class LoginDetails implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public UserDetails getUserDetails() {
 		return this.userDetails;
