@@ -34,7 +34,7 @@
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
-		<!-- Spring AOP jars by 447482-->
+		<!-- Spring AOP jars by 447482 -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -141,6 +141,11 @@
 			<version>1.2.16</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
