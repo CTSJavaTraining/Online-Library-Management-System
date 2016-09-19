@@ -1,9 +1,9 @@
 package com.training.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
-import javax.transaction.Transaction;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -19,82 +19,72 @@ import com.training.factory.ApplicationSessionFactory;
 public class AnonymousUser {
 
 	private static final Logger logger = Logger.getLogger(AnonymousUser.class);
+	private Query query;
+	private Session session;
 
 	/**
-	 * this method is used to search the items by name
 	 * 
 	 * @param name
+	 * @return
 	 */
-	public void searchItems(String name) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List searchItems(String name) {
 
-		Query query;
-		Session session = ApplicationSessionFactory.returnFactory().openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
+		String hqlQuery = "from LibraryItems where itemName = :itemName";
+		List listResult = new ArrayList<>();
 		try {
-			String hqlQuery = "from LibraryItems where item_name = :itemName";
+			session = ApplicationSessionFactory.returnFactory().openSession();
+			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
-			query.setParameter("item_name", name);
-			List<?> listResult = query.getResultList();
+			query.setParameter("itemName", name);
+			listResult = query.getResultList();
 
-			if (listResult.isEmpty()) {
+			if (listResult.isEmpty() ||(listResult==null)) {
+				
+				listResult.add("Sorry!!.... nothing to display for the search string "+ name);
 				logger.info("No matches found for search string " + name);
 			}
-
-			else {
-				listResult = displayItems(listResult);
-			}
-
-			transaction.commit();
 		} catch (Exception e) {
 			logger.error(e + "Failed to retrieve the search results for " + name);
 		} finally {
-			session.close();
+			if (session.isOpen())
+
+				session.close();
 		}
-	}
-
-	/**
-	 * this method provides anonymous user the facility to view all the items
-	 */
-	public void viewItems() {
-		Query query;
-		SessionFactory factory =  ApplicationSessionFactory.returnFactory();
-		Session session =factory.openSession();
-		Transaction transaction = (Transaction) session.beginTransaction();
-		try {
-			String hqlQuery = "from LibraryItems";
-			query = session.createQuery(hqlQuery);
-			List<?> listResult = query.getResultList();
-
-			if (listResult.isEmpty()) {
-				logger.info("No items were displayed for the user to view in general");
-			}
-
-			else {
-				listResult = displayItems(listResult);
-				System.out.println("Displayed");
-			}
-
-			transaction.commit();
-		} catch (Exception e) {
-			logger.error(e + "failed to display the items for anonymous user");
-		} finally {
-			session.close();
-		}
-
-	}
-
-	/**
-	 * 
-	 * @param listResult
-	 */
-	private List<?> displayItems(List<?> listResult) {
 
 		return listResult;
 	}
 
-	public static void main(String args[]) {
-		AnonymousUser au = new AnonymousUser();
-		au.viewItems();
-		au.searchItems("hello");
+	/**
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List viewItems() {
+
+		String hqlQuery = "from LibraryItems ";
+		List listResult = new ArrayList<>();
+		try {
+			SessionFactory factory = ApplicationSessionFactory.returnFactory();
+			session = factory.openSession();
+			session.beginTransaction();
+			query = session.createQuery(hqlQuery);
+			listResult = query.getResultList();
+
+			if (listResult.isEmpty() || (listResult.equals(null))) {
+
+				listResult.add("Sorry!!... nothing to display to u");
+				logger.info("No items were displayed for the user to view in general");
+			}
+			
+		} catch (Exception e) {
+			logger.error(e + "failed to display the items for anonymous user");
+		} finally {
+			if (session.isOpen())
+
+				session.close();
+		}
+		return listResult;
 	}
+
 }
