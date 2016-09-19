@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,29 +60,28 @@ public class LibraryItems implements Serializable {
 	private Date modifiedTime;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<?> ratingTables;
+	private List<RatingTable> ratingTables;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<?> likedLists;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<?> wishLists;
+	private List<LikedList> likedLists;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	private List<WishList> wishLists;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Books> books;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Music> music;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Movies> movies;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<?> subscribedLists;
+	private List<SubscribedList> subscribedLists;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<?> itemFormats;
-
-
+	private List<ItemFormat> itemFormats;
 
 	public String getItemId() {
 		return this.itemId;
@@ -157,27 +155,27 @@ public class LibraryItems implements Serializable {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public List<?> getRatingTables() {
+	public List<RatingTable> getRatingTables() {
 		return this.ratingTables;
 	}
 
-	public void setRatingTables(List<?> ratingTables) {
+	public void setRatingTables(List<RatingTable> ratingTables) {
 		this.ratingTables = ratingTables;
 	}
 
-	public List<?> getLikedLists() {
+	public List<LikedList> getLikedLists() {
 		return this.likedLists;
 	}
 
-	public void setLikedLists(List<?> likedLists) {
+	public void setLikedLists(List<LikedList> likedLists) {
 		this.likedLists = likedLists;
 	}
 
-	public List<?> getWishLists() {
+	public List<WishList> getWishLists() {
 		return this.wishLists;
 	}
 
-	public void setWishLists(List<?> wishLists) {
+	public void setWishLists(List<WishList> wishLists) {
 		this.wishLists = wishLists;
 	}
 
@@ -205,19 +203,19 @@ public class LibraryItems implements Serializable {
 		this.movies = movies;
 	}
 
-	public List<?> getSubscribedLists() {
+	public List<SubscribedList> getSubscribedLists() {
 		return this.subscribedLists;
 	}
 
-	public void setSubscribedLists(List<?> subscribedLists) {
+	public void setSubscribedLists(List<SubscribedList> subscribedLists) {
 		this.subscribedLists = subscribedLists;
 	}
 
-	public List<?> getItemFormats() {
+	public List<ItemFormat> getItemFormats() {
 		return this.itemFormats;
 	}
 
-	public void setItemFormats(List<?> itemFormats) {
+	public void setItemFormats(List<ItemFormat> itemFormats) {
 		this.itemFormats = itemFormats;
 	}
 

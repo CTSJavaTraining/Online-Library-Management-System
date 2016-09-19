@@ -5,14 +5,12 @@ package com.training.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -27,27 +25,19 @@ public class ItemFormat implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
+	@Id
+	@Column(name = "item_id", nullable = false, length = 8)
+	private String itemId;
 
-	@AttributeOverrides({
-			@AttributeOverride(name = "itemId", column = @Column(name = "item_id", nullable = false, length = 8)),
-			@AttributeOverride(name = "itemType", column = @Column(name = "item_type", nullable = false, length = 6)) })
-	private ItemFormatId id;
+	@Column(name = "item_type", nullable = false, length = 6)
+	private String itemType;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
+	@PrimaryKeyJoinColumn(name = "item_id")
 	private LibraryItems libraryItems;
 
 	@Column(name = "available", nullable = false, length = 150)
 	private String available;
-
-	public ItemFormatId getId() {
-		return this.id;
-	}
-
-	public void setId(ItemFormatId id) {
-		this.id = id;
-	}
 
 	public LibraryItems getLibraryItems() {
 		return this.libraryItems;

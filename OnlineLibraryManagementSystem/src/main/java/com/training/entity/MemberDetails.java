@@ -7,8 +7,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,10 +67,10 @@ public class MemberDetails implements Serializable {
 	private Date modifiedTime;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "memberDetails")
-	private Set<?> wishLists = new HashSet<Object>(0);
+	private List<WishList> wishLists;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "memberDetails")
-	private Set<?> subscribedLists = new HashSet<Object>(0);
+	private List<SubscribedList> subscribedLists;
 
 	public Integer getMemberId() {
 		return this.memberId;
@@ -137,19 +136,19 @@ public class MemberDetails implements Serializable {
 		this.modifiedTime = modifiedTime;
 	}
 
-	public Set<?> getWishLists() {
+	public List<WishList> getWishLists() {
 		return this.wishLists;
 	}
 
-	public void setWishLists(Set<?> wishLists) {
+	public void setWishLists(List<WishList> wishLists) {
 		this.wishLists = wishLists;
 	}
 
-	public Set<?> getSubscribedLists() {
+	public List<SubscribedList> getSubscribedLists() {
 		return this.subscribedLists;
 	}
 
-	public void setSubscribedLists(Set<?> subscribedLists) {
+	public void setSubscribedLists(List<SubscribedList> subscribedLists) {
 		this.subscribedLists = subscribedLists;
 	}
 

@@ -31,7 +31,6 @@ public class RatingTable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-
 	@AttributeOverrides({
 			@AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false, length = 6)),
 			@AttributeOverride(name = "itemId", column = @Column(name = "item_id", nullable = false, length = 8)) })

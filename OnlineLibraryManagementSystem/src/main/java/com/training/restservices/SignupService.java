@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ import com.training.entity.UserDetails;
 
 @ComponentScan
 @EnableAutoConfiguration
+@SpringBootApplication
 @RestController
 public class SignupService {
 
@@ -106,7 +108,7 @@ public class SignupService {
 
 	public static SessionFactory returnFactory() {
 		logger.info("Loading sessiong factory");
-		return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+		return new Configuration().configure().buildSessionFactory();
 	}
 
 	public static void main(String[] args) {
