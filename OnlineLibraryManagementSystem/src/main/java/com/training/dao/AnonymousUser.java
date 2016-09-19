@@ -5,9 +5,10 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.training.factory.ApplicationSessionFactory;
 
@@ -18,7 +19,7 @@ import com.training.factory.ApplicationSessionFactory;
  */
 public class AnonymousUser {
 
-	private static final Logger logger = Logger.getLogger(AnonymousUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(AnonymousUser.class);
 	private Query query;
 	private Session session;
 
@@ -39,9 +40,9 @@ public class AnonymousUser {
 			query.setParameter("itemName", name);
 			listResult = query.getResultList();
 
-			if (listResult.isEmpty() ||(listResult==null)) {
-				
-				listResult.add("Sorry!!.... nothing to display for the search string "+ name);
+			if (listResult.isEmpty() || (listResult == null)) {
+
+				listResult.add("Sorry!!.... nothing to display for the search string " + name);
 				logger.info("No matches found for search string " + name);
 			}
 		} catch (Exception e) {
@@ -76,7 +77,7 @@ public class AnonymousUser {
 				listResult.add("Sorry!!... nothing to display to u");
 				logger.info("No items were displayed for the user to view in general");
 			}
-			
+
 		} catch (Exception e) {
 			logger.error(e + "failed to display the items for anonymous user");
 		} finally {
