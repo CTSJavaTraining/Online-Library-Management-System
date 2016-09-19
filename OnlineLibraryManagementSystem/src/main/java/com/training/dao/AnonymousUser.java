@@ -31,7 +31,7 @@ public class AnonymousUser {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List searchItems(String name) {
 
-		String hqlQuery = "from LibraryItems where itemName = :itemName";
+		String hqlQuery = "from LibraryItems where item_name = :itemName";
 		List listResult = new ArrayList<>();
 		try {
 			session = ApplicationSessionFactory.returnFactory().openSession();
