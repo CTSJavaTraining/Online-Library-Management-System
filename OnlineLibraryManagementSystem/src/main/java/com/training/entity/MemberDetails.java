@@ -36,7 +36,6 @@ public class MemberDetails implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "member_id", unique = true, nullable = false)
 	private Integer memberId;
 

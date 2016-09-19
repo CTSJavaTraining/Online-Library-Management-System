@@ -5,9 +5,7 @@ package com.training.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,13 +75,13 @@ public class UserDetails implements Serializable {
 	private LoginDetails loginDetails;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<?> likedLists = new HashSet<>();
+	private List<UserDetails> likedLists;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<?> ratingTables = new HashSet<>();
+	private List<UserDetails> ratingTables;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	private Set<?> memberDetailses = new HashSet<>();
+	private List<UserDetails> memberDetailses;
 
 	public String getUserId() {
 		return this.userId;
@@ -223,22 +221,20 @@ public class UserDetails implements Serializable {
 		this.addressDetails = addressDetails;
 	}
 
-	public Set<?> getLikedLists() {
+	public List<UserDetails> getLikedLists() {
 		return this.likedLists;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setLikedLists(Set<?> likedLists) {
-		this.likedLists = (Set<UserDetails>) likedLists;
+	public void setLikedLists(List<UserDetails> likedLists) {
+		this.likedLists = likedLists;
 	}
 
-	public Set<?> getRatingTables() {
+	public List<UserDetails> getRatingTables() {
 		return this.ratingTables;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setRatingTables(Set<?> ratingTables) {
-		this.ratingTables = (Set<UserDetails>) ratingTables;
+	public void setRatingTables(List<UserDetails> ratingTables) {
+		this.ratingTables = ratingTables;
 	}
 
 	public LoginDetails getLoginDetails() {
@@ -249,13 +245,12 @@ public class UserDetails implements Serializable {
 		this.loginDetails = loginDetails;
 	}
 
-	public Set<?> getMemberDetailses() {
+	public List<UserDetails> getMemberDetailses() {
 		return this.memberDetailses;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setMemberDetailses(Set<?> memberDetailses) {
-		this.memberDetailses = (Set<UserDetails>) memberDetailses;
+	public void setMemberDetailses(List<UserDetails> memberDetailses) {
+		this.memberDetailses = memberDetailses;
 	}
 
 }

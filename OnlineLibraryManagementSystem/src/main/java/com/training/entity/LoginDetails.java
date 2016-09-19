@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -27,6 +28,7 @@ public class LoginDetails implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "user_id")
 	// Specifies a primary key column that is used as a foreign key to join to

@@ -21,7 +21,9 @@
 	</repositories>
 	<properties>
 		<sonar.host.url>http://10.242.133.153:9000/</sonar.host.url>
-		
+		<hibernate.version>5.2.0.Final</hibernate.version>
+		<start-class>com.training.entity.SignupService</start-class>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 
@@ -32,8 +34,7 @@
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
-
-		<!-- Spring AOP jars -->
+		<!-- Spring AOP jars by 447482-->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -55,12 +56,18 @@
 			<artifactId>aspectjtools</artifactId>
 		</dependency>
 
-		<!-- Spring boot Dependencies -->
+		<!-- Spring boot Dependencies by 447482 -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
 
 		<!-- Test DAO Dependencies -->
 
@@ -116,7 +123,7 @@
 			<artifactId>jackson-core</artifactId>
 		</dependency>
 
-		<!-- SL4J Dependencies by 447383-->
+		<!-- SL4J Dependencies by 447383 -->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -139,6 +146,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.8</source>
