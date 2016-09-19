@@ -10,7 +10,6 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,22 +26,21 @@ import com.training.entity.UserDetails;
  * @author 447482 Sign up service to validate and insert NEW USER data into
  *         database
  */
-@SpringBootApplication
+
 @ComponentScan
-@RestController
 @EnableAutoConfiguration
-@RequestMapping("/home")
+@RestController
 public class SignupService {
 
 	private static final Logger logger = Logger.getLogger(SignupService.class);
 
 	SessionFactory factory = returnFactory();
+
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String setBasicDetails(@RequestBody UserDetails userdetails) {
 
-		
 		// First level Validation
 		// Method
 		String username = userdetails.getUserName();
@@ -106,14 +104,14 @@ public class SignupService {
 		return new Date();
 	}
 
-	public static void main(String[] args) {
-		SpringApplication.run(SignupService.class, args);
-		returnFactory();
-
-		logger.info("_---------------------- Application starts--------------------");
-	}
-	
-	public static SessionFactory returnFactory(){
+	public static SessionFactory returnFactory() {
+		logger.info("Loading sessiong factory");
 		return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
 	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(SignupService.class, args);
+		logger.info("_---------------------- Application starts--------------------");
+	}
+
 }

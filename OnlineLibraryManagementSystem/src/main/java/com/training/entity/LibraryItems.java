@@ -1,12 +1,11 @@
 package com.training.entity;
 // default package
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,100 +28,63 @@ public class LibraryItems implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "item_id", unique = true, nullable = false, length = 8)
 	private String itemId;
-	
+
 	@Column(name = "item_name", nullable = false, length = 50)
 	private String itemName;
-	
+
 	@Column(name = "year")
 	private Integer year;
-	
+
 	@Column(name = "price", nullable = false)
 	private int price;
-	
+
 	@Column(name = "description", nullable = false, length = 200)
 	private String description;
-	
+
 	@Column(name = "item_type", nullable = false, length = 10)
 	private String itemType;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_added", nullable = false, length = 10)
 	private Date dateAdded;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
 	private Date createdTime;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private Set<?> ratingTables = new HashSet<>();
-	
+	private List<?> ratingTables;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private Set<?> likedLists = new HashSet<>();
-	
+	private List<?> likedLists;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private Set<?> wishLists = new HashSet<>();
-	
+	private List<?> wishLists;
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Books> books;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Music> music;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Movies> movies;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private Set<?> subscribedLists = new HashSet<>();
-	
+	private List<?> subscribedLists;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private Set<?> itemFormats = new HashSet<>();
+	private List<?> itemFormats;
 
-	public LibraryItems() {
-	}
 
-	public LibraryItems(String itemId, String itemName, int price, String description, String itemType, Date dateAdded,
-			Date createdTime, Date modifiedTime) {
-		this.itemId = itemId;
-		this.itemName = itemName;
-		this.price = price;
-		this.description = description;
-		this.itemType = itemType;
-		this.dateAdded = dateAdded;
-		this.createdTime = createdTime;
-		this.modifiedTime = modifiedTime;
-	}
 
-	public LibraryItems(String itemId, String itemName, Integer year, int price, String description, String itemType,
-			Date dateAdded, Date createdTime, Date modifiedTime, Set<?> ratingTables, Set<?> likedLists, Set<?> wishLists, List<Books> books,
-			List<Music> music, List<Movies> movies, Set<?> subscribedLists, Set<?> itemFormats) {
-		this.itemId = itemId;
-		this.itemName = itemName;
-		this.year = year;
-		this.price = price;
-		this.description = description;
-		this.itemType = itemType;
-		this.dateAdded = dateAdded;
-		this.createdTime = createdTime;
-		this.modifiedTime = modifiedTime;
-		this.ratingTables = ratingTables;
-		this.likedLists = likedLists;
-		this.wishLists = wishLists;
-		this.books = books;
-		this.music = music;
-		this.movies = movies;
-		this.subscribedLists = subscribedLists;
-		this.itemFormats = itemFormats;
-	}
-
-	
 	public String getItemId() {
 		return this.itemId;
 	}
@@ -131,7 +93,6 @@ public class LibraryItems implements Serializable {
 		this.itemId = itemId;
 	}
 
-	
 	public String getItemName() {
 		return this.itemName;
 	}
@@ -140,7 +101,6 @@ public class LibraryItems implements Serializable {
 		this.itemName = itemName;
 	}
 
-	
 	public Integer getYear() {
 		return this.year;
 	}
@@ -149,7 +109,6 @@ public class LibraryItems implements Serializable {
 		this.year = year;
 	}
 
-	
 	public int getPrice() {
 		return this.price;
 	}
@@ -158,7 +117,6 @@ public class LibraryItems implements Serializable {
 		this.price = price;
 	}
 
-	
 	public String getDescription() {
 		return this.description;
 	}
@@ -167,7 +125,6 @@ public class LibraryItems implements Serializable {
 		this.description = description;
 	}
 
-	
 	public String getItemType() {
 		return this.itemType;
 	}
@@ -176,7 +133,6 @@ public class LibraryItems implements Serializable {
 		this.itemType = itemType;
 	}
 
-	
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}
@@ -185,7 +141,6 @@ public class LibraryItems implements Serializable {
 		this.dateAdded = dateAdded;
 	}
 
-	
 	public Date getcreatedTime() {
 		return this.createdTime;
 	}
@@ -194,7 +149,6 @@ public class LibraryItems implements Serializable {
 		this.createdTime = createdTime;
 	}
 
-	
 	public Date getmodifiedTime() {
 		return this.modifiedTime;
 	}
@@ -203,34 +157,30 @@ public class LibraryItems implements Serializable {
 		this.modifiedTime = modifiedTime;
 	}
 
-
-	public Set<?> getRatingTables() {
+	public List<?> getRatingTables() {
 		return this.ratingTables;
 	}
 
-	public void setRatingTables(Set<?> ratingTables) {
+	public void setRatingTables(List<?> ratingTables) {
 		this.ratingTables = ratingTables;
 	}
 
-	
-	public Set<?> getLikedLists() {
+	public List<?> getLikedLists() {
 		return this.likedLists;
 	}
 
-	public void setLikedLists(Set<?> likedLists) {
+	public void setLikedLists(List<?> likedLists) {
 		this.likedLists = likedLists;
 	}
 
-	
-	public Set<?> getWishLists() {
+	public List<?> getWishLists() {
 		return this.wishLists;
 	}
 
-	public void setWishLists(Set<?> wishLists) {
+	public void setWishLists(List<?> wishLists) {
 		this.wishLists = wishLists;
 	}
 
-	
 	public List<Books> getBooks() {
 		return this.books;
 	}
@@ -239,7 +189,6 @@ public class LibraryItems implements Serializable {
 		this.books = books;
 	}
 
-	
 	public List<Music> getMusic() {
 		return this.music;
 	}
@@ -248,7 +197,6 @@ public class LibraryItems implements Serializable {
 		this.music = music;
 	}
 
-	
 	public List<Movies> getMovies() {
 		return this.movies;
 	}
@@ -257,21 +205,19 @@ public class LibraryItems implements Serializable {
 		this.movies = movies;
 	}
 
-	
-	public Set<?> getSubscribedLists() {
+	public List<?> getSubscribedLists() {
 		return this.subscribedLists;
 	}
 
-	public void setSubscribedLists(Set<?> subscribedLists) {
+	public void setSubscribedLists(List<?> subscribedLists) {
 		this.subscribedLists = subscribedLists;
 	}
 
-	
-	public Set<?> getItemFormats() {
+	public List<?> getItemFormats() {
 		return this.itemFormats;
 	}
 
-	public void setItemFormats(Set<?> itemFormats) {
+	public void setItemFormats(List<?> itemFormats) {
 		this.itemFormats = itemFormats;
 	}
 

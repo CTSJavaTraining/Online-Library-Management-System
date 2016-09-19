@@ -1,22 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC
-		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-	
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.password">CDPff123</property>
+
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/testonline</property>
 		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		<property name="hibernate.hbm2ddl.auto">create-drop</property>
+		<property name="hibernate.connection.password">CDPff123</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
 		<property name="hibernate.show_sql">true</property>
 		<property name="format_sql">true</property>
 		<property name="use_sql_comments">true</property>
 
 		<!-- List of XML mapping files -->
-	<mapping package="com.training.entity" />
-<!-- 		<mapping class="com.training.entity.LoginDetails" /> -->
+		<mapping class="com.training.entity.AddressDetails" />
+		<mapping class="com.training.entity.Books" />
+		<mapping class="com.training.entity.ItemFormat" />
+		<mapping class="com.training.entity.ItemFormatId" />
+		<mapping class="com.training.entity.LibraryItems" />
+		<mapping class="com.training.entity.LikedList" />
+		<mapping class="com.training.entity.LikedListId" />
+		<mapping class="com.training.entity.LoginAudit" />
+		<mapping class="com.training.entity.LoginAuditId" />
+		<mapping class="com.training.entity.LoginDetails" />
+		<mapping class="com.training.entity.MemberDetails" />
+		<mapping class="com.training.entity.MembershipDetails" />
+		<mapping class="com.training.entity.MembershipDetailsId" />
+		<mapping class="com.training.entity.Movies" />
+		<mapping class="com.training.entity.Music" />
+		<mapping class="com.training.entity.RatingTable" />
+		<mapping class="com.training.entity.RatingTableId" />
+		<mapping class="com.training.entity.SubscribedList" />
+		<mapping class="com.training.entity.SubscribedListId" />
+		<mapping class="com.training.entity.UserDetails" />
+		<mapping class="com.training.entity.WishList" />
+		<mapping class="com.training.entity.WishListId" />
+		<!-- <mapping class="com.training.entity.LoginDetails" /> -->
 	</session-factory>
 </hibernate-configuration>

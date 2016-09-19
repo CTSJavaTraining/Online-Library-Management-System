@@ -12,7 +12,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.0.RELEASE</version>
 	</parent>
-	
+
 	<repositories>
 		<repository>
 			<id>id1</id>
@@ -34,8 +34,7 @@
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
-
-		<!-- Spring AOP jars -->
+		<!-- Spring AOP jars by 447482-->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -57,12 +56,18 @@
 			<artifactId>aspectjtools</artifactId>
 		</dependency>
 
-		<!-- Spring boot Dependencies -->
+		<!-- Spring boot Dependencies by 447482 -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
 
 		<!-- Test DAO Dependencies -->
 
@@ -75,12 +80,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-<!-- 			<exclusions>
+			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
-			</exclusions> -->
+			</exclusions>
 		</dependency>
 
 		<!-- Logging dependency -->
@@ -118,7 +123,7 @@
 			<artifactId>jackson-core</artifactId>
 		</dependency>
 
-		<!-- SL4J Dependencies by 447383-->
+		<!-- SL4J Dependencies by 447383 -->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -141,6 +146,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.8</source>
