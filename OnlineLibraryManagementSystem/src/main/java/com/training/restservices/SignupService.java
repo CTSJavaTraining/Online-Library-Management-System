@@ -3,6 +3,8 @@ package com.training.restservices;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -93,13 +96,28 @@ public class SignupService {
 		}
 	}
 
-	String test = "Hi test";
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    private Response loginService(@RequestBody UserDetails userdetails) {
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-	@ResponseBody
-	public String testSer() {
-		return test;
-	}
+                    return Response.status(Response.Status.OK).entity(new UserDetails()).build();
+    }
+
+    @RequestMapping(value = "/ ", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    private Response userNameExistance(@RequestParam("username") String username) {
+
+                    System.out.println("welcomr");
+                    return Response.status(Response.Status.OK).entity("user namae exists").build();
+
+    }
+
+    @RequestMapping("/test")
+    String home() {
+                    return "Hello World!";
+    }
+
+
 
 	// Utility Method fot getting current date and time to store into Db
 	private Date getCurrentDateTime() {
