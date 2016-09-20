@@ -10,8 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,8 +31,11 @@ public class Music implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "music_id")
+	@Column(name = "music_id", length = 8)
+	private String musicId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn(name = "music_id")
 	@JsonIgnore
 	private LibraryItems libraryItems;
 
@@ -59,6 +62,14 @@ public class Music implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
+
+	public String getMusicId() {
+		return musicId;
+	}
+
+	public void setMusicId(String musicId) {
+		this.musicId = musicId;
+	}
 
 	public LibraryItems getLibraryItems() {
 		return this.libraryItems;

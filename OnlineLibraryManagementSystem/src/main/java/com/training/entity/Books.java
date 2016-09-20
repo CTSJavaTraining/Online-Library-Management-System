@@ -11,8 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,8 +32,11 @@ public class Books implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "book_id")
+	@Column(name = "book_id", length = 8)
+	private String bookId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn(name = "book_id")
 	@JsonIgnore
 	private LibraryItems libraryItems;
 
@@ -60,6 +63,14 @@ public class Books implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
+
+	public String getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(String bookId) {
+		this.bookId = bookId;
+	}
 
 	public LibraryItems getLibraryItems() {
 		return this.libraryItems;
