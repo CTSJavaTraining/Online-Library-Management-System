@@ -11,6 +11,9 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.training.entity.LibraryItems;
+import com.training.entity.RatingTable;
+import com.training.entity.UserDetails;
 import com.training.factory.ApplicationSessionFactory;
 
 /**
@@ -57,7 +60,7 @@ public class SignedUser extends AnonymousUser {
 
 			updateRateItems(review, itemId, rating, review);
 		} else {
-			insertRateItems(userId, itemId, rating, review);
+			// insertRateItems(, itemId, rating, review);
 		}
 
 	}
@@ -75,7 +78,7 @@ public class SignedUser extends AnonymousUser {
 		Query query;
 		String hqlQuery = "from LikedList where itemId = :itemId and userId= :userId";
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
-		try(Session session = factory.openSession()) {
+		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
 
@@ -87,7 +90,7 @@ public class SignedUser extends AnonymousUser {
 			if (!(listResult.isEmpty())) {
 				logger.info("Hit LikedList table");
 				return true;
-				
+
 			}
 
 		} catch (Exception e) {
@@ -111,10 +114,8 @@ public class SignedUser extends AnonymousUser {
 		Query query;
 		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
-		try(Session session = factory.openSession()) {
+		try (Session session = factory.openSession()) {
 
-			
-			
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("userId", userId);
@@ -145,8 +146,8 @@ public class SignedUser extends AnonymousUser {
 		Query query;
 		Date date = new Date();
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
-		String hqlQuery = "INSERT INTO LikedList (userId, itemId, likeStatus, createdTime, modifiedTime)"
-				+ "select * from OldLikedList where itemId= :itemId and userId= :userId";
+		String hqlQuery = "INSERT INTO LikedList(userId, itemId, likeStatus, createdTime, modifiedTime)"
+				+ "select * from LikedList where itemId= :itemId and userId= :userId";
 		try (Session session = factory.openSession()) {
 
 			Transaction transaction = session.beginTransaction();
@@ -175,15 +176,14 @@ public class SignedUser extends AnonymousUser {
 	/**
 	 * this method enters user's rating information to rating_table through
 	 * 
-	 * @param userId
-	 * @param itemId
+	 * @param userDetails
+	 * @param libraryItems
 	 * @param rating
 	 * @param review
 	 */
-	public void insertRateItems(String userId, String itemId, int rating, String review) {
+	public void insertRateItems(UserDetails userDetails, LibraryItems libraryItems, int rating, String review) {
 		Query query;
 		Date date = new Date();
-
 		String hqlQuery = "INSERT INTO RatingTable (userId, itemId, rating, review, createdTime, modifiedTime)"
 				+ "select * from OldRatingTable where itemId= :itemId and userId= :userId";
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
@@ -191,20 +191,21 @@ public class SignedUser extends AnonymousUser {
 
 			Transaction transaction = session.beginTransaction();
 			query = session.createQuery(hqlQuery);
-			query.setParameter(0, userId);
-			query.setParameter(1, itemId);
-			query.setParameter(2, rating);
-			query.setParameter(3, review);
-			query.setParameter(4, date.toString());
-			query.setParameter(5, date.toString());
-			query.setParameter("userId", userId);
-			query.setParameter("itemId", itemId);
+			RatingTable li = new RatingTable();
+			li.setUserDetails(userDetails);
+			li.setLibraryItems(libraryItems);
+			li.setRating(rating);
+			li.setReview(review);
+			li.setcreatedTime(date);
+			li.setmodifiedTime(date);
+			query.setParameter("userId", userDetails.getUserId());
+			query.setParameter("itemId", libraryItems.getItemId());
 			int result = query.executeUpdate();
 			if (result == -1) {
-				logger.info("the rating of the item", itemId, "rated by", userId,
+				logger.info("the rating of the item", libraryItems.getItemId(), "rated by", userDetails.getUserId(),
 						"has not been inserted in rating_table table");
 			} else if (result > 0) {
-				logger.info("the rating of the item", itemId, "rated by", userId,
+				logger.info("the rating of the item", libraryItems.getItemId(), "rated by", userDetails.getUserId(),
 						" has been inserted in rating_table table");
 			}
 			transaction.commit();
@@ -284,7 +285,7 @@ public class SignedUser extends AnonymousUser {
 
 	public static void main(String args[]) {
 		SignedUser su = new SignedUser();
-		su.rateItems("123", "123", 4, "null");
-		su.likeItems("123", "123", 4);
+		su.insertLikeItems("122", "122", 4);
+		//su.insertRateItems(null, null, 4, "123");
 	}
 }
