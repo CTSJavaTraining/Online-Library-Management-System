@@ -1,6 +1,6 @@
 package com.training.dao;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.training.entity.LibraryItems;
 import com.training.factory.ApplicationSessionFactory;
 
 /**
@@ -28,21 +29,20 @@ public class AnonymousUser {
 	 * @param name
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List searchItems(String name) {
+	
+	public List<LibraryItems> searchItems(String name) {
 
-		String hqlQuery = "from LibraryItems where item_name = :itemName";
-		List listResult = new ArrayList<>();
+		String hqlQuery = "from LibraryItems where itemName = :itemName";
+		List<LibraryItems> listResult = Collections.emptyList();
 		try {
 			session = ApplicationSessionFactory.returnFactory().openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("itemName", name);
-			listResult = query.getResultList();
+			listResult=query.getResultList();
 
-			if (listResult.isEmpty() || (listResult == null)) {
+			if (listResult.isEmpty()) {
 
-				listResult.add("Sorry!!.... nothing to display for the search string " + name);
 				logger.info("No matches found for search string " + name);
 			}
 		} catch (Exception e) {
@@ -60,21 +60,20 @@ public class AnonymousUser {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List viewItems() {
+
+	public List<LibraryItems> viewItems() {
 
 		String hqlQuery = "from LibraryItems ";
-		List listResult = new ArrayList<>();
+		List<LibraryItems> listResult = Collections.emptyList();
 		try {
 			SessionFactory factory = ApplicationSessionFactory.returnFactory();
 			session = factory.openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
-			listResult = query.getResultList();
+			listResult = (List<LibraryItems>) query.setMaxResults(10);
 
-			if (listResult.isEmpty() || (listResult.equals(null))) {
+			if (listResult.isEmpty()) {
 
-				listResult.add("Sorry!!... nothing to display to u");
 				logger.info("No items were displayed for the user to view in general");
 			}
 
