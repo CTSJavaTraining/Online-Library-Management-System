@@ -146,7 +146,7 @@ public class SignedUser extends AnonymousUser {
 		Date date = new Date();
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
 		String hqlQuery = "INSERT INTO LikedList (userId, itemId, likeStatus, createdTime, modifiedTime)"
-				+ "select * from LikedList where itemId= :itemId and userId= :userId";
+				+ "select * from OldLikedList where itemId= :itemId and userId= :userId";
 		try (Session session = factory.openSession()) {
 
 			Transaction transaction = session.beginTransaction();
@@ -185,7 +185,7 @@ public class SignedUser extends AnonymousUser {
 		Date date = new Date();
 
 		String hqlQuery = "INSERT INTO RatingTable (userId, itemId, rating, review, createdTime, modifiedTime)"
-				+ "select * from RatingTable where itemId= :itemId and userId= :userId";
+				+ "select * from OldRatingTable where itemId= :itemId and userId= :userId";
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
 		try (Session session = factory.openSession()) {
 
