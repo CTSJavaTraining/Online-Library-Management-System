@@ -60,6 +60,7 @@ public class AnonymousUser {
 	 * 
 	 * @return
 	 */
+
 	public List<LibraryItems> viewItems() {
 
 		String hqlQuery = "from LibraryItems ";
