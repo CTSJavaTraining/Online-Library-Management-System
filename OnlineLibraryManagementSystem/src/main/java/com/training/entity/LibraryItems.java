@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,28 +60,28 @@ public class LibraryItems implements Serializable {
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<RatingTable> ratingTables;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<LikedList> likedLists;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<WishList> wishLists;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Books> books;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Music> music;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<Movies> movies;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<SubscribedList> subscribedLists;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<ItemFormat> itemFormats;
 
 	public String getItemId() {

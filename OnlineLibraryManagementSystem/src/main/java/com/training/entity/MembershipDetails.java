@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,7 +55,7 @@ public class MembershipDetails implements Serializable {
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "membershipDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "membershipDetails")
 	private Set<MemberDetails> memberDetailses;
 
 	public int getMaxPriceLimit() {

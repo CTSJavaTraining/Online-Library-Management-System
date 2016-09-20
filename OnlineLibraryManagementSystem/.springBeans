@@ -10,7 +10,7 @@
 		<config>java:com.training.restservices.UserServices</config>
 	</configs>
 	<autoconfigs>
-		<config>java:com.training.factory.ApplicationSessionFactory</config>
+		<config>java:com.training.restservices.BootApplication</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>
