@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.training.dao.UserDAO;
 import com.training.entity.LibraryItems;
+import com.training.entity.LikedList;
+import com.training.entity.LikedListId;
 import com.training.entity.LoginDetails;
 import com.training.entity.UserDetails;
 
@@ -111,6 +113,14 @@ public class UserServices {
 					.build();
 		}
 	}
+
+	@RequestMapping(value = "/likeitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	private Response setLikeItems(@RequestBody LikedList likedList){
+		
+		return Response.status(Response.Status.OK).entity("Liked").build();
+	}
+	
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

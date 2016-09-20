@@ -112,7 +112,7 @@ public class UserDAO {
 	}
 
 	// Utility Method fot getting current date and time to store into Db
-	private Date getCurrentDateTime() {
+	public Date getCurrentDateTime() {
 		return new Date();
 	}
 }
