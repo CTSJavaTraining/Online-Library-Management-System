@@ -40,7 +40,7 @@ public class SignupService {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String setBasicDetails(@RequestBody UserDetails userdetails) {
+	private String setBasicDetails(@RequestBody UserDetails userdetails) {
 
 		try (Session session = factory.openSession()) {
 			session.beginTransaction();
