@@ -1,6 +1,7 @@
 package com.training.dao;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -35,7 +36,7 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void likeItems(String userId, String itemId, int likeStatus) {
 
-		if (findExistanceLikedItems(userId, itemId) == true) {
+		if (findExistanceLikedItems(userId, itemId)) {
 
 			updateLikeItems(userId, itemId, likeStatus);
 
@@ -55,7 +56,7 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void rateItems(String userId, String itemId, int rating, String review) {
 
-		if (findExistanceRatings(userId, itemId) == true) {
+		if (findExistanceRatings(userId, itemId)) {
 
 			updateRateItems(review, itemId, rating, review);
 		} else {
@@ -73,7 +74,7 @@ public class SignedUser extends AnonymousUser {
 	 * @return
 	 */
 	public boolean findExistanceLikedItems(String userId, String itemId) {
-		boolean status = false;
+		
 		Query query;
 		String hqlQuery = "from LikedList where item_id = :itemId and user_id= :userId";
 		try {
@@ -87,19 +88,17 @@ public class SignedUser extends AnonymousUser {
 			query.setParameter("itemId", itemId);
 			List<?> listResult = query.getResultList();
 
-			if (listResult == null) {
+			if (!((listResult.isEmpty())||(listResult==null))) {
 
-				status = false;
-			} else {
-				status = true;
-
-			}
+				return true;
+			} 
+			
 		} catch (Exception e) {
 			logger.error(e
 					+ "Failed to hit the database to check for the existance of the item liked by the same user in DB");
 		}
 
-		return status;
+		return false;
 	}
 
 	/**
@@ -111,7 +110,7 @@ public class SignedUser extends AnonymousUser {
 	 * @return
 	 */
 	public boolean findExistanceRatings(String userId, String itemId) {
-		boolean status = true;
+		
 		Query query;
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
 		Session session = factory.openSession();
@@ -123,19 +122,17 @@ public class SignedUser extends AnonymousUser {
 			query.setParameter("item_id", itemId);
 			List<?> listResult = query.getResultList();
 			transaction.commit();
-			if (listResult == null) {
+			if (!((listResult.isEmpty())||(listResult==null))) {
 
-				status = false;
-			} else {
-				status = true;
+				return true;
+			} 
 
-			}
 		} catch (Exception e) {
 			logger.error(e
 					+ "Failed to hit the database to check for the rating details of the item by the same user in DB");
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -147,17 +144,19 @@ public class SignedUser extends AnonymousUser {
 	 */
 	public void insertLikeItems(String userId, String itemId, int likeStatus) {
 		Query query;
+		Date date = new Date();
 		SessionFactory factory = ApplicationSessionFactory.returnFactory();
-		Session session = factory.openSession();
-		Transaction transaction = session.beginTransaction();
+		String hqlQuery = "INSERT INTO LikedList(user_id, item_id, like_status, c_time, m_time)";
 		try {
-			String hqlQuery = "INSERT INTO LikedList(user_id, item_id, like_status, c_time, m_time)";
+			
+			Session session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("user_id", userId);
 			query.setParameter("item_id", itemId);
 			query.setParameter("like_status", likeStatus);
-			query.setParameter("c_time", dateTimeUtils.convertToDatabaseColumn((dateTimeUtils.getLocalDateTime())));
-			query.setParameter("m_time", dateTimeUtils.convertToDatabaseColumn((dateTimeUtils.getLocalDateTime())));
+			query.setParameter("c_time", date.toString());
+			query.setParameter("m_time", date.toString());
 			int result = query.executeUpdate();
 			if (result == -1) {
 				logger.info("the details of the item liked has not been inserted in liked_list table");
