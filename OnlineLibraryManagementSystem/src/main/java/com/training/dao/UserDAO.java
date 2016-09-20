@@ -20,49 +20,95 @@ public class UserDAO {
 
 	public SessionFactory factory = new Configuration().configure().buildSessionFactory();;
 
-	private String userSignUp() {
+	public boolean userSignUp(UserDetails userdetails) {
 
-		UserDetails userdetails = new UserDetails();
 		try (Session session = factory.openSession()) {
+
 			session.beginTransaction();
 
-			String role = userdetails.getRole();
 			StringBuilder buildUserId = new StringBuilder();
+			List<String> userIdMaxList = session.createQuery("SELECT userId FROM UserDetails").getResultList();
 
-			String userIdList = session.createQuery("SELECT userId FROM UserDetails DESC 1").getResultList().get(0)
-					.toString();
-			int userIdnumber = Integer.parseInt(userIdList.substring(1, userIdList.length()));
+			String role = userdetails.getRole();
+			if (!userIdMaxList.isEmpty()) {
 
-			if ("U".equals(role)) {
+				String userIdMax = userIdMaxList.get(userIdMaxList.size() - 1).toString();
+				logger.info("Latest USERID is {} ", userIdMax);
+				int userIdnumber = Integer.parseInt(userIdMax.substring(1, userIdMax.length()));
 
-				buildUserId.append("U").append(userIdnumber + 1);
+				buildUserId.append(role).append(userIdnumber + 1);
 
-			} else if ("L".equals(role)) {
-
-				buildUserId.append("L").append(userIdnumber + 1);
-
+			} else {
+				buildUserId.append(role).append(00000);
 			}
 
 			userdetails.setUserId(buildUserId.toString());
 
-			List<AddressDetails> addressList = userdetails.getAddressDetails();
-			for (AddressDetails address : addressList) {
-				logger.info("Test address details {}", address.getCity());
-				address.setUserDetails(userdetails);
-				address.setCreatedTime(getCurrentDateTime());
-				address.setModifiedTime(getCurrentDateTime());
+			if (userdetails.getAddressDetails() != null) {
+
+				List<AddressDetails> addressList = userdetails.getAddressDetails();
+				for (AddressDetails address : addressList) {
+					logger.info("Test address details {}", address.getCity());
+					address.setUserDetails(userdetails);
+					address.setCreatedTime(getCurrentDateTime());
+					address.setModifiedTime(getCurrentDateTime());
+				}
+
 			}
 			userdetails.setcreatedTime(getCurrentDateTime());
 			userdetails.setmodifiedTime(getCurrentDateTime());
 
-			session.persist(userdetails);
+			session.saveOrUpdate(userdetails);
 
 			logger.info("Persisted user details ");
 			session.getTransaction().commit();
 			logger.info("Commited");
 
+			return true;
+		} catch (Exception e) {
+			logger.error("Exception is thrown {}", e);
+			return false;
 		}
-		return null;
+	}
+
+	public boolean validateUser(String username) {
+		try (Session session = factory.openSession()) {
+			session.beginTransaction();
+			logger.debug("User entered username is {} ", username);
+
+			Query query = session.createQuery("FROM UserDetails WHERE userName = :uName");
+			query.setParameter("uName", username);
+			query.setMaxResults(1);
+
+			if (query.getResultList().isEmpty()) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+
+	public int validateLogin(String userId, String password) {
+		try (Session session = factory.openSession()) {
+
+			session.beginTransaction();
+
+			String hql = "SELECT password FROM LoginDetails WHERE userId= :id";
+			Query query = session.createQuery(hql);
+
+			query.setParameter("id", userId);
+			query.setMaxResults(1);
+
+			String results = query.getResultList().get(0).toString();
+
+			if (results.isEmpty()) {
+				return 0;
+			} else if (password.equalsIgnoreCase(results)) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
 	}
 
 	// Utility Method fot getting current date and time to store into Db

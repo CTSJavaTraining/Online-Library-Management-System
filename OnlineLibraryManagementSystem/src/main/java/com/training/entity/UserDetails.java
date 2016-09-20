@@ -72,13 +72,13 @@ public class UserDetails implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userDetails", fetch = FetchType.LAZY)
 	private List<AddressDetails> addressDetails;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private LoginDetails loginDetails;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private List<LikedList> likedLists;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private List<RatingTable> ratingTables;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
