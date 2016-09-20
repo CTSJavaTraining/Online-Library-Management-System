@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -66,10 +67,10 @@ public class MemberDetails implements Serializable {
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "memberDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "memberDetails")
 	private List<WishList> wishLists;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "memberDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "memberDetails")
 	private List<SubscribedList> subscribedLists;
 
 	public Integer getMemberId() {

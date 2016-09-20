@@ -69,7 +69,7 @@ public class UserDetails implements Serializable {
 	@Column(name = "m_time", nullable = false, length = 19)
 	private Date modifiedTime;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userDetails", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private List<AddressDetails> addressDetails;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
@@ -81,7 +81,7 @@ public class UserDetails implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private List<RatingTable> ratingTables;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userDetails")
 	private List<MemberDetails> memberDetailses;
 
 	public String getUserId() {
