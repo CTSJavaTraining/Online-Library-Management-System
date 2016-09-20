@@ -74,10 +74,9 @@ public class SignedUser extends AnonymousUser {
 
 		Query query;
 		String hqlQuery = "from LikedList where itemId = :itemId and userId= :userId";
-		try {
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		try(Session session = factory.openSession()) {
 
-			SessionFactory factory = ApplicationSessionFactory.returnFactory();
-			Session session = factory.openSession();
 			session.beginTransaction();
 
 			query = session.createQuery(hqlQuery);
@@ -111,10 +110,11 @@ public class SignedUser extends AnonymousUser {
 
 		Query query;
 		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
-		try {
+		SessionFactory factory = ApplicationSessionFactory.returnFactory();
+		try(Session session = factory.openSession()) {
 
-			SessionFactory factory = ApplicationSessionFactory.returnFactory();
-			Session session = factory.openSession();
+			
+			
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("userId", userId);
