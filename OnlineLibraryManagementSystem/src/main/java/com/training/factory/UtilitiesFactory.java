@@ -45,7 +45,7 @@ public class UtilitiesFactory {
 			return buildUserId.append(inputType).append(userIdnumber + 1).toString();
 
 		} else {
-			return buildUserId.append(inputType).append(00000).toString();
+			return buildUserId.append(inputType).append("00000").toString();
 		}
 
 	}
