@@ -41,7 +41,7 @@ public class AnonymousUser {
 			query.setParameter("itemName", name);
 			listResult=query.getResultList();
 
-			if ((listResult == null)||listResult.isEmpty()) {
+			if (listResult.isEmpty()) {
 
 				logger.info("No matches found for search string " + name);
 			}
@@ -72,7 +72,7 @@ public class AnonymousUser {
 			query = session.createQuery(hqlQuery);
 			listResult = (List<LibraryItems>) query.setMaxResults(10);
 
-			if (listResult.equals(null) || listResult.isEmpty()) {
+			if (listResult.isEmpty()) {
 
 				logger.info("No items were displayed for the user to view in general");
 			}
