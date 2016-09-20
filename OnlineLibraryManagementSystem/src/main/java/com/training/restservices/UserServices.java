@@ -94,6 +94,7 @@ public class UserServices {
 
 	}
 
+	
 	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	private Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
