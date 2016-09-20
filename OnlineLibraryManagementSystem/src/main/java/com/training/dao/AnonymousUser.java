@@ -69,7 +69,7 @@ public class AnonymousUser {
 			session = factory.openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
-			listResult = query.getResultList();
+			listResult = (List<LibraryItems>) query.setMaxResults(10);
 
 			if (listResult.equals(null) || listResult.isEmpty()) {
 
