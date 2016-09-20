@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.training.entity.LibraryItems;
-import com.training.factory.ApplicationSessionFactory;
+import com.training.factory.UtilitiesFactory;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class AnonymousUser {
 		String hqlQuery = "from LibraryItems where itemName = :itemName";
 		List<LibraryItems> listResult = Collections.emptyList();
 		try {
-			session = ApplicationSessionFactory.returnFactory().openSession();
+			session = UtilitiesFactory.returnFactory().openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("itemName", name);
@@ -66,7 +66,7 @@ public class AnonymousUser {
 		String hqlQuery = "from LibraryItems ";
 		List<LibraryItems> listResult = Collections.emptyList();
 		try {
-			SessionFactory factory = ApplicationSessionFactory.returnFactory();
+			SessionFactory factory = UtilitiesFactory.returnFactory();
 			session = factory.openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);

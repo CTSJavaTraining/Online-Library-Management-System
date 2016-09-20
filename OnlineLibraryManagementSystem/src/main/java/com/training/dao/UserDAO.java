@@ -1,6 +1,5 @@
 package com.training.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
+import com.training.factory.UtilitiesFactory;
 
 public class UserDAO {
 
@@ -26,23 +26,13 @@ public class UserDAO {
 
 			session.beginTransaction();
 
-			StringBuilder buildUserId = new StringBuilder();
-			List<String> userIdMaxList = session.createQuery("SELECT userId FROM UserDetails").getResultList();
+			List<?> userIdMaxList = session.createQuery("SELECT userId FROM UserDetails").getResultList();
 
 			String role = userdetails.getRole();
-			if (!userIdMaxList.isEmpty()) {
 
-				String userIdMax = userIdMaxList.get(userIdMaxList.size() - 1).toString();
-				logger.info("Latest USERID is {} ", userIdMax);
-				int userIdnumber = Integer.parseInt(userIdMax.substring(1, userIdMax.length()));
-
-				buildUserId.append(role).append(userIdnumber + 1);
-
-			} else {
-				buildUserId.append(role).append(00000);
-			}
-
-			userdetails.setUserId(buildUserId.toString());
+			String newUserID = UtilitiesFactory.idGenerator(role, userIdMaxList);
+			
+			userdetails.setUserId(newUserID);
 
 			if (userdetails.getAddressDetails() != null) {
 
@@ -50,13 +40,13 @@ public class UserDAO {
 				for (AddressDetails address : addressList) {
 					logger.info("Test address details {}", address.getCity());
 					address.setUserDetails(userdetails);
-					address.setCreatedTime(getCurrentDateTime());
-					address.setModifiedTime(getCurrentDateTime());
+					address.setCreatedTime(UtilitiesFactory.getCurrentDateTime());
+					address.setModifiedTime(UtilitiesFactory.getCurrentDateTime());
 				}
 
 			}
-			userdetails.setcreatedTime(getCurrentDateTime());
-			userdetails.setmodifiedTime(getCurrentDateTime());
+			userdetails.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+			userdetails.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
 
 			session.saveOrUpdate(userdetails);
 
@@ -111,8 +101,4 @@ public class UserDAO {
 		}
 	}
 
-	// Utility Method fot getting current date and time to store into Db
-	private Date getCurrentDateTime() {
-		return new Date();
-	}
 }
