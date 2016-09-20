@@ -92,8 +92,8 @@ public class UserServices {
 
 		logger.info("Validating user for logging in");
 
-		String userId = loginDetails.getUserId();
-		String password = loginDetails.getPassword();
+		String userId = loginDetails.getUserId().trim();
+		String password = loginDetails.getPassword().trim();
 
 		if ((!userId.isEmpty()) && (!password.isEmpty())) {
 
