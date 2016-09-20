@@ -7,6 +7,7 @@ import javax.ws.rs.core.Response;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.training.entity.AddressDetails;
+import com.training.entity.LibraryItems;
 import com.training.entity.UserDetails;
 
 /**
@@ -36,32 +38,15 @@ public class SignupService {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignupService.class);
 
-	SessionFactory factory = BootApplication.factory;
+	SessionFactory factory = new Configuration().configure().buildSessionFactory();
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	private String setBasicDetails(@RequestBody UserDetails userdetails) {
 
-		try (Session session = factory.openSession()) {
-			session.beginTransaction();
-
-			List<AddressDetails> addressList = userdetails.getAddressDetails();
-
-			for (AddressDetails address : addressList) {
-				address.setUserDetails(userdetails);
-				address.setCreatedTime(getCurrentDateTime());
-				address.setModifiedTime(getCurrentDateTime());
-
-				userdetails.setcreatedTime(getCurrentDateTime());
-				userdetails.setmodifiedTime(getCurrentDateTime());
-
-				session.persist(userdetails);
-				logger.info("Persisted user details ");
-				session.getTransaction().commit();
-				logger.info("Commited");
-			}
-		}
+		
 		return "Successfully saved your information";
+
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +56,7 @@ public class SignupService {
 		return Response.status(Response.Status.OK).entity(new UserDetails()).build();
 	}
 
-	@RequestMapping(value = "/ ", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	private Response userNameExistance(@RequestParam("username") String username) {
 
@@ -80,14 +65,18 @@ public class SignupService {
 
 	}
 
+	@RequestMapping(value = "/search", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	private Response searchService(@RequestBody LibraryItems libraryitems) {
+
+		return Response.status(Response.Status.OK).entity("test").build();
+	}
+
 	@RequestMapping("/test")
 	String home() {
 		return "Hello World!";
 	}
 
-	// Utility Method fot getting current date and time to store into Db
-	private Date getCurrentDateTime() {
-		return new Date();
-	}
+	
 
 }
