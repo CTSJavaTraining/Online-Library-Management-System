@@ -32,7 +32,7 @@ public class AnonymousUser {
 	
 	public List<LibraryItems> searchItems(String name) {
 
-		String hqlQuery = "from LibraryItems where item_name = :itemName";
+		String hqlQuery = "from LibraryItems where itemName = :itemName";
 		List<LibraryItems> listResult = Collections.emptyList();
 		try {
 			session = ApplicationSessionFactory.returnFactory().openSession();

@@ -1,5 +1,7 @@
 package com.training.restservices;
 
+import javax.ws.rs.core.Response;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -28,7 +30,7 @@ public class UserValidationService {
 
 	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String validateUserId(@RequestBody UserDetails userdetails) {
+	public Response validateUserId(@RequestBody UserDetails userdetails) {
 
 		String username = userdetails.getUserName();
 
@@ -44,13 +46,13 @@ public class UserValidationService {
 				query.setMaxResults(1);
 
 				if (query.getResultList().isEmpty()) {
-					return "User does not exist";
+					return Response.status(Response.Status.OK).entity("User does not exist").build();
 				} else {
-					return "User exist";
+					return Response.status(Response.Status.CONFLICT).entity("User exist").build();
 				}
 			}
 		} else {
-			return "Username should not be blank";
+			return Response.status(Response.Status.BAD_REQUEST).entity("Username should not be blank").build();
 		}
 
 	}

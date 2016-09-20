@@ -1,6 +1,7 @@
 package com.training.restservices;
 
 import javax.persistence.Query;
+import javax.ws.rs.core.Response;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,7 +34,7 @@ public class LoginService {
 
 	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String validateLoginDetails(@RequestBody LoginDetails loginDetails) {
+	public Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
 
 		logger.info("Validating user for logging in");
 
@@ -54,15 +55,15 @@ public class LoginService {
 				String results = query.getResultList().get(0).toString();
 
 				if (results.isEmpty()) {
-					return "User does not exist. Please signup";
+					return Response.status(Response.Status.NOT_FOUND).entity("User does not exist. Please signup").build();  
 				} else if (password.equalsIgnoreCase(results)) {
-					return "User " + userId + " logged in successfully";
+					return Response.status(Response.Status.OK).entity("User " + userId + " logged in successfully").build(); 
 				} else {
-					return "Incorrect Login Details";
+					return Response.status(Response.Status.BAD_REQUEST).entity("Incorrect Login Details").build();
 				}
 			}
 		} else {
-			return "userId or password should not be empty";
+			return  Response.status(Response.Status.BAD_REQUEST).entity("userId or password should not be empty").build();
 		}
 	}
 
