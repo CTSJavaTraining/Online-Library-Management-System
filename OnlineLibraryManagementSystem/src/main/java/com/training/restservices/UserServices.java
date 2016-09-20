@@ -85,14 +85,15 @@ public class UserServices {
 
 	}
 
+	
 	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	private Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
 
 		logger.info("Validating user for logging in");
 
-		String userId = loginDetails.getUserId();
-		String password = loginDetails.getPassword();
+		String userId = loginDetails.getUserId().trim();
+		String password = loginDetails.getPassword().trim();
 
 		if ((!userId.isEmpty()) && (!password.isEmpty())) {
 
