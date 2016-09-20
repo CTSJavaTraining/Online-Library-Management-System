@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.training.restservices.SignupService;
+import com.training.restservices.UserServices;
 
 /**
  * this class creates and provides session factory
@@ -14,7 +14,7 @@ import com.training.restservices.SignupService;
  */
 public class ApplicationSessionFactory {
 
-	private static final Logger logger = Logger.getLogger(SignupService.class);
+	private static final Logger logger = Logger.getLogger(UserServices.class);
 
 	/**
 	 * this method returns sessionfactory
