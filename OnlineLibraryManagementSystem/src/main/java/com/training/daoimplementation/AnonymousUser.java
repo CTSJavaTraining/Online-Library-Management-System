@@ -2,6 +2,7 @@ package com.training.daoimplementation;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -43,41 +44,51 @@ public class AnonymousUser implements AnonymousUserDAO {
 	}
 
 	@Override
+	public Map<String, List<LibraryItems>> viewItemsCheck(int maxValue) {
+
+		List<LibraryItems> resultList;
+		Map<String, List<LibraryItems>> allResults = Collections.emptyMap();
+
+		resultList = runQuery("Books", maxValue);
+		allResults.put("Books", resultList);
+		resultList.clear();
+
+		resultList = runQuery("Movies", maxValue);
+		allResults.put("Movies", resultList);
+		resultList.clear();
+
+		resultList = runQuery("Music", maxValue);
+		allResults.put("Music", resultList);
+		resultList.clear();
+
+		return allResults;
+	}
+
+	/**
+	 * 
+	 * @param itemType
+	 * @param maxValue
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
-	public List<LibraryItems> viewItems(int maxValue) {
+	public List<LibraryItems> runQuery(String itemType, int maxValue) {
+
 		Query query;
 		String hqlQuery = "from library_items where itemType= :itemType";
 		List<LibraryItems> resultList = Collections.emptyList();
-		List<LibraryItems> resultListAll = Collections.emptyList();
 		try (Session session = factory.openSession()) {
 			session.beginTransaction();
 
 			query = session.createQuery(hqlQuery);
-			query.setParameter("itemType", "Books");
+			query.setParameter("itemType", itemType);
 			resultList = query.setMaxResults(maxValue).getResultList();
-			resultListAll.addAll(resultList);
-			logger.info("Size of the result sent for Books Category to view is {}", resultList.size());
-
-			query = session.createQuery(hqlQuery);
-			query.setParameter("itemType", "Music");
-			resultList = query.setMaxResults(maxValue).getResultList();
-			resultListAll.addAll(resultList);
-			resultList.clear();
-			logger.info("Size of result for Music Category to view is {}", resultList.size());
-
-			query = session.createQuery(hqlQuery);
-			query.setParameter("itemType", "Movies");
-			resultList = query.setMaxResults(maxValue).getResultList();
-			resultListAll.addAll(resultList);
-			resultList.clear();
-			logger.info("Size of result sent for Movies Category to view is {}", resultList.size());
-
-			logger.info("Total Search Result sent {}", resultListAll.size());
-
+			logger.info("Size of the result sent for Category {}", itemType, "  to view is {}", resultList.size());
 		} catch (Exception e) {
-			logger.error(e.getMessage(), "Failed to retrieve the results for view");
+			logger.error(e.getMessage(), " Failed to hit table {}", itemType);
 		}
-		return resultListAll;
+		resultList = Collections.emptyList();
+		return resultList;
+
 	}
 
 }
