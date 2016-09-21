@@ -155,7 +155,7 @@ public class SignedUser extends AnonymousUser {
 		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
 		try {
 
-			SessionFactory factory = ApplicationSessionFactory.returnFactory();
+			factory = ApplicationSessionFactory.returnFactory();
 			Session session = factory.openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
