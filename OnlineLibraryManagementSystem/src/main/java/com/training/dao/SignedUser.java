@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,15 +38,29 @@ public class SignedUser extends AnonymousUser {
 	public boolean insertLikedItems(LikedList likedList) {
 
 		try (Session session = factory.openSession()) {
-			session.beginTransaction();
-			logger.info("Session Opened to insert or update the Liked list details");
+			Transaction transaction = session.beginTransaction();
+
+			logger.info("Session opened to store the details of item", likedList.getId().getItemId(), "liked by",
+					likedList.getId().getUserId());
+
+			boolean checkExistence = findExistanceLikedItems(likedList.getId().getUserId(),
+					likedList.getId().getItemId());
 			if (likedList.getId() != null) {
-				likedList.setcreatedTime(date);
+				if ((!checkExistence)) {
+
+					likedList.setcreatedTime(date);
+				}
 				likedList.setmodifiedTime(date);
 			}
 			session.saveOrUpdate(likedList);
-			logger.info("the details about the liked items are used ");
-			session.getTransaction().commit();
+
+			logger.info("The details of item", likedList.getId().getItemId(), "liked by user ",
+					likedList.getId().getUserId(), "has been persisted");
+
+			transaction.commit();
+
+			logger.info("The details of item", likedList.getId().getItemId(), "liked by user ",
+					likedList.getId().getUserId(), "has been commited to DB");
 
 			return true;
 		} catch (Exception e) {
@@ -65,20 +80,99 @@ public class SignedUser extends AnonymousUser {
 	public boolean insertRatings(RatingTable ratings) {
 
 		try (Session session = factory.openSession()) {
-			session.beginTransaction();
+			Transaction transaction = session.beginTransaction();
+			logger.info("Session opened to store the ratings for the item", ratings.getId().getItemId(), "rated by",
+					ratings.getId().getUserId());
+			boolean checkExistence = findExistanceRatings(ratings.getId().getUserId(), ratings.getId().getItemId());
 			if (ratings.getId() != null) {
-				ratings.setcreatedTime(date);
+				if (!checkExistence) {
+					ratings.setcreatedTime(date);
+				}
 				ratings.setmodifiedTime(date);
 			}
 			session.saveOrUpdate(ratings);
-			session.getTransaction().commit();
-
+			logger.info("The ratings for item", ratings.getId().getItemId(), "given by", ratings.getId().getUserId(),
+					"has been persisted");
+			transaction.commit();
+			logger.info("The details of item", ratings.getId().getItemId(), "rated by", ratings.getId().getUserId(),
+					"has been commited to DB");
 			return true;
 		} catch (Exception e) {
-			logger.error(e.getMessage(),"Not able to hit DB to update the rating table");
+			logger.error(e.getMessage(), "Not able to hit DB to update the rating table");
 		}
 		return false;
 
 	}
 
+	/**
+	 * this method returns true if there is an existing entry in database for
+	 * the same item and user
+	 * 
+	 * @param userId
+	 * @param itemId
+	 * @return
+	 */
+	public boolean findExistanceLikedItems(String userId, String itemId) {
+
+		Query query;
+		String hqlQuery = "from LikedList where itemId = :itemId and userId= :userId";
+		try {
+
+			factory = ApplicationSessionFactory.returnFactory();
+			Session session = factory.openSession();
+			session.beginTransaction();
+
+			query = session.createQuery(hqlQuery);
+			query.setParameter("userId", userId);
+			query.setParameter("itemId", itemId);
+			List<?> listResult = query.getResultList();
+
+			if (!(listResult.isEmpty())) {
+				logger.info("Hit LikedList table");
+				return true;
+
+			}
+
+		} catch (Exception e) {
+			logger.error(e + "Failed to hit the database to check for the existance of the item", itemId, "liked by",
+					userId);
+		}
+
+		return false;
+	}
+
+	/**
+	 * this method checks if rating or review exists for a particular item by
+	 * the same user and returns true if exists else returns false
+	 * 
+	 * @param userId
+	 * @param itemId
+	 * @return
+	 */
+	public boolean findExistanceRatings(String userId, String itemId) {
+
+		Query query;
+		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
+		try {
+
+			SessionFactory factory = ApplicationSessionFactory.returnFactory();
+			Session session = factory.openSession();
+			session.beginTransaction();
+			query = session.createQuery(hqlQuery);
+			query.setParameter("userId", userId);
+			query.setParameter("itemId", itemId);
+			List<?> listResult = query.getResultList();
+
+			if (!(listResult.isEmpty())) {
+				logger.info("Hit Rating table");
+				return true;
+			}
+
+		} catch (Exception e) {
+			logger.error(e + "Failed to hit the database to check for the rating details of the item", itemId,
+					"rated by user", userId);
+		}
+
+		return false;
+	}
 }
