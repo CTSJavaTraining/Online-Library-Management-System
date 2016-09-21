@@ -11,9 +11,8 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.training.entity.LibraryItems;
+import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
-import com.training.entity.UserDetails;
 import com.training.factory.UtilitiesFactory;
 
 /**
@@ -26,48 +25,88 @@ import com.training.factory.UtilitiesFactory;
 public class SignedUser extends AnonymousUser {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
+	SessionFactory factory = UtilitiesFactory.returnFactory();
+	Date date = new Date();
 
 	/**
-	 * this method is used to make an entry on liked items
+	 * this method is used to insert or update the liked_list table in data base
+	 * with the liked list details
 	 * 
-	 * @param userId
-	 * @param itemId
-	 * @param likeStatus
+	 * @param likedList
+	 * @return
 	 */
-	public void likeItems(String userId, String itemId, int likeStatus) {
+	public boolean insertLikedItems(LikedList likedList) {
 
-		if (findExistanceLikedItems(userId, itemId)) {
+		try (Session session = factory.openSession()) {
+			Transaction transaction = session.beginTransaction();
 
-			updateLikeItems(userId, itemId, likeStatus);
+			logger.info("Session opened to store the details of item", likedList.getId().getItemId(), "liked by",
+					likedList.getId().getUserId());
 
-		} else {
-			insertLikeItems(userId, itemId, likeStatus);
+			boolean checkExistence = findExistanceLikedItems(likedList.getId().getUserId(),
+					likedList.getId().getItemId());
+			if (likedList.getId() != null) {
+				if ((!checkExistence)) {
+
+					likedList.setcreatedTime(date);
+				}
+				likedList.setmodifiedTime(date);
+			}
+			session.saveOrUpdate(likedList);
+
+			logger.info("The details of item", likedList.getId().getItemId(), "liked by user ",
+					likedList.getId().getUserId(), "has been persisted");
+
+			transaction.commit();
+
+			logger.info("The details of item", likedList.getId().getItemId(), "liked by user ",
+					likedList.getId().getUserId(), "has been commited to DB");
+
+			return true;
+		} catch (Exception e) {
+			logger.error("not able to load the liked item details because of DB error", e.getMessage());
 		}
+		return false;
 
 	}
 
 	/**
-	 * this method is used to make an entry on rate items
+	 * this method is used to insert or update the rating_table table in data
+	 * base with the rating details
 	 * 
-	 * @param userId
-	 * @param itemId
-	 * @param rating
-	 * @param review
+	 * @param ratings
+	 * @return
 	 */
-	public void rateItems(String userId, String itemId, int rating, String review) {
+	public boolean insertRatings(RatingTable ratings) {
 
-		if (findExistanceRatings(userId, itemId)) {
-
-			updateRateItems(review, itemId, rating, review);
-		} else {
-			// insertRateItems(, itemId, rating, review);
+		try (Session session = factory.openSession()) {
+			Transaction transaction = session.beginTransaction();
+			logger.info("Session opened to store the ratings for the item", ratings.getId().getItemId(), "rated by",
+					ratings.getId().getUserId());
+			boolean checkExistence = findExistanceRatings(ratings.getId().getUserId(), ratings.getId().getItemId());
+			if (ratings.getId() != null) {
+				if (!checkExistence) {
+					ratings.setcreatedTime(date);
+				}
+				ratings.setmodifiedTime(date);
+			}
+			session.saveOrUpdate(ratings);
+			logger.info("The ratings for item", ratings.getId().getItemId(), "given by", ratings.getId().getUserId(),
+					"has been persisted");
+			transaction.commit();
+			logger.info("The details of item", ratings.getId().getItemId(), "rated by", ratings.getId().getUserId(),
+					"has been commited to DB");
+			return true;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), "Not able to hit DB to update the rating table");
 		}
+		return false;
 
 	}
 
 	/**
-	 * this method checks if rating or review exists for a particular item by
-	 * the same user and returns true if exists else returns false
+	 * this method returns true if there is an existing entry in database for
+	 * the same item and user
 	 * 
 	 * @param userId
 	 * @param itemId
@@ -77,7 +116,6 @@ public class SignedUser extends AnonymousUser {
 
 		Query query;
 		String hqlQuery = "from LikedList where itemId = :itemId and userId= :userId";
-		SessionFactory factory = UtilitiesFactory.returnFactory();
 		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
@@ -94,8 +132,8 @@ public class SignedUser extends AnonymousUser {
 			}
 
 		} catch (Exception e) {
-			logger.error(e
-					+ "Failed to hit the database to check for the existance of the item liked by the same user in DB");
+			logger.error(e + "Failed to hit the database to check for the existance of the item", itemId, "liked by",
+					userId);
 		}
 
 		return false;
@@ -113,7 +151,6 @@ public class SignedUser extends AnonymousUser {
 
 		Query query;
 		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
-		SessionFactory factory = UtilitiesFactory.returnFactory();
 		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
@@ -128,164 +165,10 @@ public class SignedUser extends AnonymousUser {
 			}
 
 		} catch (Exception e) {
-			logger.error(e
-					+ "Failed to hit the database to check for the rating details of the item by the same user in DB");
+			logger.error(e + "Failed to hit the database to check for the rating details of the item", itemId,
+					"rated by user", userId);
 		}
 
 		return false;
-	}
-
-	/**
-	 * this method inserts the liked item details into liked_list table in DB
-	 * 
-	 * @param userId
-	 * @param itemId
-	 * @param likeStatus
-	 */
-	public void insertLikeItems(String userId, String itemId, int likeStatus) {
-		Query query;
-		Date date = new Date();
-		SessionFactory factory = UtilitiesFactory.returnFactory();
-		String hqlQuery = "INSERT INTO LikedList(userId, itemId, likeStatus, createdTime, modifiedTime)"
-				+ "select * from LikedList where itemId= :itemId and userId= :userId";
-		try (Session session = factory.openSession()) {
-
-			Transaction transaction = session.beginTransaction();
-			query = session.createQuery(hqlQuery);
-			query.setParameter(0, userId);
-			query.setParameter(1, itemId);
-			query.setParameter(2, likeStatus);
-			query.setParameter(3, date.toString());
-			query.setParameter(4, date.toString());
-			query.setParameter("userId", userId);
-			query.setParameter("itemId", itemId);
-			int result = query.executeUpdate();
-			if (result == -1) {
-				logger.info("the liked status of the item", itemId, " liked by", userId,
-						" has not been inserted in liked_list table");
-			} else if (result > 0) {
-				logger.info("the liked status of the item", itemId, " liked by", userId,
-						"has been inserted in liked_list tabl");
-			}
-			transaction.commit();
-		} catch (Exception e) {
-			logger.error(e + "not able to load the item liked details in Database liked_list");
-		}
-	}
-
-	/**
-	 * this method enters user's rating information to rating_table through
-	 * 
-	 * @param userDetails
-	 * @param libraryItems
-	 * @param rating
-	 * @param review
-	 */
-	public void insertRateItems(UserDetails userDetails, LibraryItems libraryItems, int rating, String review) {
-		Query query;
-		Date date = new Date();
-		String hqlQuery = "INSERT INTO RatingTable (userId, itemId, rating, review, createdTime, modifiedTime)"
-				+ "select * from OldRatingTable where itemId= :itemId and userId= :userId";
-		SessionFactory factory = UtilitiesFactory.returnFactory();
-		try (Session session = factory.openSession()) {
-
-			Transaction transaction = session.beginTransaction();
-			query = session.createQuery(hqlQuery);
-			RatingTable li = new RatingTable();
-			li.setUserDetails(userDetails);
-			li.setLibraryItems(libraryItems);
-			li.setRating(rating);
-			li.setReview(review);
-			li.setcreatedTime(date);
-			li.setmodifiedTime(date);
-			query.setParameter("userId", userDetails.getUserId());
-			query.setParameter("itemId", libraryItems.getItemId());
-			int result = query.executeUpdate();
-			if (result == -1) {
-				logger.info("the rating of the item", libraryItems.getItemId(), "rated by", userDetails.getUserId(),
-						"has not been inserted in rating_table table");
-			} else if (result > 0) {
-				logger.info("the rating of the item", libraryItems.getItemId(), "rated by", userDetails.getUserId(),
-						" has been inserted in rating_table table");
-			}
-			transaction.commit();
-		} catch (Exception e) {
-			logger.error(e + "not able to load the item rated details in Database rating_table");
-		}
-	}
-
-	/**
-	 * 
-	 * @param userId
-	 * @param itemId
-	 * @param rating
-	 * @param review
-	 */
-	public void updateRateItems(String userId, String itemId, int rating, String review) {
-		Query query;
-		Date date = new Date();
-		String hqlQuery = "UPDATE RatingTable set rating= :rating, review =:review, modifiedTime :mTime where itemId = :itemId and userId= :userId";
-		SessionFactory factory = UtilitiesFactory.returnFactory();
-		try (Session session = factory.openSession()) {
-
-			Transaction transaction = session.beginTransaction();
-			query = session.createQuery(hqlQuery);
-			query.setParameter("userId", userId);
-			query.setParameter("itemId", itemId);
-			query.setParameter("rating", rating);
-			query.setParameter("review", review);
-			query.setParameter("mTime", date.toString());
-			int result = query.executeUpdate();
-			if (result == -1) {
-				logger.info("the ratings of the item", itemId, "rated by", userId,
-						"has not been inserted in rating_table table");
-			} else if (result > 0) {
-				logger.info("the ratings of the item", itemId, "rated by", userId,
-						"has been inserted in rating_table table");
-			}
-			transaction.commit();
-		} catch (Exception e) {
-			logger.error(e + "not able to load the item rated details in Database rating_table");
-		}
-	}
-
-	/**
-	 * 
-	 * @param userId
-	 * @param itemId
-	 * @param likeStatus
-	 */
-	public void updateLikeItems(String userId, String itemId, int likeStatus) {
-		Query query;
-		Date dateModified = new Date();
-		String hqlQuery = "UPDATE LikedList set likeStatus= :likeStatus, modifiedTime :modifiedTime where itemId = :itemId and userId= :userId";
-		SessionFactory factory = UtilitiesFactory.returnFactory();
-
-		try (Session session = factory.openSession()) {
-
-			Transaction transaction = session.beginTransaction();
-			query = session.createQuery(hqlQuery);
-			query.setParameter("userId", userId);
-			query.setParameter("itemId", itemId);
-			query.setParameter("likeStatus", likeStatus);
-			query.setParameter("mTime", dateModified.toString());
-			int result = query.executeUpdate();
-			if (result == -1) {
-				logger.info("the like status of the item", itemId, " liked by", userId,
-						"has not been inserted in liked_list table");
-			} else if (result > 0) {
-				logger.info("the like status of the item", itemId, " liked by", userId,
-						"has been inserted in liked_list table");
-			}
-			transaction.commit();
-		} catch (Exception e) {
-			logger.error(e + "not able to load the item liked details in Database liked_list");
-		}
-	}
-
-	public static void main(String args[]) {
-		SignedUser su = new SignedUser();
-		su.insertLikeItems("122", "122", 4);
-		//su.insertRateItems(null, null, 4, "123");
 	}
 }

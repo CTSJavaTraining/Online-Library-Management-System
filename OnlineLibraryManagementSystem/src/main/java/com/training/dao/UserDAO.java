@@ -1,5 +1,6 @@
 package com.training.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -98,6 +99,10 @@ public class UserDAO {
 				return -1;
 			}
 		}
+	}
+	
+	public Date getCurrentDateTime() {
+		return new Date();
 	}
 
 }
