@@ -4,6 +4,7 @@
 package com.training.dao;
 
 import com.training.entity.LikedList;
+import com.training.entity.RatingTable;
 
 /**
  * @author 447383
@@ -18,5 +19,12 @@ public interface SignedUserDAO {
 	 */
 	public boolean insertLikedItems(LikedList likedList);
 	
+	/**
+	 * 
+	 * @param ratings
+	 * @return
+	 */
+	public boolean insertRatings(RatingTable ratings);
 	
+
 }
