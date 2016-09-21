@@ -1,6 +1,5 @@
 package com.training.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -14,12 +13,21 @@ import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
 import com.training.factory.UtilitiesFactory;
 
+/**
+ * 
+ * @author 447482
+ */
 public class UserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
 	private SessionFactory factory = UtilitiesFactory.returnFactory();
 
+	/**
+	 * 
+	 * @param userdetails
+	 * @return
+	 */
 	public boolean userSignUp(UserDetails userdetails) {
 
 		try (Session session = factory.openSession()) {
@@ -31,7 +39,7 @@ public class UserDAO {
 			String role = userdetails.getRole();
 
 			String newUserID = UtilitiesFactory.idGenerator(role, userIdMaxList);
-			
+
 			userdetails.setUserId(newUserID);
 
 			if (userdetails.getAddressDetails() != null) {
@@ -61,6 +69,11 @@ public class UserDAO {
 		}
 	}
 
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 */
 	public boolean validateUser(String username) {
 		try (Session session = factory.openSession()) {
 			session.beginTransaction();
@@ -71,13 +84,18 @@ public class UserDAO {
 			query.setMaxResults(1);
 
 			if (query.getResultList().isEmpty()) {
-				return false;
-			} else {
 				return true;
 			}
 		}
+		return false;
 	}
 
+	/**
+	 * 
+	 * @param userId
+	 * @param password
+	 * @return
+	 */
 	public int validateLogin(String userId, String password) {
 		try (Session session = factory.openSession()) {
 
@@ -100,9 +118,4 @@ public class UserDAO {
 			}
 		}
 	}
-	
-	public Date getCurrentDateTime() {
-		return new Date();
-	}
-
 }
