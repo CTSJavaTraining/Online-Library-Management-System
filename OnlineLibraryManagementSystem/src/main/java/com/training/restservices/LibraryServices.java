@@ -1,7 +1,5 @@
 package com.training.restservices;
 
-import java.util.List;
-
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -11,18 +9,29 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.training.daoimplementation.AnonymousUser;
 import com.training.entity.LibraryItems;
 
+
+/**
+ * 
+ * @author 447482
+ *
+ */
 @ComponentScan
 @RestController
 @EnableAutoConfiguration
 public class LibraryServices {
 
+	/**
+	 * 
+	 * @param libraryItems
+	 * @return
+	 */
 	@RequestMapping(value = "/addbook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
@@ -32,6 +41,11 @@ public class LibraryServices {
 
 	}
 
+	/**
+	 * 
+	 * @param libraryItems
+	 * @return
+	 */
 	@RequestMapping(value = "/addmusic", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
@@ -41,6 +55,11 @@ public class LibraryServices {
 
 	}
 
+	/**
+	 * 
+	 * @param libraryItems
+	 * @return
+	 */
 	@RequestMapping(value = "/addmovies", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
@@ -50,6 +69,11 @@ public class LibraryServices {
 
 	}
 
+	/**
+	 * 
+	 * @param libraryItems
+	 * @return
+	 */
 	@RequestMapping(value = "/additemformat", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
@@ -59,19 +83,6 @@ public class LibraryServices {
 
 	}
 	
-	@RequestMapping(value = "/searchitems", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Produces("application/json")
-	private Response viewItems(@RequestParam(value="itemName") String itemName) {
-		
-		AnonymousUser anonymousUser=new AnonymousUser();
-		List<?> getItems=anonymousUser.searchItems(itemName);
-		if(getItems.isEmpty()){
-			return Response.status(Response.Status.NOT_FOUND).entity("No requested items available").build();
-		}
-		else{
-			return Response.status(Response.Status.OK).entity(getItems).build();
-		}
-	}
+	
 
 }
