@@ -115,12 +115,11 @@ public class SignedUser extends AnonymousUser {
 	public boolean findExistanceLikedItems(String userId, String itemId) {
 
 		Query query;
-		String hqlQuery = "from LikedList where itemId = :itemId and userId= :userId";
 		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
 
-			query = session.createQuery(hqlQuery);
+			query = session.createQuery("from LikedList where itemId = :itemId and userId= :userId");
 			query.setParameter("userId", userId);
 			query.setParameter("itemId", itemId);
 			List<?> listResult = query.getResultList();
@@ -150,11 +149,10 @@ public class SignedUser extends AnonymousUser {
 	public boolean findExistanceRatings(String userId, String itemId) {
 
 		Query query;
-		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
 		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
-			query = session.createQuery(hqlQuery);
+			query = session.createQuery("from RatingTable where itemId = :itemId and userId= :userId");
 			query.setParameter("userId", userId);
 			query.setParameter("itemId", itemId);
 			List<?> listResult = query.getResultList();
