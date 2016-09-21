@@ -10,7 +10,6 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.training.dao.FindExistenceDAO;
 import com.training.dao.SignedUserDAO;
 import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
@@ -23,7 +22,7 @@ import com.training.factory.UtilitiesFactory;
  * @author 447383
  *
  */
-public class SignedUser extends AnonymousUser implements SignedUserDAO, FindExistenceDAO {
+public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
 	private SessionFactory factory = UtilitiesFactory.returnFactory();
