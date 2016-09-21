@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.dao.LibrarianDAO;
+import com.training.dao.AnonymousUser;
 import com.training.entity.LibraryItems;
 
 @ComponentScan
@@ -64,9 +64,8 @@ public class LibraryServices {
 	@Produces("application/json")
 	private Response viewItems(@RequestParam(value="itemName") String itemName) {
 		
-		LibrarianDAO libraryDAO=new LibrarianDAO();
-		List<?> getItems=libraryDAO.searchItems(itemName);
-		
+		AnonymousUser anonymousUser=new AnonymousUser();
+		List<?> getItems=anonymousUser.searchItems(itemName);
 		if(getItems.isEmpty()){
 			return Response.status(Response.Status.NOT_FOUND).entity("No requested items available").build();
 		}

@@ -2,8 +2,6 @@ package com.training.dao;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -79,19 +77,6 @@ public class LibrarianDAO {
 			logger.error("Exception is thrown {}", e);
 			return false;
 		}
-	}
-
-	public List<?> searchItems(String itemName) {
-		try (Session session = factory.openSession()) {
-			session.beginTransaction();
-
-			Query query = session.createQuery("FROM LibraryItems WHERE itemName = :iName");
-			query.setParameter("iName", itemName);
-			
-			List<?> itemList = query.getResultList();
-			return itemList;
-		}
-		
 	}
 
 }
