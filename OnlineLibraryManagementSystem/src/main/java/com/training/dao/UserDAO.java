@@ -1,5 +1,6 @@
 package com.training.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -100,12 +101,9 @@ public class UserDAO {
 			}
 		}
 	}
-
-<<<<<<< HEAD
-	// Utility Method fot getting current date and time to store into Db
+	
 	public Date getCurrentDateTime() {
 		return new Date();
 	}
-=======
->>>>>>> branch 'master' of https://github.com/CTSJavaTraining/Online-Library-Management-System.git
+
 }
