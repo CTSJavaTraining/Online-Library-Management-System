@@ -75,17 +75,42 @@ public class UserDAO {
 	 * @return
 	 */
 	public boolean validateUser(String username) {
+		logger.info("Validating username {}", username);
 		try (Session session = factory.openSession()) {
 			session.beginTransaction();
-			logger.debug("User entered username is {} ", username);
 
 			Query query = session.createQuery("FROM UserDetails WHERE userName = :uName");
 			query.setParameter("uName", username);
 			query.setMaxResults(1);
 
 			if (query.getResultList().isEmpty()) {
+				logger.info("User does not exist");
 				return true;
 			}
+			logger.info("userexists");
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public boolean validateLoginUser(String userId) {
+		logger.info("Validating username {}", userId);
+		try (Session session = factory.openSession()) {
+			session.beginTransaction();
+
+			Query query = session.createQuery("FROM UserDetails WHERE userId = :uId");
+			query.setParameter("uId", userId);
+			query.setMaxResults(1);
+
+			if (query.getResultList().isEmpty()) {
+				logger.info("User does not exist");
+				return true;
+			}
+			logger.info("userexists");
 		}
 		return false;
 	}

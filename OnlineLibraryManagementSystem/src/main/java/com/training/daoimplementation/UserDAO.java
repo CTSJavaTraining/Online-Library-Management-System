@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
@@ -18,11 +19,12 @@ public class UserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
-	private SessionFactory factory = UtilitiesFactory.returnFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	public boolean userSignUp(UserDetails userdetails) {
 
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 
@@ -31,7 +33,7 @@ public class UserDAO {
 			String role = userdetails.getRole();
 
 			String newUserID = UtilitiesFactory.idGenerator(role, userIdMaxList);
-			
+
 			userdetails.setUserId(newUserID);
 
 			if (userdetails.getAddressDetails() != null) {
@@ -62,7 +64,7 @@ public class UserDAO {
 	}
 
 	public boolean validateUser(String username) {
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 			logger.debug("User entered username is {} ", username);
 
@@ -78,8 +80,31 @@ public class UserDAO {
 		}
 	}
 
-	public int validateLogin(String userId, String password) {
-		try (Session session = factory.openSession()) {
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public boolean validateLoginUser(String userId) {
+		logger.info("Validating username {}", userId);
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+
+			Query query = session.createQuery("FROM UserDetails WHERE userId = :uId");
+			query.setParameter("uId", userId);
+			query.setMaxResults(1);
+
+			if (query.getResultList().isEmpty()) {
+				logger.info("User does not exist");
+				return true;
+			}
+			logger.info("userexists");
+		}
+		return false;
+	}
+
+	public boolean validateLogin(String userId, String password) {
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 
@@ -91,16 +116,13 @@ public class UserDAO {
 
 			String results = query.getResultList().get(0).toString();
 
-			if (results.isEmpty()) {
-				return 0;
-			} else if (password.equalsIgnoreCase(results)) {
-				return 1;
-			} else {
-				return -1;
+			if (password.equalsIgnoreCase(results)) {
+				return true;
 			}
 		}
+		return false;
 	}
-	
+
 	public Date getCurrentDateTime() {
 		return new Date();
 	}

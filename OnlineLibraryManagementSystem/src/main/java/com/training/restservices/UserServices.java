@@ -5,10 +5,9 @@ import java.util.List;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.training.daoimplementation.AnonymousUser;
 import com.training.daoimplementation.UserDAO;
-
-
 import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
@@ -36,6 +33,7 @@ import com.training.entity.UserDetails;
  *         signup details, user validation, login service and search items from
  *         library
  */
+
 @ComponentScan
 @RestController
 @EnableAutoConfiguration
@@ -43,14 +41,17 @@ public class UserServices {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 
-	SessionFactory factory = new Configuration().configure().buildSessionFactory();
+	@Autowired
+	private UserDAO userDao;
+
+	@Autowired
+	private AnonymousUser anonymousUser;
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
 	private Response setBasicDetails(@RequestBody UserDetails userdetails) {
 
-		UserDAO userDao = new UserDAO();
 		userDao.userSignUp(userdetails);
 
 		String username = userdetails.getUserName();
@@ -83,10 +84,10 @@ public class UserServices {
 	public Response userNameExistance(@RequestBody UserDetails userdetails) {
 
 		String username = userdetails.getUserName();
-		UserDAO userdao = new UserDAO();
+
 		if (!username.isEmpty()) {
 
-			boolean validationStatus = userdao.validateUser(username);
+			boolean validationStatus = userDao.validateUser(username);
 
 			if (validationStatus) {
 				return Response.status(Response.Status.OK).entity("User does not exist").build();
@@ -118,15 +119,22 @@ public class UserServices {
 
 		if ((!userId.isEmpty()) && (!password.isEmpty())) {
 
-			UserDAO userdao = new UserDAO();
-			int loginStatus = userdao.validateLogin(userId, password);
+			logger.info("username and password is not empty and validating user");
 
-			if (loginStatus == 0) {
+			boolean loginUserStatus = userDao.validateLoginUser(userId);
+
+			if (loginUserStatus) {
 				return Response.status(Response.Status.NOT_FOUND).entity("User does not exist. Please signup").build();
-			} else if (loginStatus == 1) {
-				return Response.status(Response.Status.OK).entity("User " + userId + " logged in successfully").build();
 			} else {
-				return Response.status(Response.Status.BAD_REQUEST).entity("Incorrect Login Details").build();
+
+				boolean loginStatus = userDao.validateLogin(userId, password);
+
+				if (loginStatus) {
+					return Response.status(Response.Status.OK).entity("User " + userId + " logged in successfully")
+							.build();
+				} else {
+					return Response.status(Response.Status.BAD_REQUEST).entity("Incorrect Login Details").build();
+				}
 			}
 		} else {
 			return Response.status(Response.Status.BAD_REQUEST).entity("userId or password should not be empty")
@@ -174,12 +182,11 @@ public class UserServices {
 	 * @param itemName
 	 * @return
 	 */
-	@RequestMapping(value = "/searchitems", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/viewitems", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
 	private Response viewItems(@RequestParam(value = "itemName") String itemName) {
 
-		AnonymousUser anonymousUser = new AnonymousUser();
 		List<?> getItems = anonymousUser.searchItems(itemName);
 		if (getItems.isEmpty()) {
 			return Response.status(Response.Status.NOT_FOUND).entity("No requested items available").build();

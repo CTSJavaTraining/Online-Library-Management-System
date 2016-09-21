@@ -9,9 +9,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.entity.LibraryItems;
-import com.training.factory.UtilitiesFactory;
 
 /**
  * 
@@ -22,7 +22,9 @@ public class AnonymousUser {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnonymousUser.class);
 	private Query query;
-	private SessionFactory factory = UtilitiesFactory.returnFactory();
+
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	/**
 	 * 
@@ -34,7 +36,7 @@ public class AnonymousUser {
 	public List<LibraryItems> searchItems(String name) {
 
 		List<LibraryItems> listResult = Collections.emptyList();
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 			query = session.createQuery("from LibraryItems where itemName = :itemName");
 			query.setParameter("itemName", name);
@@ -60,7 +62,7 @@ public class AnonymousUser {
 	public List<LibraryItems> viewItems() {
 
 		List<LibraryItems> listResult = Collections.emptyList();
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 			query = session.createQuery("from LibraryItems ");

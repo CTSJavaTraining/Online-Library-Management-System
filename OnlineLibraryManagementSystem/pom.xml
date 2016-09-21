@@ -34,6 +34,8 @@
 			<artifactId>jersey-common</artifactId>
 			<version>2.22.2</version>
 		</dependency>
+
+
 		<!-- Response status -->
 
 		<dependency>
@@ -69,6 +71,18 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjtools</artifactId>
+		</dependency>
+
+		<!-- Spring ORM Jar -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		
+		<!-- Spring JDBC Jar for sessionFactory -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 
 		<!-- Spring boot Dependencies by 447482 -->
