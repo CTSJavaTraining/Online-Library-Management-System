@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.dao.UserDAO;
+import com.training.daoimplementation.UserDAO;
 import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
 import com.training.entity.LikedListId;

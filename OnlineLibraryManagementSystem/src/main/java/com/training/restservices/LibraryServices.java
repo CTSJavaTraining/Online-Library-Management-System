@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.dao.AnonymousUser;
+import com.training.daoimplementation.AnonymousUser;
 import com.training.entity.LibraryItems;
 
 @ComponentScan

@@ -1,4 +1,4 @@
-package com.training.dao;
+package com.training.daoimplementation;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.training.dao.SignedUserDAO;
 import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
 import com.training.factory.UtilitiesFactory;
@@ -22,7 +23,7 @@ import com.training.factory.UtilitiesFactory;
  * @author 447383
  *
  */
-public class SignedUser extends AnonymousUser {
+public class SignedUser  extends AnonymousUser implements SignedUserDAO{
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
 	private SessionFactory factory = UtilitiesFactory.returnFactory();
@@ -35,18 +36,21 @@ public class SignedUser extends AnonymousUser {
 	 * @param likedList
 	 * @return
 	 */
+	@Override
 	public boolean insertLikedItems(LikedList likedList) {
 
 		try (Session session = factory.openSession()) {
 			Transaction transaction = session.beginTransaction();
 
-			logger.info("Session opened to store the details of item", likedList.getId().getItemId(), "liked by",
+			logger.info("Session opened to store the details of item {}", likedList.getId().getItemId(), "liked by {}",
 					likedList.getId().getUserId());
 
-			boolean checkExistence = findExistanceLikedItems(likedList.getId().getUserId(),
-					likedList.getId().getItemId());
 			if (likedList.getId() != null) {
-				if ((!checkExistence)) {
+
+				boolean checkExistence = findExistanceLikedItems(likedList.getId().getUserId(),
+						likedList.getId().getItemId());
+
+				if (!checkExistence) {
 
 					likedList.setcreatedTime(date);
 				}
@@ -54,17 +58,17 @@ public class SignedUser extends AnonymousUser {
 			}
 			session.saveOrUpdate(likedList);
 
-			logger.info("The details of item", likedList.getId().getItemId(), "liked by user ",
+			logger.info("The item {}", likedList.getId().getItemId(), "liked by user {}",
 					likedList.getId().getUserId(), "has been persisted");
 
 			transaction.commit();
 
-			logger.info("The details of item", likedList.getId().getItemId(), "liked by user ",
+			logger.info("The item{}", likedList.getId().getItemId(), "liked by user {} ",
 					likedList.getId().getUserId(), "has been commited to DB");
 
 			return true;
 		} catch (Exception e) {
-			logger.error("not able to load the liked item details because of DB error", e.getMessage());
+			logger.error("not able to load the liked item details because of DB error {}", e.getMessage());
 		}
 		return false;
 
@@ -81,20 +85,21 @@ public class SignedUser extends AnonymousUser {
 
 		try (Session session = factory.openSession()) {
 			Transaction transaction = session.beginTransaction();
-			logger.info("Session opened to store the ratings for the item", ratings.getId().getItemId(), "rated by",
+			logger.info("Session opened to store the ratings for the item {}", ratings.getId().getItemId(), "rated by {}",
 					ratings.getId().getUserId());
-			boolean checkExistence = findExistanceRatings(ratings.getId().getUserId(), ratings.getId().getItemId());
 			if (ratings.getId() != null) {
+				boolean checkExistence = findExistanceRatings(ratings.getId().getUserId(), ratings.getId().getItemId());
+
 				if (!checkExistence) {
 					ratings.setcreatedTime(date);
 				}
 				ratings.setmodifiedTime(date);
 			}
 			session.saveOrUpdate(ratings);
-			logger.info("The ratings for item", ratings.getId().getItemId(), "given by", ratings.getId().getUserId(),
+			logger.info("The ratings for item{}", ratings.getId().getItemId(), "given by{}", ratings.getId().getUserId(),
 					"has been persisted");
 			transaction.commit();
-			logger.info("The details of item", ratings.getId().getItemId(), "rated by", ratings.getId().getUserId(),
+			logger.info("The details of item{}", ratings.getId().getItemId(), "rated by{}", ratings.getId().getUserId(),
 					"has been commited to DB");
 			return true;
 		} catch (Exception e) {
@@ -131,7 +136,7 @@ public class SignedUser extends AnonymousUser {
 			}
 
 		} catch (Exception e) {
-			logger.error(e + "Failed to hit the database to check for the existance of the item", itemId, "liked by",
+			logger.error(e + "Failed to hit the database to check for the existance of the item {}", itemId, "liked by {}",
 					userId);
 		}
 
@@ -163,11 +168,12 @@ public class SignedUser extends AnonymousUser {
 			}
 
 		} catch (Exception e) {
-			logger.error(e + "Failed to hit the database to check for the rating details of the item", itemId,
-					"rated by user", userId);
+			logger.error(e + "Failed to hit the database to check for the rating details of the item {}", itemId,
+					"rated by user {}", userId);
 		}
-		
 
 		return false;
 	}
+
+
 }

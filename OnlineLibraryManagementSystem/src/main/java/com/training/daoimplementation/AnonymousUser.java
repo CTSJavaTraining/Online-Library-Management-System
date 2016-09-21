@@ -1,4 +1,4 @@
-package com.training.dao;
+package com.training.daoimplementation;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,9 +30,10 @@ public class AnonymousUser {
 	 * @return
 	 */
 
-	public List<?> searchItems(String name) {
+	@SuppressWarnings("unchecked")
+	public List<LibraryItems> searchItems(String name) {
 
-		List<?> listResult = Collections.emptyList();
+		List<LibraryItems> listResult = Collections.emptyList();
 		try (Session session = factory.openSession()) {
 			session.beginTransaction();
 			query = session.createQuery("from LibraryItems where itemName = :itemName");
@@ -55,14 +56,15 @@ public class AnonymousUser {
 	 * @return
 	 */
 
-	public List<?> viewItems() {
+	@SuppressWarnings("unchecked")
+	public List<LibraryItems> viewItems() {
 
-		List<?> listResult = Collections.emptyList();
+		List<LibraryItems> listResult = Collections.emptyList();
 		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
 			query = session.createQuery("from LibraryItems ");
-			listResult = (List<?>) query.setMaxResults(10);
+			listResult = (List<LibraryItems>) query.setMaxResults(10);
 
 			if (listResult.isEmpty()) {
 
