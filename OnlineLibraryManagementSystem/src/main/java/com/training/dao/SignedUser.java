@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
-import com.training.factory.ApplicationSessionFactory;
+import com.training.factory.UtilitiesFactory;
 
 /**
  * this class handles the signed user functionalities such as keeping track of
@@ -25,7 +25,7 @@ import com.training.factory.ApplicationSessionFactory;
 public class SignedUser extends AnonymousUser {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
-	SessionFactory factory = ApplicationSessionFactory.returnFactory();
+	SessionFactory factory = UtilitiesFactory.returnFactory();
 	Date date = new Date();
 
 	/**
@@ -116,10 +116,8 @@ public class SignedUser extends AnonymousUser {
 
 		Query query;
 		String hqlQuery = "from LikedList where itemId = :itemId and userId= :userId";
-		try {
+		try (Session session = factory.openSession()) {
 
-			factory = ApplicationSessionFactory.returnFactory();
-			Session session = factory.openSession();
 			session.beginTransaction();
 
 			query = session.createQuery(hqlQuery);
@@ -153,10 +151,8 @@ public class SignedUser extends AnonymousUser {
 
 		Query query;
 		String hqlQuery = "from RatingTable where itemId = :itemId and userId= :userId";
-		try {
+		try (Session session = factory.openSession()) {
 
-			factory = ApplicationSessionFactory.returnFactory();
-			Session session = factory.openSession();
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("userId", userId);
