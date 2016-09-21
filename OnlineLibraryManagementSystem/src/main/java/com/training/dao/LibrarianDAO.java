@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,7 @@ public class LibrarianDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
-	public SessionFactory factory = new Configuration().configure().buildSessionFactory();;
+	public SessionFactory factory = UtilitiesFactory.returnFactory();
 
 	public boolean addItems(LibraryItems libraryItems) {
 
@@ -53,16 +52,16 @@ public class LibrarianDAO {
 				}
 			}
 
-				else if (libraryItems.getMusic() != null) {
-					List<Music> musicList = libraryItems.getMusic();
-					for (Music musicItem : musicList) {
-						logger.info("Test movie details {}", musicItem.getGenre());
-						musicItem.setLibraryItems(libraryItems);
-						musicItem.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
-						musicItem.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
-					}
-
+			else if (libraryItems.getMusic() != null) {
+				List<Music> musicList = libraryItems.getMusic();
+				for (Music musicItem : musicList) {
+					logger.info("Test movie details {}", musicItem.getGenre());
+					musicItem.setLibraryItems(libraryItems);
+					musicItem.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+					musicItem.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
 				}
+
+			}
 
 			libraryItems.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
 			libraryItems.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());

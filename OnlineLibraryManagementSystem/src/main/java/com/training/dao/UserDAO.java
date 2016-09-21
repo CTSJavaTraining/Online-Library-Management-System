@@ -7,7 +7,6 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +18,7 @@ public class UserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
-	public SessionFactory factory = new Configuration().configure().buildSessionFactory();;
+	private SessionFactory factory = UtilitiesFactory.returnFactory();
 
 	public boolean userSignUp(UserDetails userdetails) {
 
