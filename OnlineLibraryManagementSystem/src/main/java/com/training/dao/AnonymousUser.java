@@ -22,24 +22,23 @@ public class AnonymousUser {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnonymousUser.class);
 	private Query query;
-	private Session session;
+	private SessionFactory factory = UtilitiesFactory.returnFactory();
 
 	/**
 	 * 
 	 * @param name
 	 * @return
 	 */
-	
-	public List<LibraryItems> searchItems(String name) {
+
+	public List<?> searchItems(String name) {
 
 		String hqlQuery = "from LibraryItems where itemName = :itemName";
-		List<LibraryItems> listResult = Collections.emptyList();
-		try {
-			session = UtilitiesFactory.returnFactory().openSession();
+		List<?> listResult = Collections.emptyList();
+		try (Session session = factory.openSession()) {
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
 			query.setParameter("itemName", name);
-			listResult=query.getResultList();
+			listResult = query.getResultList();
 
 			if (listResult.isEmpty()) {
 
@@ -47,10 +46,6 @@ public class AnonymousUser {
 			}
 		} catch (Exception e) {
 			logger.error(e + "Failed to retrieve the search results for " + name);
-		} finally {
-			if (session.isOpen())
-
-				session.close();
 		}
 
 		return listResult;
@@ -61,16 +56,15 @@ public class AnonymousUser {
 	 * @return
 	 */
 
-	public List<LibraryItems> viewItems() {
+	public List<?> viewItems() {
 
 		String hqlQuery = "from LibraryItems ";
-		List<LibraryItems> listResult = Collections.emptyList();
-		try {
-			SessionFactory factory = UtilitiesFactory.returnFactory();
-			session = factory.openSession();
+		List<?> listResult = Collections.emptyList();
+		try (Session session = factory.openSession()) {
+
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
-			listResult = (List<LibraryItems>) query.setMaxResults(10);
+			listResult = (List<?>) query.setMaxResults(10);
 
 			if (listResult.isEmpty()) {
 
@@ -79,10 +73,6 @@ public class AnonymousUser {
 
 		} catch (Exception e) {
 			logger.error(e + "failed to display the items for anonymous user");
-		} finally {
-			if (session.isOpen())
-
-				session.close();
 		}
 		return listResult;
 	}

@@ -25,7 +25,7 @@ import com.training.factory.UtilitiesFactory;
 public class SignedUser extends AnonymousUser {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
-	SessionFactory factory = UtilitiesFactory.returnFactory();
+	private SessionFactory factory = UtilitiesFactory.returnFactory();
 	Date date = new Date();
 
 	/**
@@ -168,6 +168,7 @@ public class SignedUser extends AnonymousUser {
 			logger.error(e + "Failed to hit the database to check for the rating details of the item", itemId,
 					"rated by user", userId);
 		}
+		
 
 		return false;
 	}
