@@ -32,11 +32,10 @@ public class AnonymousUser {
 
 	public List<?> searchItems(String name) {
 
-		String hqlQuery = "from LibraryItems where itemName = :itemName";
 		List<?> listResult = Collections.emptyList();
 		try (Session session = factory.openSession()) {
 			session.beginTransaction();
-			query = session.createQuery(hqlQuery);
+			query = session.createQuery("from LibraryItems where itemName = :itemName");
 			query.setParameter("itemName", name);
 			listResult = query.getResultList();
 
@@ -58,12 +57,11 @@ public class AnonymousUser {
 
 	public List<?> viewItems() {
 
-		String hqlQuery = "from LibraryItems ";
 		List<?> listResult = Collections.emptyList();
 		try (Session session = factory.openSession()) {
 
 			session.beginTransaction();
-			query = session.createQuery(hqlQuery);
+			query = session.createQuery("from LibraryItems ");
 			listResult = (List<?>) query.setMaxResults(10);
 
 			if (listResult.isEmpty()) {
