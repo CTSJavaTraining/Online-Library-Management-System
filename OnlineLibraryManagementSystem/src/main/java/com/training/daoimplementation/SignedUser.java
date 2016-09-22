@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.dao.SignedUserDAO;
 import com.training.entity.LikedList;
@@ -25,7 +26,9 @@ import com.training.factory.UtilitiesFactory;
 public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
-	private SessionFactory factory = UtilitiesFactory.returnFactory();
+
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	/**
 	 * this method is used to insert or update the liked_list table in data base
@@ -35,39 +38,55 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 	 * @return
 	 */
 	@Override
-	public boolean insertLikedItems(LikedList likedList) {
+	public int insertLikedItems(LikedList likedList) {
 
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			Transaction transaction = session.beginTransaction();
 
 			logger.info("Session opened to store the details of item {}", likedList.getId().getItemId(), "liked by {}",
 					likedList.getId().getUserId());
 
-			boolean checkExistence = findExistance(likedList.getId().getUserId(), likedList.getId().getItemId(),
-					"liked_list");
+			boolean checkLikeStatus = likeExistance(likedList.getId().getUserId(), likedList.getId().getItemId(),
+					likedList.getLikeStatus());
 
-			if (!checkExistence) {
+			// Check if the user like status and db like status is same. If not
+			// same, make requested change.
 
-				likedList.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+			if (checkLikeStatus) {
+
+				boolean checkExistence = findExistance(likedList.getId().getUserId(), likedList.getId().getItemId(),
+						"LikedList");
+
+				// Check if this is the first like by the user for this item. If
+				// not, add modified time.
+
+				if (!checkExistence) {
+
+					likedList.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+				}
+
+				likedList.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+
+				session.saveOrUpdate(likedList);
+
+				logger.info("The item {}", likedList.getId().getItemId(), "liked by user {}",
+						likedList.getId().getUserId(), "has been persisted");
+
+				transaction.commit();
+
+				logger.info("The item{}", likedList.getId().getItemId(), "liked by user {} ",
+						likedList.getId().getUserId(), "has been commited to DB");
+
+				return 1;
 			}
-			likedList.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
 
-			session.saveOrUpdate(likedList);
-
-			logger.info("The item {}", likedList.getId().getItemId(), "liked by user {}", likedList.getId().getUserId(),
-					"has been persisted");
-
-			transaction.commit();
-
-			logger.info("The item{}", likedList.getId().getItemId(), "liked by user {} ", likedList.getId().getUserId(),
-					"has been commited to DB");
-
-			return true;
 		} catch (Exception e) {
 			logger.error("not able to load the liked item details because of DB error {}", e.getMessage());
+			return -1;
 		}
-		return false;
+
+		return 0;
 
 	}
 
@@ -81,10 +100,11 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 	@Override
 	public boolean insertRatings(RatingTable ratings) {
 
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 			Transaction transaction = session.beginTransaction();
 			logger.info("Session opened to store the ratings for the item {}", ratings.getId().getItemId(),
 					"rated by {}", ratings.getId().getUserId());
+
 			boolean checkExistence = findExistance(ratings.getId().getUserId(), ratings.getId().getItemId(),
 					"rating_table");
 
@@ -97,8 +117,10 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 			logger.info("The ratings for item{}", ratings.getId().getItemId(), "given by{}",
 					ratings.getId().getUserId(), "has been persisted");
 			transaction.commit();
+
 			logger.info("The details of item{}", ratings.getId().getItemId(), "rated by{}", ratings.getId().getUserId(),
 					"has been commited to DB");
+
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), " {} Not able to hit DB to update the rating table");
@@ -109,12 +131,11 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 	@Override
 	public boolean findExistance(String userId, String itemId, String tableName) {
-		Query query;
-		String hqlQuery = "from " + tableName + " where itemId = :itemId and userId= :userId";
-		try (Session session = factory.openSession()) {
+
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
-			query = session.createQuery(hqlQuery);
+			Query query = session.createQuery("from " + tableName + " where itemId = :itemId and userId= :userId");
 			query.setParameter("userId", userId);
 			query.setParameter("itemId", itemId);
 			List<?> listResult = query.getResultList();
@@ -133,4 +154,62 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 		return false;
 	}
 
+	@Override
+	public boolean likeExistance(String userId, String itemId, int likeStatus) {
+
+		try (Session session = sessionFactory.openSession()) {
+
+			session.beginTransaction();
+
+			Query query = session.createQuery(
+					"FROM LikedList where itemId = :itemId AND userId = :userId AND likeStatus = :likeStatus");
+			query.setParameter("userId", userId);
+			query.setParameter("itemId", itemId);
+			query.setParameter("likeStatus", likeStatus);
+
+			int returnedLikeStatus = ((Integer) query.getResultList().get(0)).intValue();
+
+			if (returnedLikeStatus == likeStatus) {
+				logger.info("No change is commited, since returnedLike status from DB and user input is same: {}",
+						returnedLikeStatus);
+				return false;
+
+			}
+
+		} catch (Exception e) {
+			logger.error("Failed to Query Database due to exception {}", e);
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * This method is used to update the library_items table in DataBase with
+	 * rating details
+	 * 
+	 * @author 542224
+	 * @param itemId
+	 * @return
+	 */
+	public boolean updateRatings(String itemId) {
+
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+
+			Query query = session.createQuery(
+					"UPDATE LibraryItems set rating=(select avg(rating) from RatingTable where itemId= :itemId");
+			query.setParameter("itemId", itemId);
+
+			int rowsAffected = query.executeUpdate();
+			logger.debug("rows affected {}", rowsAffected);
+
+			logger.info("The rating for item{}", itemId, " updated successfully in library items table");
+			return true;
+
+		} catch (Exception e) {
+			logger.error("Failed to query Database due to exception {}", e);
+		}
+		return false;
+	}
 }

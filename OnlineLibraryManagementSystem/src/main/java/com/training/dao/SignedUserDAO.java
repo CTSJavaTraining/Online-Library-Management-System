@@ -18,7 +18,7 @@ public interface SignedUserDAO {
 	 * @param likedList
 	 * @return
 	 */
-	public boolean insertLikedItems(LikedList likedList);
+	public int insertLikedItems(LikedList likedList);
 
 	/**
 	 * this method is used to insert details into ratings table
@@ -37,5 +37,16 @@ public interface SignedUserDAO {
 	 * @return
 	 */
 	public boolean findExistance(String userId, String itemId, String tableName);
+
+	/**
+	 * this method is used to check the flag of likeStatus and update depending
+	 * on it.
+	 * 
+	 * @param userId
+	 * @param itemId
+	 * @param likeStatus
+	 * @return
+	 */
+	public boolean likeExistance(String userId, String itemId, int likeStatus);
 
 }

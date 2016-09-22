@@ -108,8 +108,7 @@ public class UserDAO {
 
 			session.beginTransaction();
 
-			String hql = "SELECT password FROM LoginDetails WHERE userId= :id";
-			Query query = session.createQuery(hql);
+			Query query = session.createQuery("SELECT password FROM LoginDetails WHERE userId= :id");
 
 			query.setParameter("id", userId);
 			query.setMaxResults(1);
