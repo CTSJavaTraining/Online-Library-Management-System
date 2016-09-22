@@ -15,7 +15,7 @@ import com.training.factory.UtilitiesFactory;
 
 public class LibrarianDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(LibrarianDAO.class);
 
 	public SessionFactory factory = UtilitiesFactory.returnFactory();
 
@@ -25,15 +25,14 @@ public class LibrarianDAO {
 
 			session.beginTransaction();
 
-			List<?> userIdMaxList = session.createQuery("SELECT itemId FROM libraryItems").getResultList();
+			String lastItemId = session
+					.createQuery(
+							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
+					.getResultList().get(0).toString();
 
-			String itemType = libraryItems.getItemType().substring(0, 2).toString();
+			libraryItems.setItemId(UtilitiesFactory.idGenerator(libraryItems.getItemType(), lastItemId));
 
-			String newItemID = UtilitiesFactory.idGenerator(itemType, userIdMaxList);
-
-			libraryItems.setItemId(newItemID);
-
-			if (libraryItems.getBooks() != null) {
+			if (!libraryItems.getBooks().isEmpty()) {
 				List<Books> bookList = libraryItems.getBooks();
 				for (Books book : bookList) {
 					logger.info("Test book details {}", book.getPublishers());
@@ -42,7 +41,7 @@ public class LibrarianDAO {
 					book.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
 				}
 
-			} else if (libraryItems.getMovies() != null) {
+			} else if (!libraryItems.getMovies().isEmpty()) {
 				List<Movies> movieList = libraryItems.getMovies();
 				for (Movies movie : movieList) {
 					logger.info("Test movie details {}", movie.getDirectors());
@@ -52,7 +51,7 @@ public class LibrarianDAO {
 				}
 			}
 
-			else if (libraryItems.getMusic() != null) {
+			else if (!libraryItems.getMusic().isEmpty()) {
 				List<Music> musicList = libraryItems.getMusic();
 				for (Music musicItem : musicList) {
 					logger.info("Test movie details {}", musicItem.getGenre());
@@ -60,7 +59,6 @@ public class LibrarianDAO {
 					musicItem.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
 					musicItem.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
 				}
-
 			}
 
 			libraryItems.setcreatedTime(UtilitiesFactory.getCurrentDateTime());

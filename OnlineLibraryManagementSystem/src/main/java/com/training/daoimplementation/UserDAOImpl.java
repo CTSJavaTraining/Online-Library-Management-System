@@ -1,5 +1,6 @@
-package com.training.dao;
+package com.training.daoimplementation;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -8,20 +9,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
 import com.training.factory.UtilitiesFactory;
 
-/**
- * 
- * @author 447482
- */
-public class UserDAO {
+public class UserDAOImpl {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 
-	private SessionFactory factory = UtilitiesFactory.returnFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	/**
 	 * 
@@ -30,19 +29,18 @@ public class UserDAO {
 	 */
 	public boolean userSignUp(UserDetails userdetails) {
 
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 
-			List<?> userIdMaxList = session.createQuery("SELECT userId FROM UserDetails").getResultList();
+			String lastUserId = session
+					.createQuery(
+							"SELECT itemId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails")
+					.getResultList().get(0).toString();
 
-			String role = userdetails.getRole();
+			userdetails.setUserId(UtilitiesFactory.idGenerator(userdetails.getRole(), lastUserId));
 
-			String newUserID = UtilitiesFactory.idGenerator(role, userIdMaxList);
-
-			userdetails.setUserId(newUserID);
-
-			if (userdetails.getAddressDetails() != null) {
+			if (!userdetails.getAddressDetails().isEmpty()) {
 
 				List<AddressDetails> addressList = userdetails.getAddressDetails();
 				for (AddressDetails address : addressList) {
@@ -69,27 +67,21 @@ public class UserDAO {
 		}
 	}
 
-	/**
-	 * 
-	 * @param username
-	 * @return
-	 */
 	public boolean validateUser(String username) {
-		logger.info("Validating username {}", username);
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
+			logger.debug("User entered username is {} ", username);
 
 			Query query = session.createQuery("FROM UserDetails WHERE userName = :uName");
 			query.setParameter("uName", username);
 			query.setMaxResults(1);
 
 			if (query.getResultList().isEmpty()) {
-				logger.info("User does not exist");
+				return false;
+			} else {
 				return true;
 			}
-			logger.info("userexists");
 		}
-		return false;
 	}
 
 	/**
@@ -99,7 +91,7 @@ public class UserDAO {
 	 */
 	public boolean validateLoginUser(String userId) {
 		logger.info("Validating username {}", userId);
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 
 			Query query = session.createQuery("FROM UserDetails WHERE userId = :uId");
@@ -115,14 +107,8 @@ public class UserDAO {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param userId
-	 * @param password
-	 * @return
-	 */
-	public int validateLogin(String userId, String password) {
-		try (Session session = factory.openSession()) {
+	public boolean validateLogin(String userId, String password) {
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 
@@ -134,13 +120,15 @@ public class UserDAO {
 
 			String results = query.getResultList().get(0).toString();
 
-			if (results.isEmpty()) {
-				return 0;
-			} else if (password.equalsIgnoreCase(results)) {
-				return 1;
-			} else {
-				return -1;
+			if (password.equalsIgnoreCase(results)) {
+				return true;
 			}
 		}
+		return false;
 	}
+
+	public Date getCurrentDateTime() {
+		return new Date();
+	}
+
 }
