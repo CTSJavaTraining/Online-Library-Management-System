@@ -1,4 +1,4 @@
-package com.training.daoimplementation;
+package com.training.dao.impl;
 
 import java.util.List;
 
@@ -9,11 +9,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.dao.MemberUserDAO;
 import com.training.entity.SubscribedList;
 import com.training.entity.WishList;
-import com.training.factory.UtilitiesFactory;
+import com.training.utils.UtilitiesFactory;
 
 /**
  * this method holds the subscribe and add wish list by teh user
@@ -24,13 +25,15 @@ import com.training.factory.UtilitiesFactory;
 public class MemberUser extends AnonymousUser implements MemberUserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
-	private SessionFactory factory = UtilitiesFactory.returnFactory();
+	
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@Override
 	public boolean findExistance(int memberId, String itemId, String tableName) {
 		Query query;
 		String hqlQuery = "from " + tableName + " where itemId = :itemId and memberID= :userId";
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 			query = session.createQuery(hqlQuery);
@@ -55,7 +58,7 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 	@Override
 	public boolean insertWishList(WishList wishList) {
 
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			Transaction transaction = session.beginTransaction();
 			logger.info("Session opened to store the wishList for the item {}", wishList.getId().getItemId(), " by {}",
@@ -89,7 +92,7 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 	@Override
 	public boolean insertSubscribedList(SubscribedList subscribedList) {
 
-		try (Session session = factory.openSession()) {
+		try (Session session = sessionFactory.openSession()) {
 
 			Transaction transaction = session.beginTransaction();
 

@@ -1,7 +1,5 @@
 package com.training.restservices;
 
-import java.util.List;
-
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -14,12 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.daoimplementation.AnonymousUser;
-import com.training.daoimplementation.UserDAOImpl;
+import com.training.dao.impl.AnonymousUser;
+import com.training.dao.impl.UserDAOImpl;
 import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
@@ -51,8 +48,6 @@ public class UserServices {
 	@ResponseBody
 	@Produces("application/json")
 	private Response setBasicDetails(@RequestBody UserDetails userdetails) {
-
-		userDao.userSignUp(userdetails);
 
 		String username = userdetails.getUserName();
 
@@ -182,17 +177,19 @@ public class UserServices {
 	 * @param itemName
 	 * @return
 	 */
-	@RequestMapping(value = "/viewitems", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Produces("application/json")
-	private Response viewItems(@RequestParam(value = "itemName") String itemName) {
-
-		List<?> getItems = anonymousUser.searchItems(itemName);
-		if (getItems.isEmpty()) {
-			return Response.status(Response.Status.NOT_FOUND).entity("No requested items available").build();
-		} else {
-			return Response.status(Response.Status.OK).entity(getItems).build();
-		}
-	}
+	/*
+	 * @RequestMapping(value = "/viewitems", method = RequestMethod.GET,
+	 * consumes = MediaType.APPLICATION_JSON_VALUE)
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @Produces("application/json") private Response
+	 * viewItems(@RequestParam(value = "itemName") String itemName) {
+	 * 
+	 * List<?> getItems = anonymousUser.searchItems(itemName); if
+	 * (getItems.isEmpty()) { return Response.status(Response.Status.NOT_FOUND).
+	 * entity("No requested items available").build(); } else { return
+	 * Response.status(Response.Status.OK).entity(getItems).build(); } }
+	 */
 
 }

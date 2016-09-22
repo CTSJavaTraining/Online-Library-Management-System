@@ -1,9 +1,7 @@
-package com.training.factory;
+package com.training.utils;
 
 import java.util.Date;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,16 +14,6 @@ import org.slf4j.LoggerFactory;
 public class UtilitiesFactory {
 
 	private static final Logger logger = LoggerFactory.getLogger(UtilitiesFactory.class);
-
-	/**
-	 * this method returns sessionfactory
-	 * 
-	 * @return
-	 */
-	public static SessionFactory returnFactory() {
-		logger.info("Loading sessiong factory");
-		return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-	}
 
 	// Utility Method fot getting current date and time to store into Db
 	public static Date getCurrentDateTime() {
@@ -51,9 +39,21 @@ public class UtilitiesFactory {
 
 			logger.info("Latest Category ID is {} ", lastId);
 
-			int categoryIdnumber = Integer.parseInt(lastId.substring(2, lastId.length()));
+			stringBuilder.append(categoryType); // Example: LI or DV
 
-			return stringBuilder.append(categoryType).append(categoryIdnumber + 1).toString();
+			// Converting "US111111" to integer 111111 and adding 1 to 111112
+			// which is then converted to String
+
+			String categoryIdnumber = Integer.toString(Integer.parseInt(lastId.substring(2, lastId.length())) + 1);
+
+			// Prepending 0's. if categoryIdnumber is "2", then 0 are prepended
+			// to 6 digits as 000002
+
+			for (int toPrepend = 6 - categoryIdnumber.length(); toPrepend > 0; toPrepend--) {
+				stringBuilder.append('0');
+			}
+
+			return stringBuilder.append(categoryIdnumber).toString();
 
 		} else {
 			return stringBuilder.append(categoryType).append("000000").toString();

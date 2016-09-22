@@ -1,4 +1,4 @@
-package com.training.daoimplementation;
+package com.training.dao.impl;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.training.dao.SignedUserDAO;
 import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
-import com.training.factory.UtilitiesFactory;
+import com.training.utils.UtilitiesFactory;
 
 /**
  * this class handles the signed user functionalities such as keeping track of

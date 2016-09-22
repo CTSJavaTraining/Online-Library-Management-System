@@ -1,4 +1,4 @@
-package com.training.daoimplementation;
+package com.training.dao.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
-import com.training.factory.UtilitiesFactory;
+import com.training.utils.UtilitiesFactory;
 
 public class UserDAOImpl {
 
@@ -38,7 +38,7 @@ public class UserDAOImpl {
 							"SELECT itemId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails")
 					.getResultList().get(0).toString();
 
-			userdetails.setUserId(UtilitiesFactory.idGenerator(userdetails.getRole(), lastUserId));
+			userdetails.setUserId(UtilitiesFactory.idGenerator(userdetails.getRole(), lastUserId.substring(0, 2).toUpperCase()));
 
 			if (!userdetails.getAddressDetails().isEmpty()) {
 

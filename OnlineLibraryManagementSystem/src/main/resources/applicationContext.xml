@@ -2,12 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
 	<context:annotation-config />
 	<import resource="classpath:olms-spring.xml" />
 	<context:component-scan base-package="com.training." />
-	<bean id="userDao" class="com.training.daoimplementation.UserDAO" />
+	<!--NOTE: LibrarianDAO is annotated with @Component so that Component Scan 
+		will configure it as bean -->
+
+	<!-- Below are beans without @Component annotation -->
+	<bean id="userDao" class="com.training.daoimplementation.UserDAOImpl" />
 	<bean id="anonymousUser" class="com.training.daoimplementation.AnonymousUser" />
+	<bean id="librarianDAO" class="com.training.daoimplementation.LibrarianDAO" />
 </beans>
