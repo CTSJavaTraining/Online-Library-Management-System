@@ -15,28 +15,32 @@ import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
 import com.training.factory.UtilitiesFactory;
 
-public class UserDAO {
+public class UserDAOImpl {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	/**
+	 * 
+	 * @param userdetails
+	 * @return
+	 */
 	public boolean userSignUp(UserDetails userdetails) {
 
 		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
 
-			List<?> userIdMaxList = session.createQuery("SELECT userId FROM UserDetails").getResultList();
+			String lastUserId = session
+					.createQuery(
+							"SELECT itemId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails")
+					.getResultList().get(0).toString();
 
-			String role = userdetails.getRole();
+			userdetails.setUserId(UtilitiesFactory.idGenerator(userdetails.getRole(), lastUserId));
 
-			String newUserID = UtilitiesFactory.idGenerator(role, userIdMaxList);
-
-			userdetails.setUserId(newUserID);
-
-			if (userdetails.getAddressDetails() != null) {
+			if (!userdetails.getAddressDetails().isEmpty()) {
 
 				List<AddressDetails> addressList = userdetails.getAddressDetails();
 				for (AddressDetails address : addressList) {

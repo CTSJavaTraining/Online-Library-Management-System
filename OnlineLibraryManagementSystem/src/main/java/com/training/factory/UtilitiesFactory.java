@@ -1,7 +1,6 @@
 package com.training.factory;
 
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -33,19 +32,31 @@ public class UtilitiesFactory {
 		return new Date();
 	}
 
-	public static String idGenerator(String inputType, List<?> userIdMaxList) {
-		StringBuilder buildUserId = new StringBuilder();
+	/**
+	 * 
+	 * @param categoryType
+	 *            It is either user ROLE (Li for librarian , US for User) or
+	 *            Item TYPE( MU - Music, MO - Movie, BO - Book)
+	 * @param lastId
+	 *            It is latest ID fetched from DB to generate new ID for new
+	 *            item or user. If latest userid is US111111 then new generated
+	 *            ID will be US111112
+	 * @return new itemID or userID depending on catergoryType and latestID
+	 */
+	public static String idGenerator(String categoryType, String lastId) {
 
-		if (!userIdMaxList.isEmpty()) {
+		StringBuilder stringBuilder = new StringBuilder();
 
-			String userIdMax = userIdMaxList.get(userIdMaxList.size() - 1).toString();
-			logger.info("Latest USERID is {} ", userIdMax);
-			int userIdnumber = Integer.parseInt(userIdMax.substring(1, userIdMax.length()));
+		if (!lastId.isEmpty()) {
 
-			return buildUserId.append(inputType).append(userIdnumber + 1).toString();
+			logger.info("Latest Category ID is {} ", lastId);
+
+			int categoryIdnumber = Integer.parseInt(lastId.substring(2, lastId.length()));
+
+			return stringBuilder.append(categoryType).append(categoryIdnumber + 1).toString();
 
 		} else {
-			return buildUserId.append(inputType).append("00000").toString();
+			return stringBuilder.append(categoryType).append("000000").toString();
 		}
 
 	}

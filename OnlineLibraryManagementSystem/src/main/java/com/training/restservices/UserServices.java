@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.training.daoimplementation.AnonymousUser;
-import com.training.daoimplementation.UserDAO;
+import com.training.daoimplementation.UserDAOImpl;
 import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
@@ -42,7 +42,7 @@ public class UserServices {
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 
 	@Autowired
-	private UserDAO userDao;
+	private UserDAOImpl userDao;
 
 	@Autowired
 	private AnonymousUser anonymousUser;
