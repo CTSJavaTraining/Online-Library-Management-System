@@ -47,23 +47,19 @@ public class LibraryServices {
 	@Produces("application/json")
 	private Response addBooks(@RequestBody BooksDTO booksDto) {
 
-		try {
-			if (librarianDAO.itemExistence(booksDto.getItemName(), booksDto.getItemType().substring(0, 2))) {
-				return Response.status(Response.Status.NOT_IMPLEMENTED)
-						.entity("Same item already exists. Kindly update existing items.").build();
-			} else {
-				return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
-			}
+		if (librarianDAO.itemExistence(booksDto.getItemName(), booksDto.getItemType().substring(0, 2))) {
+			return Response.status(Response.Status.NOT_IMPLEMENTED)
+					.entity("Same item already exists. Kindly update existing items.").build();
+		} else if (librarianDAO.addBooks(booksDto)) {
+			return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
+		} else {
 
-		} catch (Exception exceptionAddBooks) {
-
-			logger.error("Exception occured when updating book item: {}", booksDto.getItemName(), " Exception is {}",
-					exceptionAddBooks);
+			logger.error("Error occured when updating Book Name: {}",booksDto.getItemName());
 
 			return Response.status(Response.Status.BAD_GATEWAY).entity("Item could not be updated. Please try again.")
 					.build();
-		}
 
+		}
 	}
 
 	/**
@@ -76,7 +72,19 @@ public class LibraryServices {
 	@Produces("application/json")
 	private Response addMusic(@RequestBody MusicDTO musicDto) {
 
-		return Response.status(Response.Status.OK).entity("Successfully updated music details.").build();
+		if (librarianDAO.itemExistence(musicDto.getItemName(), musicDto.getItemType().substring(0, 2))) {
+			return Response.status(Response.Status.NOT_IMPLEMENTED)
+					.entity("Same item already exists. Kindly update existing items.").build();
+		} else if (librarianDAO.addMovies(musicDto)) {
+			return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
+		} else {
+
+			logger.error("Error occured when updating music Name: {}",musicDto.getItemName());
+
+			return Response.status(Response.Status.BAD_GATEWAY).entity("Item could not be updated. Please try again.")
+					.build();
+
+		}
 
 	}
 
