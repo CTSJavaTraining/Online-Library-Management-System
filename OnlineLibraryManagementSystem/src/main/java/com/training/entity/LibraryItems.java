@@ -52,6 +52,12 @@ public class LibraryItems implements Serializable {
 	@Column(name = "date_added", nullable = false, length = 10)
 	private Date dateAdded;
 
+	@Column(name = "category", length = 10)
+	private String category;
+
+	@Column(name = "rating", length = 2)
+	private int rating;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "c_time", nullable = false, length = 19)
 	private Date createdTime;
@@ -154,6 +160,36 @@ public class LibraryItems implements Serializable {
 
 	public void setmodifiedTime(Date modifiedTime) {
 		this.modifiedTime = modifiedTime;
+	}
+
+	/**
+	 * @return the category
+	 */
+	public String getCategory() {
+		return category;
+	}
+
+	/**
+	 * @param category
+	 *            the category to set
+	 */
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	/**
+	 * @return the rating
+	 */
+	public int getRating() {
+		return rating;
+	}
+
+	/**
+	 * @param rating
+	 *            the rating to set
+	 */
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	public List<RatingTable> getRatingTables() {

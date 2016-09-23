@@ -3,12 +3,17 @@ package com.training.blayer;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 /**
  * LibraryItemsDTO for librarian to insert record
  */
+@Component
 public class LibraryItemsDTO {
+
+	private String itemId;
 
 	private String itemName;
 
@@ -29,6 +34,21 @@ public class LibraryItemsDTO {
 	private Date releaseDate;
 
 	private String genre;
+
+	/**
+	 * @return the itemId
+	 */
+	public String getItemId() {
+		return itemId;
+	}
+
+	/**
+	 * @param itemId
+	 *            the itemId to set
+	 */
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
 
 	/**
 	 * @return the itemName

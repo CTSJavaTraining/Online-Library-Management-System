@@ -8,16 +8,17 @@
 
 	<context:annotation-config />
 	<import resource="classpath:olms-spring.xml" />
-	<context:component-scan base-package="com.training." />
+	<context:component-scan base-package="com.training" />
 	<!--NOTE: LibrarianDAO is annotated with @Component so that Component Scan 
 		will configure it as bean -->
 
 	<!-- Below are beans without @Component annotation -->
-	<bean id="userDao" class="com.training.daoimplementation.UserDAOImpl" />
-	<bean id="anonymousUser" class="com.training.daoimplementation.AnonymousUser" />
-	<bean id="librarianDAO" class="com.training.daoimplementation.LibrarianDAO" />
+	<bean id="userDao" class="com.training.dao.impl.UserDAOImpl" />
+	<bean id="anonymousUser" class="com.training.dao.impl.AnonymousUser" />
+	<bean id="librarianDAO" class="com.training.dao.impl.LibrarianDAO" />
+	<bean id="libraryItemsDto" class="com.training.blayer.LibraryItemsDTO" />
 	<bean id="movies" class="com.training.entity.Movies" />
 	<bean id="music" class="com.training.entity.Movies" />
 	<bean id="books" class="com.training.entity.Books" />
-	
+
 </beans>

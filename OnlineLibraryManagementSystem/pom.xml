@@ -6,6 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Online Library Management System</name>
 	<description>Describes online library functionalities</description>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -78,7 +79,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
-		
+
 		<!-- Spring JDBC Jar for sessionFactory -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -164,7 +165,18 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-	<packaging>war</packaging>
+
 </project>

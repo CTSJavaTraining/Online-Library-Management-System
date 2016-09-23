@@ -46,8 +46,23 @@ public class LibraryServices {
 	@ResponseBody
 	@Produces("application/json")
 	private Response addBooks(@RequestBody BooksDTO booksDto) {
-		librarianDAO.addBooks(booksDto);
-		return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
+
+		try {
+			if (librarianDAO.itemExistence(booksDto.getItemName(), booksDto.getItemType().substring(0, 2))) {
+				return Response.status(Response.Status.NOT_IMPLEMENTED)
+						.entity("Same item already exists. Kindly update existing items.").build();
+			} else {
+				return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
+			}
+
+		} catch (Exception exceptionAddBooks) {
+
+			logger.error("Exception occured when updating book item: {}", booksDto.getItemName(), " Exception is {}",
+					exceptionAddBooks);
+
+			return Response.status(Response.Status.BAD_GATEWAY).entity("Item could not be updated. Please try again.")
+					.build();
+		}
 
 	}
 

@@ -2,25 +2,36 @@ package com.training.dao.impl;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.training.blayer.BooksDTO;
+import com.training.blayer.LibraryItemsDTO;
 import com.training.entity.Books;
 import com.training.entity.LibraryItems;
 import com.training.entity.Movies;
 import com.training.entity.Music;
 import com.training.utils.IDDateGeneratorUtility;
 
+@Component
 public class LibrarianDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(LibrarianDAO.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
+
+	@Autowired
+	private LibraryItemsDTO libraryItemsDto;
+
+	@Autowired
+	private LibraryItems libraryItems;
 
 	@Autowired
 	private Books books;
@@ -125,13 +136,64 @@ public class LibrarianDAO {
 	 */
 	public boolean addBooks(BooksDTO booksDto) {
 
-		books.setPublishers(booksDto.getPublishers());
-		books.setGenre(booksDto.getGenre());
-		books.setEditionNo(booksDto.getEditionNo());
-		books.setAuthor(booksDto.getAuthor());
+		try (Session session = sessionFactory.openSession()) {
 
-		return false;
+			session.beginTransaction();
 
+			String lastItemId = session
+					.createQuery(
+							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
+					.getResultList().get(0).toString();
+
+			booksDto.setItemId(IDDateGeneratorUtility.idGenerator(booksDto.getItemType(),
+					lastItemId.substring(0, 2).toUpperCase()));
+
+			libraryItems.setItemId(booksDto.getItemId());
+			libraryItems.setItemName(booksDto.getItemName());
+			libraryItems.setItemType(booksDto.getItemType());
+			libraryItems.setYear(booksDto.getYear());
+			libraryItems.setPrice(booksDto.getPrice());
+			libraryItems.setCategory(booksDto.getCategory());
+			libraryItems.setDateAdded(booksDto.getDateAdded());
+			libraryItems.setDescription(booksDto.getDescription());
+
+			books.setLibraryItems(libraryItems);
+			books.setAuthor(booksDto.getAuthor());
+			books.setPublishers(booksDto.getPublishers());
+			books.setEditionNo(booksDto.getEditionNo());
+			books.setReleaseDate(libraryItemsDto.getReleaseDate());
+			books.setGenre(libraryItemsDto.getGenre());
+
+			session.persist(libraryItems);
+			logger.debug("Persisted libraryItems records. itemID: {}", libraryItems.getItemId());
+
+			session.persist(books);
+			logger.debug("Persisted book records. book Author: {}", books.getAuthor());
+
+			session.getTransaction().commit();
+			logger.debug("Commited changes for book item of itemID: {}", libraryItems.getItemId());
+
+			return true;
+
+		}
+
+	}
+
+	public boolean itemExistence(String itemName, String ShortItemType) {
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
+			logger.debug("User entered username is {} ", itemName);
+
+			Query query = session.createQuery("FROM LibraryItems WHERE itemName = :iName AND itemId LIKE :iType");
+			query.setParameter("iName", itemName);
+			query.setParameter("iType", ShortItemType+"%");
+			query.setMaxResults(1);
+
+			if (query.getResultList().isEmpty()) {
+				return false;
+			}
+			return true;
+		}
 	}
 
 }

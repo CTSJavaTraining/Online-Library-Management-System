@@ -38,7 +38,8 @@ public class UserDAOImpl {
 							"SELECT itemId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails")
 					.getResultList().get(0).toString();
 
-			userdetails.setUserId(IDDateGeneratorUtility.idGenerator(userdetails.getRole(), lastUserId.substring(0, 2).toUpperCase()));
+			userdetails.setUserId(IDDateGeneratorUtility.idGenerator(userdetails.getRole(),
+					lastUserId.substring(0, 2).toUpperCase()));
 
 			if (!userdetails.getAddressDetails().isEmpty()) {
 
@@ -78,9 +79,8 @@ public class UserDAOImpl {
 
 			if (query.getResultList().isEmpty()) {
 				return false;
-			} else {
-				return true;
 			}
+			return true;
 		}
 	}
 
