@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.training.blayer.BooksDTO;
 import com.training.blayer.MoviesDTO;
+import com.training.blayer.MusicDTO;
 import com.training.dao.impl.LibrarianDAO;
 import com.training.entity.LibraryItems;
 
@@ -43,8 +45,8 @@ public class LibraryServices {
 	@RequestMapping(value = "/addbook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addBooks(@RequestBody LibraryItems libraryItems) {
-
+	private Response addBooks(@RequestBody BooksDTO booksDto) {
+		librarianDAO.addBooks(booksDto);
 		return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
 
 	}
@@ -57,7 +59,7 @@ public class LibraryServices {
 	@RequestMapping(value = "/addmusic", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addMusic(@RequestBody MoviesDTO moviesDTO) {
+	private Response addMusic(@RequestBody MusicDTO musicDto) {
 
 		return Response.status(Response.Status.OK).entity("Successfully updated music details.").build();
 
@@ -71,7 +73,7 @@ public class LibraryServices {
 	@RequestMapping(value = "/addmovies", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addMovies(@RequestBody LibraryItems libraryItems) {
+	private Response addMovies(@RequestBody MoviesDTO moviesDto) {
 
 		return Response.status(Response.Status.OK).entity("Successfully updated movie details.").build();
 

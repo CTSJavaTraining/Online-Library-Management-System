@@ -16,4 +16,8 @@
 	<bean id="userDao" class="com.training.daoimplementation.UserDAOImpl" />
 	<bean id="anonymousUser" class="com.training.daoimplementation.AnonymousUser" />
 	<bean id="librarianDAO" class="com.training.daoimplementation.LibrarianDAO" />
+	<bean id="movies" class="com.training.entity.Movies" />
+	<bean id="music" class="com.training.entity.Movies" />
+	<bean id="books" class="com.training.entity.Books" />
+	
 </beans>

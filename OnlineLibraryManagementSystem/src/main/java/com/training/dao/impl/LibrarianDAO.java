@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.training.blayer.BooksDTO;
 import com.training.entity.Books;
 import com.training.entity.LibraryItems;
 import com.training.entity.Movies;
@@ -21,6 +22,15 @@ public class LibrarianDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	@Autowired
+	private Books books;
+
+	@Autowired
+	private Movies movies;
+
+	@Autowired
+	private Music music;
+
 	public boolean addItems(LibraryItems libraryItems) {
 
 		try (Session session = sessionFactory.openSession()) {
@@ -32,7 +42,8 @@ public class LibrarianDAO {
 							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
 					.getResultList().get(0).toString();
 
-			libraryItems.setItemId(UtilitiesFactory.idGenerator(libraryItems.getItemType(), lastItemId.substring(0, 2).toUpperCase()));
+			libraryItems.setItemId(
+					UtilitiesFactory.idGenerator(libraryItems.getItemType(), lastItemId.substring(0, 2).toUpperCase()));
 
 			if (!libraryItems.getBooks().isEmpty()) {
 				List<Books> bookList = libraryItems.getBooks();
@@ -105,6 +116,22 @@ public class LibrarianDAO {
 			return "Error";
 		}
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param booksDto
+	 * @return
+	 */
+	public boolean addBooks(BooksDTO booksDto) {
+
+		books.setPublishers(booksDto.getPublishers());
+		books.setGenre(booksDto.getGenre());
+		books.setEditionNo(booksDto.getEditionNo());
+		books.setAuthor(booksDto.getAuthor());
+
+		return false;
+
 	}
 
 }
