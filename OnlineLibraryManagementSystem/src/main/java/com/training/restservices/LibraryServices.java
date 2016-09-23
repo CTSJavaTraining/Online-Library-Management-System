@@ -75,7 +75,7 @@ public class LibraryServices {
 		if (librarianDAO.itemExistence(musicDto.getItemName(), musicDto.getItemType().substring(0, 2))) {
 			return Response.status(Response.Status.NOT_IMPLEMENTED)
 					.entity("Same item already exists. Kindly update existing items.").build();
-		} else if (librarianDAO.addMovies(musicDto)) {
+		} else if (librarianDAO.addMusic(musicDto)) {
 			return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
 		} else {
 

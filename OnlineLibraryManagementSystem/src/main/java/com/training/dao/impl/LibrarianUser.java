@@ -216,7 +216,7 @@ public class LibrarianUser implements LibrarianDAO {
 			session.persist(libraryItems);
 			logger.info("Persisted object for library items{}", libraryItems.getItemId());
 
-			session.persist(movies);
+			session.persist(music);
 			logger.info("Persisted Object for music details music{}", musicDto.getItemId());
 
 			session.getTransaction().commit();
