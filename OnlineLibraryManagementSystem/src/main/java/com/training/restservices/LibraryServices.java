@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.training.blayer.BooksDTO;
 import com.training.blayer.MoviesDTO;
 import com.training.blayer.MusicDTO;
-import com.training.dao.impl.LibrarianDAO;
+import com.training.dao.impl.LibrarianUser;
 import com.training.entity.LibraryItems;
 
 /**
@@ -35,7 +35,7 @@ public class LibraryServices {
 	private static final Logger logger = LoggerFactory.getLogger(LibraryServices.class);
 
 	@Autowired
-	private LibrarianDAO librarianDAO;
+	private LibrarianUser librarianDAO;
 
 	/**
 	 * 
@@ -117,7 +117,7 @@ public class LibraryServices {
 
 		String availabilityStatus = librarianDAO.checkAvailability(itemID);
 
-		if (!availabilityStatus.isEmpty()) {
+		if (("exist").equals(availabilityStatus)) {
 			return Response.status(Response.Status.OK).entity("Item is available: " + availabilityStatus).build();
 
 		} else if ("Error".equals(availabilityStatus)) {
