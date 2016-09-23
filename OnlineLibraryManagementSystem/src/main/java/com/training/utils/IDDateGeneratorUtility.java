@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
  * @author 447383
  *
  */
-public class UtilitiesFactory {
+public class IDDateGeneratorUtility {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesFactory.class);
+	private static final Logger logger = LoggerFactory.getLogger(IDDateGeneratorUtility.class);
 
-	// Utility Method fot getting current date and time to store into Db
+	// Utility Method for getting current date and time to store into Db
 	public static Date getCurrentDateTime() {
 		return new Date();
 	}

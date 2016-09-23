@@ -13,7 +13,7 @@ import com.training.entity.Books;
 import com.training.entity.LibraryItems;
 import com.training.entity.Movies;
 import com.training.entity.Music;
-import com.training.utils.UtilitiesFactory;
+import com.training.utils.IDDateGeneratorUtility;
 
 public class LibrarianDAO {
 
@@ -42,16 +42,16 @@ public class LibrarianDAO {
 							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
 					.getResultList().get(0).toString();
 
-			libraryItems.setItemId(
-					UtilitiesFactory.idGenerator(libraryItems.getItemType(), lastItemId.substring(0, 2).toUpperCase()));
+			libraryItems.setItemId(IDDateGeneratorUtility.idGenerator(libraryItems.getItemType(),
+					lastItemId.substring(0, 2).toUpperCase()));
 
 			if (!libraryItems.getBooks().isEmpty()) {
 				List<Books> bookList = libraryItems.getBooks();
 				for (Books book : bookList) {
 					logger.info("Test book details {}", book.getPublishers());
 					book.setLibraryItems(libraryItems);
-					book.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
-					book.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+					book.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
+					book.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 				}
 
 			} else if (!libraryItems.getMovies().isEmpty()) {
@@ -59,8 +59,8 @@ public class LibrarianDAO {
 				for (Movies movie : movieList) {
 					logger.info("Test movie details {}", movie.getDirectors());
 					movie.setLibraryItems(libraryItems);
-					movie.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
-					movie.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+					movie.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
+					movie.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 				}
 			}
 
@@ -69,13 +69,13 @@ public class LibrarianDAO {
 				for (Music musicItem : musicList) {
 					logger.info("Test movie details {}", musicItem.getGenre());
 					musicItem.setLibraryItems(libraryItems);
-					musicItem.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
-					musicItem.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+					musicItem.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
+					musicItem.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 				}
 			}
 
-			libraryItems.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
-			libraryItems.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+			libraryItems.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
+			libraryItems.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 
 			session.saveOrUpdate(libraryItems);
 
