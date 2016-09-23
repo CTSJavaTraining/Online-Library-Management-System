@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.entity.AddressDetails;
 import com.training.entity.UserDetails;
-import com.training.utils.UtilitiesFactory;
+import com.training.utils.IDDateGeneratorUtility;
 
 public class UserDAOImpl {
 
@@ -38,7 +38,7 @@ public class UserDAOImpl {
 							"SELECT itemId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails")
 					.getResultList().get(0).toString();
 
-			userdetails.setUserId(UtilitiesFactory.idGenerator(userdetails.getRole(), lastUserId.substring(0, 2).toUpperCase()));
+			userdetails.setUserId(IDDateGeneratorUtility.idGenerator(userdetails.getRole(), lastUserId.substring(0, 2).toUpperCase()));
 
 			if (!userdetails.getAddressDetails().isEmpty()) {
 
@@ -46,13 +46,13 @@ public class UserDAOImpl {
 				for (AddressDetails address : addressList) {
 					logger.info("Test address details {}", address.getCity());
 					address.setUserDetails(userdetails);
-					address.setCreatedTime(UtilitiesFactory.getCurrentDateTime());
-					address.setModifiedTime(UtilitiesFactory.getCurrentDateTime());
+					address.setCreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
+					address.setModifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 				}
 
 			}
-			userdetails.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
-			userdetails.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+			userdetails.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
+			userdetails.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 
 			session.saveOrUpdate(userdetails);
 

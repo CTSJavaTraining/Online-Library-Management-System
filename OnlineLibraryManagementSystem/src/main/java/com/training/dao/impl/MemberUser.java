@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.training.dao.MemberUserDAO;
 import com.training.entity.SubscribedList;
 import com.training.entity.WishList;
-import com.training.utils.UtilitiesFactory;
+import com.training.utils.IDDateGeneratorUtility;
 
 /**
  * this method holds the subscribe and add wish list by teh user
@@ -68,9 +68,9 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 					"rating_table");
 
 			if (!checkExistence) {
-				wishList.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+				wishList.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
 			}
-			wishList.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+			wishList.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 
 			session.saveOrUpdate(wishList);
 			logger.info("The wishList updated for item{}", wishList.getId().getItemId(), " by{}",
@@ -103,9 +103,9 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 					subscribedList.getId().getItemId(), "subscribed item table");
 
 			if (!checkExistence) {
-				subscribedList.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+				subscribedList.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
 			}
-			subscribedList.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+			subscribedList.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 
 			session.saveOrUpdate(subscribedList);
 			logger.info("The item{}", subscribedList.getId().getItemId(), " subscribed by{}",

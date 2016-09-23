@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.training.dao.SignedUserDAO;
 import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
-import com.training.utils.UtilitiesFactory;
+import com.training.utils.IDDateGeneratorUtility;
 
 /**
  * this class handles the signed user functionalities such as keeping track of
@@ -63,10 +63,10 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 				if (!checkExistence) {
 
-					likedList.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+					likedList.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
 				}
 
-				likedList.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+				likedList.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 
 				session.saveOrUpdate(likedList);
 
@@ -109,9 +109,9 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 					"rating_table");
 
 			if (!checkExistence) {
-				ratings.setcreatedTime(UtilitiesFactory.getCurrentDateTime());
+				ratings.setcreatedTime(IDDateGeneratorUtility.getCurrentDateTime());
 			}
-			ratings.setmodifiedTime(UtilitiesFactory.getCurrentDateTime());
+			ratings.setmodifiedTime(IDDateGeneratorUtility.getCurrentDateTime());
 
 			session.saveOrUpdate(ratings);
 			logger.info("The ratings for item{}", ratings.getId().getItemId(), "given by{}",
