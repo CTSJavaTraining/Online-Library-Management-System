@@ -44,7 +44,7 @@ public interface LibrarianDAO {
 	 * @param musicDto
 	 * @return
 	 */
-	public boolean addMovies(MusicDTO musicDto);
+	public boolean addMusic(MusicDTO musicDto);
 
 	/**
 	 * this method is used to check if the item already exists to decide if to
