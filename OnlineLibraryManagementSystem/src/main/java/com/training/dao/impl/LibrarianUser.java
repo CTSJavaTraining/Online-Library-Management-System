@@ -145,9 +145,11 @@ public class LibrarianUser implements LibrarianDAO {
 			movies.setSingers(moviesDto.getSingers());
 			movies.setDirectors(moviesDto.getDirectors());
 			movies.setCasts(moviesDto.getCasts());
+			movies.setReleaseDate(libraryItemsDto.getReleaseDate());
+			movies.setGenre(libraryItemsDto.getGenre());
 
 			session.persist(libraryItems);
-			logger.info("Persisted object for library items{}", moviesDto.getItemId());
+			logger.info("Persisted object for library items{}", libraryItems.getItemId());
 
 			session.persist(movies);
 			logger.info("Persisted Object for movies details movies{}", moviesDto.getItemId());
@@ -183,9 +185,48 @@ public class LibrarianUser implements LibrarianDAO {
 	}
 
 	@Override
-	public boolean addMovies(MusicDTO musicDto) {
+	public boolean addMusic(MusicDTO musicDto) {
+		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
 
-		return false;
+			String lastItemId = session
+					.createQuery(
+							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
+					.getResultList().get(0).toString();
+
+			musicDto.setItemId(IDDateGeneratorUtility.idGenerator(musicDto.getItemType(),
+					lastItemId.substring(0, 2).toUpperCase()));
+
+			libraryItems.setItemId(musicDto.getItemId());
+			libraryItems.setItemName(musicDto.getItemName());
+			libraryItems.setItemType(musicDto.getItemType());
+			libraryItems.setYear(musicDto.getYear());
+			libraryItems.setPrice(musicDto.getPrice());
+			libraryItems.setCategory(musicDto.getCategory());
+			libraryItems.setDateAdded(musicDto.getDateAdded());
+			libraryItems.setDescription(musicDto.getDescription());
+
+			music.setLibraryItems(libraryItems);
+			music.setProductions(musicDto.getProductions());
+			music.setWriters(musicDto.getWriters());
+			music.setSingers(musicDto.getSingers());
+			music.setGenre(libraryItemsDto.getGenre());
+			music.setReleaseDate(libraryItemsDto.getReleaseDate());
+
+			session.persist(libraryItems);
+			logger.info("Persisted object for library items{}", libraryItems.getItemId());
+
+			session.persist(movies);
+			logger.info("Persisted Object for music details music{}", musicDto.getItemId());
+
+			session.getTransaction().commit();
+
+			logger.debug("Commited changes for music item of itemID: {}", libraryItems.getItemId());
+		} catch (Exception e) {
+			logger.error("{} Not able to inser music {}", e, musicDto.getItemId());
+			return false;
+		}
+		return true;
 	}
 
 }
