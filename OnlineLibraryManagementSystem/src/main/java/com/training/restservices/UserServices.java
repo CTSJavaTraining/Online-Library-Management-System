@@ -5,7 +5,6 @@ import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.dao.impl.AnonymousUser;
 import com.training.dao.impl.UserDAOImpl;
 import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
@@ -38,11 +36,7 @@ public class UserServices {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 
-	@Autowired
 	private UserDAOImpl userDao;
-
-	@Autowired
-	private AnonymousUser anonymousUser;
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -107,10 +101,11 @@ public class UserServices {
 	@Produces("application/json")
 	private Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
 
-		logger.info("Validating user for logging in");
+		logger.info("Validating user for logging in {},{}", loginDetails.getUserId(), loginDetails.getPassword());
 
-		String userId = loginDetails.getUserId().trim();
-		String password = loginDetails.getPassword().trim();
+		String userId = loginDetails.getUserId();
+
+		String password = loginDetails.getPassword();
 
 		if ((!userId.isEmpty()) && (!password.isEmpty())) {
 

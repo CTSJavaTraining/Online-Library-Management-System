@@ -18,7 +18,7 @@ import com.training.entity.Books;
 import com.training.entity.LibraryItems;
 import com.training.entity.Movies;
 import com.training.entity.Music;
-import com.training.utils.IDDateGeneratorUtility;
+import com.training.utils.Utilities;
 
 /**
  * class holds functionalities for Librarian
@@ -34,20 +34,20 @@ public class LibrarianUser implements LibrarianDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Autowired
 	private LibraryItemsDTO libraryItemsDto;
 
-	@Autowired
 	private LibraryItems libraryItems;
 
-	@Autowired
 	private Books books;
 
-	@Autowired
 	private Movies movies;
 
-	@Autowired
 	private Music music;
+
+	public LibrarianUser() {
+		logger.debug("LibrarianUser Constructor loaded.. ");
+		System.out.println("LibrarianUser Constructor loaded..#############");
+	}
 
 	@Override
 	public String checkAvailability(String itemId) {
@@ -77,13 +77,10 @@ public class LibrarianUser implements LibrarianDAO {
 
 			session.beginTransaction();
 
-			String lastItemId = session
-					.createQuery(
-							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
-					.getResultList().get(0).toString();
+			String lastItemId = session.createQuery("SELECT max(itemId) FROM LibraryItems").getResultList().get(0)
+					.toString();
 
-			booksDto.setItemId(IDDateGeneratorUtility.idGenerator(booksDto.getItemType(),
-					lastItemId.substring(0, 2).toUpperCase()));
+			booksDto.setItemId(Utilities.idGenerator(booksDto.getItemType(), lastItemId));
 
 			libraryItems.setItemId(booksDto.getItemId());
 			libraryItems.setItemName(booksDto.getItemName());
@@ -110,7 +107,7 @@ public class LibrarianUser implements LibrarianDAO {
 			session.getTransaction().commit();
 			logger.debug("Commited changes for book item of itemID: {}", libraryItems.getItemId());
 		} catch (Exception e) {
-			logger.error("{} Not able to inser book {}", e, booksDto.getItemId());
+			logger.error("{} Not able to insert book {}", e, booksDto.getItemId());
 			return false;
 		}
 		return true;
@@ -127,8 +124,8 @@ public class LibrarianUser implements LibrarianDAO {
 							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
 					.getResultList().get(0).toString();
 
-			moviesDto.setItemId(IDDateGeneratorUtility.idGenerator(moviesDto.getItemType(),
-					lastItemId.substring(0, 2).toUpperCase()));
+			moviesDto.setItemId(
+					Utilities.idGenerator(moviesDto.getItemType(), lastItemId.substring(0, 2).toUpperCase()));
 
 			libraryItems.setItemId(moviesDto.getItemId());
 			libraryItems.setItemName(moviesDto.getItemName());
@@ -165,23 +162,27 @@ public class LibrarianUser implements LibrarianDAO {
 
 	@Override
 	public boolean itemExistence(String itemName, String shortItemType) {
+
+		System.out.println("Session Factory ==-==-=-=-=-=" + sessionFactory);
 		try (Session session = sessionFactory.openSession()) {
+
+			logger.info("Inside item existence {},{}", itemName, shortItemType);
 			session.beginTransaction();
-			logger.debug("User entered username is {} ", itemName);
+			logger.info("Session Began");
+			logger.debug("User entered username is {}", itemName, " itemtype is {}", shortItemType);
 
 			Query query = session.createQuery("FROM LibraryItems WHERE itemName = :iName AND itemId LIKE :iType");
 			query.setParameter("iName", itemName);
 			query.setParameter("iType", shortItemType + "%");
-			query.setMaxResults(1);
 
 			if (query.getResultList().isEmpty()) {
-				return false;
+				return true;
 			}
 
 		} catch (Exception e) {
 			logger.error("Not able to find existance of {} ", itemName, "of type {}", shortItemType, e);
 		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -194,8 +195,7 @@ public class LibrarianUser implements LibrarianDAO {
 							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems")
 					.getResultList().get(0).toString();
 
-			musicDto.setItemId(IDDateGeneratorUtility.idGenerator(musicDto.getItemType(),
-					lastItemId.substring(0, 2).toUpperCase()));
+			musicDto.setItemId(Utilities.idGenerator(musicDto.getItemType(), lastItemId.substring(0, 2).toUpperCase()));
 
 			libraryItems.setItemId(musicDto.getItemId());
 			libraryItems.setItemName(musicDto.getItemName());

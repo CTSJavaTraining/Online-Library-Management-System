@@ -1,5 +1,7 @@
 package com.training.dao;
 
+import org.springframework.stereotype.Component;
+
 import com.training.blayer.BooksDTO;
 import com.training.blayer.MoviesDTO;
 import com.training.blayer.MusicDTO;
@@ -10,6 +12,7 @@ import com.training.blayer.MusicDTO;
  * @author 447383
  *
  */
+@Component
 public interface LibrarianDAO {
 
 	/**

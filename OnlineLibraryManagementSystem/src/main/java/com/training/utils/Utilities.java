@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * this class creates and provides session factory
@@ -11,9 +12,14 @@ import org.slf4j.LoggerFactory;
  * @author 447383
  *
  */
-public class IDDateGeneratorUtility {
+@Component
+public class Utilities {
 
-	private static final Logger logger = LoggerFactory.getLogger(IDDateGeneratorUtility.class);
+	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
+
+	public Utilities() {
+		logger.info("Context is loaded");
+	}
 
 	// Utility Method for getting current date and time to store into Db
 	public static Date getCurrentDateTime() {
@@ -60,4 +66,5 @@ public class IDDateGeneratorUtility {
 		}
 
 	}
+
 }

@@ -7,8 +7,9 @@ import java.math.BigDecimal;
  * @author 447482
  *
  */
-public class BooksDTO extends LibraryItemsDTO {
 
+public class BooksDTO extends LibraryItemsDTO {
+	
 	private String author;
 
 	private String publishers;

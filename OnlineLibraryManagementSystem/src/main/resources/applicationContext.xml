@@ -6,19 +6,59 @@
                             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
                             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+
+
+	<context:component-scan base-package="com.training." />
 	<context:annotation-config />
-	<import resource="classpath:olms-spring.xml" />
-	<context:component-scan base-package="com.training" />
+
+  <context:property-placeholder location="classpath:online-library.properties" />
+     
+    <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+     
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}"/>
+         
+    </bean>
+     
+    <bean name="sessionFactory" id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <list>
+                <value>com.training.entity</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="use_sql_comments">${use_sql_comments}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            </props>
+        </property>       
+    </bean>
+ 
+  <!--   <bean id="transactionManager"  class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean> -->
+ 
+    <bean id="persistenceExceptionTranslationPostProcessor"
+        class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+
+
 	<!--NOTE: LibrarianDAO is annotated with @Component so that Component Scan 
 		will configure it as bean -->
 
 	<!-- Below are beans without @Component annotation -->
-	<bean id="userDao" class="com.training.dao.impl.UserDAOImpl" />
-	<bean id="anonymousUser" class="com.training.dao.impl.AnonymousUser" />
-	<bean id="librarianDAO" class="com.training.dao.impl.LibrarianDAO" />
-	<bean id="libraryItemsDto" class="com.training.blayer.LibraryItemsDTO" />
-	<bean id="movies" class="com.training.entity.Movies" />
-	<bean id="music" class="com.training.entity.Movies" />
-	<bean id="books" class="com.training.entity.Books" />
+	<!-- <bean id="userDao" class="com.training.dao.impl.UserDAOImpl" /> <bean 
+		id="anonymousUser" class="com.training.dao.impl.AnonymousUser" /> <bean id="librarianDAO" 
+		class="com.training.dao.impl.LibrarianDAO" /> <bean id="libraryItemsDto" 
+		class="com.training.blayer.LibraryItemsDTO" /> <bean id="movies" class="com.training.entity.Movies" 
+		/> <bean id="music" class="com.training.entity.Movies" /> <bean id="books" 
+		class="com.training.entity.Books" /> -->
 
 </beans>

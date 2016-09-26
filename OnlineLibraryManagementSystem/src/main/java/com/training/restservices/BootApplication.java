@@ -30,8 +30,9 @@ public class BootApplication {
 			AuthConfigFactory.setFactory(new AuthConfigFactoryImpl());
 		}
 		SpringApplication.run(BootApplication.class, args);
-
-		logger.info("---------------------- Application starts--------------------");
+		logger.info("**************Application Starts****************/n/n/n/n");
+		logger.info("------------------Loading application context.xml---------------");
+		//ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 	}
 

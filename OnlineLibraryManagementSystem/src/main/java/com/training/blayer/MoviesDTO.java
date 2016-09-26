@@ -1,5 +1,7 @@
 package com.training.blayer;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 
  * @author 447482
@@ -7,14 +9,19 @@ package com.training.blayer;
  */
 public class MoviesDTO extends LibraryItemsDTO {
 
+	@NotNull
 	private String productions;
 
+	@NotNull
 	private String writers;
 
+	@NotNull
 	private String singers;
 
+	@NotNull
 	private String directors;
 
+	@NotNull
 	private String casts;
 
 	/**
