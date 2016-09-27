@@ -39,7 +39,7 @@ public class LibrarianUser implements LibrarianDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	private static String getLatestUserId = "SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems) AND itemId LIKE :itemIdType";
+	private String getLatestUserId = "SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems) AND itemId LIKE :itemIdType";
 
 	@Override
 	public String checkAvailability(String itemId) {
