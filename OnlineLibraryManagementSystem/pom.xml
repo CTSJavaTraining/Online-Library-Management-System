@@ -27,13 +27,28 @@
 		<start-class>com.training.entity.SignupService</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javax.version>7.0</javax.version>
+		<java.version>1.8</java.version>
+		<glassfish.version>2.22.2</glassfish.version>
+		<junit.version>4.12</junit.version>
+		<mockito.varsion>1.9.5</mockito.varsion>
 	</properties>
+	
 	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.varsion}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>
-			<version>2.22.2</version>
+			<version>${glassfish.version}</version>
 		</dependency>
 
 
@@ -167,8 +182,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
