@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * this class creates and provides session factory
@@ -12,13 +11,12 @@ import org.springframework.stereotype.Component;
  * @author 447383
  *
  */
-@Component
 public class Utilities {
 
 	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
-	public Utilities() {
-		logger.info("Context is loaded");
+	private Utilities() {
+
 	}
 
 	// Utility Method for getting current date and time to store into Db
@@ -45,7 +43,8 @@ public class Utilities {
 
 			logger.info("Latest Category ID is {} ", lastId);
 
-			stringBuilder.append(categoryType.substring(0,2)); // Example: LI or DV
+			stringBuilder.append(categoryType.substring(0, 2)); // Example: LI
+																// or DV
 
 			// Converting "US111111" to integer 111111 and adding 1 to 111112
 			// which is then converted to String
@@ -62,7 +61,7 @@ public class Utilities {
 			return stringBuilder.append(categoryIdnumber).toString();
 
 		} else {
-			return stringBuilder.append(categoryType.substring(0,2)).append("000000").toString();
+			return stringBuilder.append(categoryType.substring(0, 2)).append("000000").toString();
 		}
 
 	}
