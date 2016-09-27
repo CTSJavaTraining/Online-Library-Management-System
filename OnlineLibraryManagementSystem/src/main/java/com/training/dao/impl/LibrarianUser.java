@@ -23,6 +23,7 @@ import com.training.entity.ItemFormat;
 import com.training.entity.LibraryItems;
 import com.training.entity.Movies;
 import com.training.entity.Music;
+import com.training.utils.LibraryConstants;
 import com.training.utils.Utilities;
 
 /**
@@ -39,7 +40,7 @@ public class LibrarianUser implements LibrarianDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	private String getLatestUserId = "SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems) AND itemId LIKE :itemIdType";
+	private static String getLatestItemId = "SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems) AND itemId LIKE :itemIdType";
 
 	@Override
 	public String checkAvailability(String itemId) {
@@ -57,9 +58,9 @@ public class LibrarianUser implements LibrarianDAO {
 		} catch (Exception e) {
 
 			logger.error("Exception occured {}", e);
-			return "Error";
+			return LibraryConstants.ERROR;
 		}
-		return "exist";
+		return LibraryConstants.EXISTS;
 	}
 
 	@Override
@@ -77,7 +78,6 @@ public class LibrarianUser implements LibrarianDAO {
 			query.setParameter("iName", itemName);
 			query.setParameter("iType", shortItemType + "%");
 
-			System.out.println("query performed--------------------------");
 			if (query.getResultList().isEmpty()) {
 				logger.info("Query result is empty. No item with this name: {}", itemName);
 				return true;
@@ -122,7 +122,7 @@ public class LibrarianUser implements LibrarianDAO {
 			String shortItemType = libraryItemsDto.getItemType().substring(0, 2).toUpperCase();
 
 			@SuppressWarnings("unchecked")
-			List<String> lastItemId = session.createQuery(getLatestUserId)
+			List<String> lastItemId = session.createQuery(getLatestItemId)
 					.setParameter("itemIdType", shortItemType + "%").getResultList();
 
 			// Generating latest Item ID
@@ -139,13 +139,14 @@ public class LibrarianUser implements LibrarianDAO {
 
 			session.getTransaction().commit();
 			logger.debug("Commited changes for item of itemID: {}", libraryItems.getItemId());
+			return true;
 
 		} catch (Exception e) {
 
 			logger.error("{} Not able to insert Item {}", e, libraryItemsDto.getItemId());
-			return false;
+
 		}
-		return true;
+		return false;
 
 	}
 
@@ -154,15 +155,15 @@ public class LibrarianUser implements LibrarianDAO {
 
 		// Updating corresponding tables books or music or movies
 
-		if ("BOOKS".equalsIgnoreCase(libraryItemsDto.getCategory())) {
+		if ((LibraryConstants.BOOKS).equalsIgnoreCase(libraryItemsDto.getCategory())) {
 			setBookValues(libraryItemsDto, libraryItems);
 		}
 
-		else if ("MOVIES".equalsIgnoreCase(libraryItemsDto.getCategory())) {
+		else if ((LibraryConstants.MOVIES).equalsIgnoreCase(libraryItemsDto.getCategory())) {
 			setMovieValue(libraryItemsDto, libraryItems);
 		}
 
-		else {
+		else if ((LibraryConstants.MUSIC).equalsIgnoreCase(libraryItemsDto.getCategory())) {
 			setMusicValue(libraryItemsDto, libraryItems);
 		}
 

@@ -15,8 +15,8 @@ public class Utilities {
 
 	private static final Logger logger = LoggerFactory.getLogger(Utilities.class);
 
-	public Utilities() {
-		logger.info("Context is loaded");
+	private Utilities() {
+
 	}
 
 	// Utility Method for getting current date and time to store into Db

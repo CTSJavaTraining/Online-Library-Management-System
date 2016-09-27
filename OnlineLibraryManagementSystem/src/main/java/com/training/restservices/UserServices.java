@@ -5,6 +5,7 @@ import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.training.blayer.UserSignupDTO;
 import com.training.dao.impl.UserDAOImpl;
 import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
-import com.training.entity.UserDetails;
 
 /**
  * 
@@ -36,20 +37,24 @@ public class UserServices {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 
-	private UserDAOImpl userDao;
+	@Autowired
+	private UserDAOImpl userDaoImpl;
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response setBasicDetails(@RequestBody UserDetails userdetails) {
+	private Response setBasicDetails(@RequestBody UserSignupDTO userSignupDto) {
 
-		String username = userdetails.getUserName();
+		String username = userSignupDto.getUserName();
 
-		boolean userValidationStatus = userDao.validateUser(username);
+		boolean userValidationStatus = userDaoImpl.validateUser(username);
 
+		// If true, user does not exist. So new user is created
 		if (userValidationStatus) {
-			boolean signupStatus = userDao.userSignUp(userdetails);
+			System.out.println("---------------True user does not exist");
+			boolean signupStatus = userDaoImpl.userSignUp(userSignupDto);
 
+			// If true, new user is updated into DB.
 			if (signupStatus) {
 				return Response.status(Response.Status.OK).entity("Successfully saved your information").build();
 			} else {
@@ -70,15 +75,13 @@ public class UserServices {
 	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response userNameExistance(@RequestBody UserDetails userdetails) {
+	public Response userNameExistance(@RequestBody UserSignupDTO userSignupDto) {
 
-		String username = userdetails.getUserName();
+		String username = userSignupDto.getUserName();
 
 		if (!username.isEmpty()) {
 
-			boolean validationStatus = userDao.validateUser(username);
-
-			if (validationStatus) {
+			if (userDaoImpl.validateUser(username)) {
 				return Response.status(Response.Status.OK).entity("User does not exist").build();
 			} else {
 				return Response.status(Response.Status.CONFLICT).entity("User exist").build();
@@ -109,17 +112,11 @@ public class UserServices {
 
 		if ((!userId.isEmpty()) && (!password.isEmpty())) {
 
-			logger.info("username and password is not empty and validating user");
-
-			boolean loginUserStatus = userDao.validateLoginUser(userId);
-
-			if (loginUserStatus) {
+			if (userDaoImpl.validateLoginUser(userId)) {
 				return Response.status(Response.Status.NOT_FOUND).entity("User does not exist. Please signup").build();
 			} else {
 
-				boolean loginStatus = userDao.validateLogin(userId, password);
-
-				if (loginStatus) {
+				if (userDaoImpl.validateLogin(userId, password)) {
 					return Response.status(Response.Status.OK).entity("User " + userId + " logged in successfully")
 							.build();
 				} else {

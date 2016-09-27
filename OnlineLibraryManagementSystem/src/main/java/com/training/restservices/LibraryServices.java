@@ -20,6 +20,7 @@ import com.training.blayer.DeleteItemsDTO;
 import com.training.blayer.LibraryItemsDTO;
 import com.training.dao.impl.LibrarianUser;
 import com.training.entity.LibraryItems;
+import com.training.utils.LibraryConstants;
 
 /**
  * 
@@ -130,10 +131,10 @@ public class LibraryServices {
 
 		String availabilityStatus = librarianUser.checkAvailability(itemID);
 
-		if (("exist").equals(availabilityStatus)) {
+		if ((LibraryConstants.EXISTS).equals(availabilityStatus)) {
 			return Response.status(Response.Status.OK).entity("Item is available: " + availabilityStatus).build();
 
-		} else if ("Error".equals(availabilityStatus)) {
+		} else if ((LibraryConstants.ERROR).equals(availabilityStatus)) {
 			return Response.status(Response.Status.BAD_GATEWAY).entity("Error occured. Please try again").build();
 		}
 
