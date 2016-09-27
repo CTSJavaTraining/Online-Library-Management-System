@@ -77,9 +77,12 @@ public class LibrarianUser implements LibrarianDAO {
 
 			session.beginTransaction();
 
-			String lastItemId = session.createQuery("SELECT max(itemId) FROM LibraryItems").getResultList().get(0)
-					.toString();
-
+			System.out.println("Going to query");
+			String lastItemId = session
+					.createQuery(
+							"SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems)")
+					.getSingleResult().toString();
+			System.out.println("Book lastItem id is: " + lastItemId);
 			booksDto.setItemId(Utilities.idGenerator(booksDto.getItemType(), lastItemId));
 
 			libraryItems.setItemId(booksDto.getItemId());
@@ -107,6 +110,7 @@ public class LibrarianUser implements LibrarianDAO {
 			session.getTransaction().commit();
 			logger.debug("Commited changes for book item of itemID: {}", libraryItems.getItemId());
 		} catch (Exception e) {
+			System.out.println(e);
 			logger.error("{} Not able to insert book {}", e, booksDto.getItemId());
 			return false;
 		}
@@ -163,25 +167,26 @@ public class LibrarianUser implements LibrarianDAO {
 	@Override
 	public boolean itemExistence(String itemName, String shortItemType) {
 
-		System.out.println("Session Factory ==-==-=-=-=-=" + sessionFactory);
 		try (Session session = sessionFactory.openSession()) {
 
 			logger.info("Inside item existence {},{}", itemName, shortItemType);
 			session.beginTransaction();
 			logger.info("Session Began");
-			logger.debug("User entered username is {}", itemName, " itemtype is {}", shortItemType);
+			logger.info("User entered item name is {}", itemName, " itemtype is {}", shortItemType);
 
 			Query query = session.createQuery("FROM LibraryItems WHERE itemName = :iName AND itemId LIKE :iType");
 			query.setParameter("iName", itemName);
 			query.setParameter("iType", shortItemType + "%");
 
 			if (query.getResultList().isEmpty()) {
+				logger.info("Query result is empty. No item with this name: {}", itemName);
 				return true;
 			}
 
 		} catch (Exception e) {
 			logger.error("Not able to find existance of {} ", itemName, "of type {}", shortItemType, e);
 		}
+		logger.debug("Book exists: {}" + itemName);
 		return false;
 	}
 

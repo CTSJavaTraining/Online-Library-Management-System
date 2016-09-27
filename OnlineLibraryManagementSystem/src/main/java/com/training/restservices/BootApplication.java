@@ -31,8 +31,6 @@ public class BootApplication {
 		}
 		SpringApplication.run(BootApplication.class, args);
 		logger.info("**************Application Starts****************/n/n/n/n");
-		logger.info("------------------Loading application context.xml---------------");
-		//ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ import com.training.blayer.BooksDTO;
 import com.training.blayer.MoviesDTO;
 import com.training.blayer.MusicDTO;
 import com.training.dao.impl.LibrarianUser;
+import com.training.entity.LibraryItems;
 
 /**
  * 
@@ -48,9 +50,10 @@ public class LibraryServices {
 		logger.debug("itemName is {}" + booksDto.getItemName());
 
 		logger.info("Checking for existence of book");
-		logger.info("Item type is: {}",booksDto.getItemType());
+		logger.info("Item type is: {}", booksDto.getItemType());
 
-		if (!librarianUser.itemExistence(booksDto.getItemName(), booksDto.getItemType().substring(0, 2).toUpperCase())) {
+		if (!librarianUser.itemExistence(booksDto.getItemName(),
+				booksDto.getItemType().substring(0, 2).toUpperCase())) {
 			return Response.status(Response.Status.NOT_IMPLEMENTED)
 					.entity("Same item already exists. Kindly update existing items.").build();
 		} else if (librarianUser.addBooks(booksDto)) {
@@ -105,47 +108,42 @@ public class LibraryServices {
 
 	}
 
-	/*	*//**
-			 * 
-			 * @param libraryItems
-			 * @return
-			 *//*
-			 * @RequestMapping(value = "/additemformat", method =
-			 * RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-			 * 
-			 * @ResponseBody
-			 * 
-			 * @Produces("application/json") private Response
-			 * addItemFormat(@RequestBody LibraryItems libraryItems) {
-			 * 
-			 * return Response.status(Response.Status.OK).
-			 * entity("Successfully updated item format.").build();
-			 * 
-			 * }
-			 * 
-			 * @RequestMapping(value = "/itemavailability", method =
-			 * RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-			 * 
-			 * @ResponseBody
-			 * 
-			 * @Produces("application/json") private Response
-			 * checkItemAvailablity(@RequestParam("itemID") String itemID) {
-			 * 
-			 * logger.debug("Checking availability for the item ID : {}",
-			 * itemID);
-			 * 
-			 * String availabilityStatus =
-			 * librarianUser.checkAvailability(itemID);
-			 * 
-			 * if (("exist").equals(availabilityStatus)) { return
-			 * Response.status(Response.Status.OK).entity("Item is available: "
-			 * + availabilityStatus).build();
-			 * 
-			 * } else if ("Error".equals(availabilityStatus)) { return
-			 * Response.status(Response.Status.BAD_GATEWAY).
-			 * entity("Error occured. Please try again").build(); }
-			 * 
-			 * return Response.status(Response.Status.BAD_REQUEST).
-			 * entity("Item is not available").build(); }
-			 */
+	/**
+	 * 
+	 * @param libraryItems
+	 * @return
+	 */
+
+	@RequestMapping(value = "/additemformat", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+
+	@ResponseBody
+
+	@Produces("application/json")
+	private Response addItemFormat(@RequestBody LibraryItems libraryItems) {
+
+		return Response.status(Response.Status.OK).entity("Successfully updated item format.").build();
+
+	}
+
+	@RequestMapping(value = "/itemavailability", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+
+	@ResponseBody
+
+	@Produces("application/json")
+	private Response checkItemAvailablity(@RequestParam("itemID") String itemID) {
+
+		logger.debug("Checking availability for the item ID : {}", itemID);
+
+		String availabilityStatus = librarianUser.checkAvailability(itemID);
+
+		if (("exist").equals(availabilityStatus)) {
+			return Response.status(Response.Status.OK).entity("Item is available: " + availabilityStatus).build();
+
+		} else if ("Error".equals(availabilityStatus)) {
+			return Response.status(Response.Status.BAD_GATEWAY).entity("Error occured. Please try again").build();
+		}
+
+		return Response.status(Response.Status.BAD_REQUEST).entity("Item is not available").build();
+	}
+
 }
