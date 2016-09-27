@@ -2,15 +2,13 @@ package com.training.blayer;
 // default package
 
 import java.util.Date;
-
-import org.springframework.stereotype.Component;
+import java.util.Set;
 
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 /**
  * LibraryItemsDTO for librarian to insert record
  */
-@Component
 public class LibraryItemsDTO {
 
 	private String itemId;
@@ -35,6 +33,12 @@ public class LibraryItemsDTO {
 
 	private String genre;
 
+	private Set<BooksDTO> booksDto;
+
+	private Set<MoviesDTO> moviesDto;
+
+	private Set<MusicDTO> musicDto;
+
 	/**
 	 * @return the itemId
 	 */
@@ -44,7 +48,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param itemId
-	 *            the itemId to set
+	 *            the itemId to Set
 	 */
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
@@ -59,7 +63,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param itemName
-	 *            the itemName to set
+	 *            the itemName to Set
 	 */
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
@@ -74,7 +78,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param year
-	 *            the year to set
+	 *            the year to Set
 	 */
 	public void setYear(Integer year) {
 		this.year = year;
@@ -89,7 +93,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param price
-	 *            the price to set
+	 *            the price to Set
 	 */
 	public void setPrice(int price) {
 		this.price = price;
@@ -104,7 +108,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param description
-	 *            the description to set
+	 *            the description to Set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -119,7 +123,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param itemType
-	 *            the itemType to set
+	 *            the itemType to Set
 	 */
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
@@ -134,7 +138,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param dateAdded
-	 *            the dateAdded to set
+	 *            the dateAdded to Set
 	 */
 	public void setDateAdded(Date dateAdded) {
 		this.dateAdded = dateAdded;
@@ -149,7 +153,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param noOfCopiesOrUrl
-	 *            the noOfCopiesOrUrl to set
+	 *            the noOfCopiesOrUrl to Set
 	 */
 	public void setNoOfCopiesOrUrl(String noOfCopiesOrUrl) {
 		this.noOfCopiesOrUrl = noOfCopiesOrUrl;
@@ -164,7 +168,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param category
-	 *            the category to set
+	 *            the category to Set
 	 */
 	public void setCategory(String category) {
 		this.category = category;
@@ -179,7 +183,7 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param releaseDate
-	 *            the releaseDate to set
+	 *            the releaseDate to Set
 	 */
 	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
@@ -194,10 +198,52 @@ public class LibraryItemsDTO {
 
 	/**
 	 * @param genre
-	 *            the genre to set
+	 *            the genre to Set
 	 */
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	/**
+	 * @return the booksDto
+	 */
+	public Set<BooksDTO> getBooksDto() {
+		return booksDto;
+	}
+
+	/**
+	 * @param booksDto the booksDto to Set
+	 */
+	public void setBooksDto(Set<BooksDTO> booksDto) {
+		this.booksDto = booksDto;
+	}
+
+	/**
+	 * @return the moviesDto
+	 */
+	public Set<MoviesDTO> getMoviesDto() {
+		return moviesDto;
+	}
+
+	/**
+	 * @param moviesDto the moviesDto to Set
+	 */
+	public void setMoviesDto(Set<MoviesDTO> moviesDto) {
+		this.moviesDto = moviesDto;
+	}
+
+	/**
+	 * @return the musicDto
+	 */
+	public Set<MusicDTO> getMusicDto() {
+		return musicDto;
+	}
+
+	/**
+	 * @param musicDto the musicDto to Set
+	 */
+	public void setMusicDto(Set<MusicDTO> musicDto) {
+		this.musicDto = musicDto;
 	}
 
 }

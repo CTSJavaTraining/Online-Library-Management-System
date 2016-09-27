@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.blayer.BooksDTO;
-import com.training.blayer.MoviesDTO;
-import com.training.blayer.MusicDTO;
+import com.training.blayer.DeleteItemsDTO;
+import com.training.blayer.LibraryItemsDTO;
 import com.training.dao.impl.LibrarianUser;
 import com.training.entity.LibraryItems;
 
@@ -42,25 +41,26 @@ public class LibraryServices {
 	 * @param libraryItems
 	 * @return
 	 */
-	@RequestMapping(value = "/addbook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/additems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addBooks(@RequestBody BooksDTO booksDto) {
+	private Response addBooks(@RequestBody LibraryItemsDTO libraryItemsDto) {
 
-		logger.debug("itemName is {}" + booksDto.getItemName());
+		logger.debug("itemName is {}", libraryItemsDto.getItemName(), " category: {}", libraryItemsDto.getCategory());
 
-		logger.info("Checking for existence of book");
-		logger.info("Item type is: {}", booksDto.getItemType());
-
-		if (!librarianUser.itemExistence(booksDto.getItemName(),
-				booksDto.getItemType().substring(0, 2).toUpperCase())) {
+		if (!librarianUser.itemExistence(libraryItemsDto.getItemName(),
+				libraryItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 			return Response.status(Response.Status.NOT_IMPLEMENTED)
 					.entity("Same item already exists. Kindly update existing items.").build();
-		} else if (librarianUser.addBooks(booksDto)) {
-			return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
-		} else {
+		}
 
-			logger.error("Error occured when updating Book Name: {}", booksDto.getItemName());
+		else if (librarianUser.addLibraryItems(libraryItemsDto)) {
+			return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
+		}
+
+		else {
+
+			logger.error("Error occured when updating Item Name: {}", libraryItemsDto.getItemName());
 
 			return Response.status(Response.Status.BAD_GATEWAY).entity("Item could not be updated. Please try again.")
 					.build();
@@ -73,39 +73,33 @@ public class LibraryServices {
 	 * @param libraryItems
 	 * @return
 	 */
-	@RequestMapping(value = "/addmusic", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/deleteitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addMusic(@RequestBody MusicDTO musicDto) {
+	private Response addBooks(@RequestBody DeleteItemsDTO deleteItemsDto) {
 
-		if (librarianUser.itemExistence(musicDto.getItemName(), musicDto.getItemType().substring(0, 2))) {
-			return Response.status(Response.Status.NOT_IMPLEMENTED)
-					.entity("Same item already exists. Kindly update existing items.").build();
-		} else if (librarianUser.addMusic(musicDto)) {
-			return Response.status(Response.Status.OK).entity("Successfully updated book details.").build();
-		} else {
+		logger.debug("itemName is {}", deleteItemsDto.getItemName(), " Type: {}", deleteItemsDto.getItemType());
 
-			logger.error("Error occured when updating music Name: {}", musicDto.getItemName());
+		if (!librarianUser.itemExistence(deleteItemsDto.getItemName(),
+				deleteItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 
-			return Response.status(Response.Status.BAD_GATEWAY).entity("Item could not be updated. Please try again.")
-					.build();
+			if (librarianUser.deleteLibraryItems(deleteItemsDto)) {
+				return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
+			}
 
+			else {
+				return Response.status(Response.Status.BAD_GATEWAY)
+						.entity("Error occured when deleting item!! Please try again later!!!!").build();
+			}
 		}
 
-	}
+		else {
 
-	/**
-	 * 
-	 * @param libraryItems
-	 * @return
-	 */
-	@RequestMapping(value = "/addmovies", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Produces("application/json")
-	private Response addMovies(@RequestBody MoviesDTO moviesDto) {
+			logger.error("Error occured when updating Item Name: {}", deleteItemsDto.getItemName());
 
-		return Response.status(Response.Status.OK).entity("Successfully updated movie details.").build();
+			return Response.status(Response.Status.NOT_MODIFIED).entity("Item already does not exist.").build();
 
+		}
 	}
 
 	/**

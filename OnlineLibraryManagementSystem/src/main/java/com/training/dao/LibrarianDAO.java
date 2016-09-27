@@ -2,9 +2,8 @@ package com.training.dao;
 
 import org.springframework.stereotype.Component;
 
-import com.training.blayer.BooksDTO;
-import com.training.blayer.MoviesDTO;
-import com.training.blayer.MusicDTO;
+import com.training.blayer.DeleteItemsDTO;
+import com.training.blayer.LibraryItemsDTO;
 
 /**
  * interface holds abstract methods for class Librarian in dao.impl package
@@ -26,30 +25,6 @@ public interface LibrarianDAO {
 	public String checkAvailability(String itemId);
 
 	/**
-	 * method used to add details of books to books table
-	 * 
-	 * @param booksDto
-	 * @return
-	 */
-	public boolean addBooks(BooksDTO booksDto);
-
-	/**
-	 * allows to add items to movies table
-	 * 
-	 * @param moviesDto
-	 * @return
-	 */
-	public boolean addMovies(MoviesDTO moviesDto);
-
-	/**
-	 * allows to add items to music table
-	 * 
-	 * @param musicDto
-	 * @return
-	 */
-	public boolean addMusic(MusicDTO musicDto);
-
-	/**
 	 * this method is used to check if the item already exists to decide if to
 	 * add or update a library item
 	 * 
@@ -58,4 +33,23 @@ public interface LibrarianDAO {
 	 * @return
 	 */
 	public boolean itemExistence(String itemName, String shortItemType);
+
+	/**
+	 * This method is used by service to add new library items into database.
+	 * 
+	 * @param libraryItemsDto
+	 *            to get the item details from user in jSON and validate them
+	 *            and update in DB
+	 * @return
+	 */
+	public boolean addLibraryItems(LibraryItemsDTO libraryItemsDto);
+
+	/**
+	 * 
+	 * @param deleteItemsDto
+	 *            gets itemname, itemtype and performs updating available column
+	 *            in item format table
+	 * @return boolean if the item deletion is updated or not
+	 */
+	public boolean deleteLibraryItems(DeleteItemsDTO deleteItemsDto);
 }

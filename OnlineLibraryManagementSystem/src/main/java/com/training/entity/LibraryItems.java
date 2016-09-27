@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -75,20 +76,20 @@ public class LibraryItems implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<WishList> wishLists;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<Books> books;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	private Books books;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<Music> music;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	private Music music;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<Movies> movies;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	private Movies movies;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<SubscribedList> subscribedLists;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
-	private List<ItemFormat> itemFormats;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	private ItemFormat itemFormats;
 
 	public String getItemId() {
 		return this.itemId;
@@ -216,27 +217,27 @@ public class LibraryItems implements Serializable {
 		this.wishLists = wishLists;
 	}
 
-	public List<Books> getBooks() {
+	public Books getBooks() {
 		return this.books;
 	}
 
-	public void setBooks(List<Books> books) {
+	public void setBooks(Books books) {
 		this.books = books;
 	}
 
-	public List<Music> getMusic() {
-		return this.music;
+	public Music getMusic() {
+		return music;
 	}
 
-	public void setMusic(List<Music> music) {
+	public void setMusic(Music music) {
 		this.music = music;
 	}
 
-	public List<Movies> getMovies() {
-		return this.movies;
+	public Movies getMovies() {
+		return movies;
 	}
 
-	public void setMovies(List<Movies> movies) {
+	public void setMovies(Movies movies) {
 		this.movies = movies;
 	}
 
@@ -248,11 +249,11 @@ public class LibraryItems implements Serializable {
 		this.subscribedLists = subscribedLists;
 	}
 
-	public List<ItemFormat> getItemFormats() {
+	public ItemFormat getItemFormats() {
 		return this.itemFormats;
 	}
 
-	public void setItemFormats(List<ItemFormat> itemFormats) {
+	public void setItemFormats(ItemFormat itemFormats) {
 		this.itemFormats = itemFormats;
 	}
 

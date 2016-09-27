@@ -39,6 +39,22 @@ public class ItemFormat implements Serializable {
 	@Column(name = "available", nullable = false, length = 150)
 	private String available;
 
+	public String getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
+
 	public LibraryItems getLibraryItems() {
 		return this.libraryItems;
 	}
