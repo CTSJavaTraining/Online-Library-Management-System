@@ -1,13 +1,13 @@
 package com.training.blayer;
 
 public class MoviesDTO {
-	
+
 	private String productions;
 
 	private String writers;
 
 	private String singers;
-	
+
 	private String directors;
 
 	private String casts;

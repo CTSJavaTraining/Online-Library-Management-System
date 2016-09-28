@@ -1,7 +1,7 @@
 package com.training.blayer;
 
 public class MusicDTO {
-	
+
 	private String productions;
 
 	private String writers;

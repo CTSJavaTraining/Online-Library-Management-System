@@ -1,7 +1,5 @@
 package com.training.dao;
 
-import org.springframework.stereotype.Component;
-
 import com.training.blayer.DeleteItemsDTO;
 import com.training.blayer.LibraryItemsDTO;
 
@@ -11,7 +9,7 @@ import com.training.blayer.LibraryItemsDTO;
  * @author 447383
  *
  */
-@Component
+
 public interface LibrarianDAO {
 
 	/**

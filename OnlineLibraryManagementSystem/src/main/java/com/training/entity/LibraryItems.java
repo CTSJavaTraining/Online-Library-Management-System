@@ -76,19 +76,19 @@ public class LibraryItems implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<WishList> wishLists;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToOne(optional=false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private Books books;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToOne(optional=false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private Music music;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToOne(optional=false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private Movies movies;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private List<SubscribedList> subscribedLists;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
+	@OneToOne(optional=false, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "libraryItems")
 	private ItemFormat itemFormats;
 
 	public String getItemId() {

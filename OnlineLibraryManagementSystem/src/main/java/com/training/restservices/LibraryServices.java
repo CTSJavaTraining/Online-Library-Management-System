@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.training.blayer.DeleteItemsDTO;
 import com.training.blayer.LibraryItemsDTO;
-import com.training.dao.impl.LibrarianUser;
+import com.training.dao.LibrarianDAO;
 import com.training.entity.LibraryItems;
 import com.training.utils.LibraryConstants;
 
@@ -34,8 +35,13 @@ public class LibraryServices {
 
 	private static final Logger logger = LoggerFactory.getLogger(LibraryServices.class);
 
+	
+	//private LibrarianUser librarianUser;
+	
 	@Autowired
-	private LibrarianUser librarianUser;
+	@Qualifier("librarianUser")
+	private LibrarianDAO librarianDAO;
+	
 
 	/**
 	 * 
@@ -49,13 +55,13 @@ public class LibraryServices {
 
 		logger.debug("itemName is {}", libraryItemsDto.getItemName(), " category: {}", libraryItemsDto.getCategory());
 
-		if (!librarianUser.itemExistence(libraryItemsDto.getItemName(),
+		if (!librarianDAO.itemExistence(libraryItemsDto.getItemName(),
 				libraryItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 			return Response.status(Response.Status.NOT_IMPLEMENTED)
 					.entity("Same item already exists. Kindly update existing items.").build();
 		}
 
-		else if (librarianUser.addLibraryItems(libraryItemsDto)) {
+		else if (librarianDAO.addLibraryItems(libraryItemsDto)) {
 			return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
 		}
 
@@ -81,10 +87,10 @@ public class LibraryServices {
 
 		logger.debug("itemName is {}", deleteItemsDto.getItemName(), " Type: {}", deleteItemsDto.getItemType());
 
-		if (!librarianUser.itemExistence(deleteItemsDto.getItemName(),
+		if (!librarianDAO.itemExistence(deleteItemsDto.getItemName(),
 				deleteItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 
-			if (librarianUser.deleteLibraryItems(deleteItemsDto)) {
+			if (librarianDAO.deleteLibraryItems(deleteItemsDto)) {
 				return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
 			}
 
@@ -129,7 +135,7 @@ public class LibraryServices {
 
 		logger.debug("Checking availability for the item ID : {}", itemID);
 
-		String availabilityStatus = librarianUser.checkAvailability(itemID);
+		String availabilityStatus = librarianDAO.checkAvailability(itemID);
 
 		if ((LibraryConstants.EXISTS).equals(availabilityStatus)) {
 			return Response.status(Response.Status.OK).entity("Item is available: " + availabilityStatus).build();

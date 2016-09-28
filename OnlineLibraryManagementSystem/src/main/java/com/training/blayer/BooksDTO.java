@@ -3,7 +3,7 @@ package com.training.blayer;
 import java.math.BigDecimal;
 
 public class BooksDTO {
-	
+
 	private String author;
 
 	private String publishers;
@@ -33,7 +33,5 @@ public class BooksDTO {
 	public void setEditionNo(BigDecimal editionNo) {
 		this.editionNo = editionNo;
 	}
-	
-	
 
 }

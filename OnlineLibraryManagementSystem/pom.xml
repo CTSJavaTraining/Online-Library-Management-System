@@ -32,7 +32,7 @@
 		<junit.version>4.12</junit.version>
 		<mockito.varsion>1.9.5</mockito.varsion>
 	</properties>
-	
+
 	<dependencies>
 
 		<dependency>
@@ -168,13 +168,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+
 	</dependencies>
+
+
 
 	<build>
 		<plugins>

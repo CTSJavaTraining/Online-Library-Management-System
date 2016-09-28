@@ -43,7 +43,7 @@ public class Utilities {
 
 			logger.info("Latest Category ID is {} ", lastId);
 
-			stringBuilder.append(categoryType.substring(0, 2)); // Example: LI
+			stringBuilder.append(categoryType.substring(0, 2).toUpperCase()); // Example: LI
 																// or DV
 
 			// Converting "US111111" to integer 111111 and adding 1 to 111112
@@ -61,7 +61,7 @@ public class Utilities {
 			return stringBuilder.append(categoryIdnumber).toString();
 
 		} else {
-			return stringBuilder.append(categoryType.substring(0, 2)).append("000000").toString();
+			return stringBuilder.append(categoryType.substring(0, 2).toUpperCase()).append("000000").toString();
 		}
 
 	}

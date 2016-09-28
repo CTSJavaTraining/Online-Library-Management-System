@@ -33,11 +33,11 @@ public class LibraryItemsDTO {
 
 	private String genre;
 
-	private Set<BooksDTO> booksDto;
+	private Set<BooksDTO> bookDetails;
 
-	private Set<MoviesDTO> moviesDto;
+	private Set<MoviesDTO> movieDetails;
 
-	private Set<MusicDTO> musicDto;
+	private Set<MusicDTO> musicDetails;
 
 	/**
 	 * @return the itemId
@@ -205,45 +205,47 @@ public class LibraryItemsDTO {
 	}
 
 	/**
-	 * @return the booksDto
+	 * @return the bookDetails
 	 */
-	public Set<BooksDTO> getBooksDto() {
-		return booksDto;
+	public Set<BooksDTO> getBookDetails() {
+		return bookDetails;
 	}
 
 	/**
-	 * @param booksDto the booksDto to Set
+	 * @param bookDetails the bookDetails to set
 	 */
-	public void setBooksDto(Set<BooksDTO> booksDto) {
-		this.booksDto = booksDto;
+	public void setBookDetails(Set<BooksDTO> bookDetails) {
+		this.bookDetails = bookDetails;
 	}
 
 	/**
-	 * @return the moviesDto
+	 * @return the movieDetails
 	 */
-	public Set<MoviesDTO> getMoviesDto() {
-		return moviesDto;
+	public Set<MoviesDTO> getMovieDetails() {
+		return movieDetails;
 	}
 
 	/**
-	 * @param moviesDto the moviesDto to Set
+	 * @param movieDetails the movieDetails to set
 	 */
-	public void setMoviesDto(Set<MoviesDTO> moviesDto) {
-		this.moviesDto = moviesDto;
+	public void setMovieDetails(Set<MoviesDTO> movieDetails) {
+		this.movieDetails = movieDetails;
 	}
 
 	/**
-	 * @return the musicDto
+	 * @return the musicDetails
 	 */
-	public Set<MusicDTO> getMusicDto() {
-		return musicDto;
+	public Set<MusicDTO> getMusicDetails() {
+		return musicDetails;
 	}
 
 	/**
-	 * @param musicDto the musicDto to Set
+	 * @param musicDetails the musicDetails to set
 	 */
-	public void setMusicDto(Set<MusicDTO> musicDto) {
-		this.musicDto = musicDto;
+	public void setMusicDetails(Set<MusicDTO> musicDetails) {
+		this.musicDetails = musicDetails;
 	}
+
+
 
 }

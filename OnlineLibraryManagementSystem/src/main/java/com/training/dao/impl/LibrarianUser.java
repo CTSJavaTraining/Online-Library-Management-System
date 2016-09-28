@@ -32,7 +32,7 @@ import com.training.utils.Utilities;
  * @author 447383
  *
  */
-@Component
+@Component(value="librarianUser")
 public class LibrarianUser implements LibrarianDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(LibrarianUser.class);
@@ -76,6 +76,9 @@ public class LibrarianUser implements LibrarianDAO {
 			Query query = session
 					.createQuery("SELECT itemId FROM LibraryItems WHERE itemName = :iName AND itemType LIKE :iType");
 			query.setParameter("iName", itemName);
+
+			// ShortItemtype is if the item is Physical Book then Query to check
+			// for Name: "Item name" of type "PB%"
 			query.setParameter("iType", shortItemType + "%");
 
 			if (query.getResultList().isEmpty()) {
@@ -125,12 +128,7 @@ public class LibrarianUser implements LibrarianDAO {
 			List<String> lastItemId = session.createQuery(getLatestItemId)
 					.setParameter("itemIdType", shortItemType + "%").getResultList();
 
-			// Generating latest Item ID
-			if (!lastItemId.isEmpty()) {
-				libraryItemsDto.setItemId(Utilities.idGenerator(libraryItemsDto.getItemType(), lastItemId.get(0)));
-			} else {
-				libraryItemsDto.setItemId(Utilities.idGenerator(libraryItemsDto.getItemType(), ""));
-			}
+			getNewItemID(libraryItemsDto, lastItemId);
 
 			LibraryItems libraryItems = insertIntoLibraryItems(libraryItemsDto);
 
@@ -148,6 +146,15 @@ public class LibrarianUser implements LibrarianDAO {
 		}
 		return false;
 
+	}
+
+	private void getNewItemID(LibraryItemsDTO libraryItemsDto, List<String> lastItemId) {
+		// Generating latest Item ID
+		if (!lastItemId.isEmpty()) {
+			libraryItemsDto.setItemId(Utilities.idGenerator(libraryItemsDto.getItemType(), lastItemId.get(0)));
+		} else {
+			libraryItemsDto.setItemId(Utilities.idGenerator(libraryItemsDto.getItemType(), ""));
+		}
 	}
 
 	private LibraryItems insertIntoLibraryItems(LibraryItemsDTO libraryItemsDto) {
@@ -190,7 +197,7 @@ public class LibrarianUser implements LibrarianDAO {
 	}
 
 	private void setMusicValue(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
-		Set<MusicDTO> musicList = libraryItemsDto.getMusicDto();
+		Set<MusicDTO> musicList = libraryItemsDto.getMusicDetails();
 
 		Music music = new Music();
 
@@ -209,7 +216,7 @@ public class LibrarianUser implements LibrarianDAO {
 	}
 
 	private void setMovieValue(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
-		Set<MoviesDTO> moviesList = libraryItemsDto.getMoviesDto();
+		Set<MoviesDTO> moviesList = libraryItemsDto.getMovieDetails();
 		Movies movies = new Movies();
 
 		for (MoviesDTO movieValue : moviesList) {
@@ -229,7 +236,7 @@ public class LibrarianUser implements LibrarianDAO {
 	}
 
 	private void setBookValues(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
-		Set<BooksDTO> booksList = libraryItemsDto.getBooksDto();
+		Set<BooksDTO> booksList = libraryItemsDto.getBookDetails();
 		Books books = new Books();
 
 		for (BooksDTO bookValue : booksList) {

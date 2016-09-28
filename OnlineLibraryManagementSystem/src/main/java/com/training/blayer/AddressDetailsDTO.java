@@ -13,7 +13,7 @@ public class AddressDetailsDTO {
 	private String state;
 
 	private String country;
-	
+
 	public int getDoorNo() {
 		return doorNo;
 	}
@@ -61,6 +61,5 @@ public class AddressDetailsDTO {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-
 
 }

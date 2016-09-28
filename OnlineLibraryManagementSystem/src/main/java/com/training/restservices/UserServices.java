@@ -1,23 +1,32 @@
 package com.training.restservices;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.training.blayer.UserSignupDTO;
+import com.training.blayer.ViewItemsDto;
+import com.training.dao.impl.AnonymousUser;
 import com.training.dao.impl.UserDAOImpl;
-import com.training.entity.LibraryItems;
 import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
 
@@ -40,6 +49,36 @@ public class UserServices {
 	@Autowired
 	private UserDAOImpl userDaoImpl;
 
+	@Autowired
+	@Qualifier("anonymousUser")
+	private AnonymousUser anonymousUser;
+
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@ResponseBody
+	@Produces("application/json")
+	private Response getHomePageDetails() {
+
+		Map<String, List<ViewItemsDto>> viewMap = anonymousUser.viewItemsCheck(1);
+
+
+		String mapAsJson = null;
+		try {
+			mapAsJson = new ObjectMapper().writeValueAsString(viewMap);
+		} catch (JsonProcessingException e) {
+			logger.error("Json exception: {}", e);
+		}
+
+		return Response.status(Response.Status.OK).entity(mapAsJson).build();
+	}
+
+	@RequestMapping(value = "/home&{pageno}", method = RequestMethod.GET)
+	@ResponseBody
+	@Produces("application/json")
+	private Response navigateHomePageDetails(@PathVariable("pageno") int pageno) {
+		return null;
+
+	}
+
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
@@ -47,15 +86,11 @@ public class UserServices {
 
 		String username = userSignupDto.getUserName();
 
-		boolean userValidationStatus = userDaoImpl.validateUser(username);
-
 		// If true, user does not exist. So new user is created
-		if (userValidationStatus) {
-			System.out.println("---------------True user does not exist");
-			boolean signupStatus = userDaoImpl.userSignUp(userSignupDto);
+		if (userDaoImpl.validateUser(username)) {
 
 			// If true, new user is updated into DB.
-			if (signupStatus) {
+			if (userDaoImpl.userSignUp(userSignupDto)) {
 				return Response.status(Response.Status.OK).entity("Successfully saved your information").build();
 			} else {
 				return Response.status(Response.Status.BAD_GATEWAY)
@@ -147,12 +182,18 @@ public class UserServices {
 	 * @param libraryitems
 	 * @return
 	 */
-	@RequestMapping(value = "/searchitems", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/searchitems", method = RequestMethod.GET)
 	@ResponseBody
 	@Produces("application/json")
-	private Response searchService(@RequestBody LibraryItems libraryitems) {
+	private Response searchService(@RequestParam("itemname") String itemName, @RequestParam("pageno") int pageNo) {
 
-		return Response.status(Response.Status.OK).entity("test").build();
+		List<ViewItemsDto> viewItemsDtoList = anonymousUser.searchItems(itemName, pageNo);
+
+		if (!viewItemsDtoList.isEmpty()) {
+			return Response.status(Response.Status.OK).entity(viewItemsDtoList).build();
+		} else {
+			return Response.status(Response.Status.OK).entity("No items available of name:" + itemName).build();
+		}
 	}
 
 	/**
@@ -163,25 +204,5 @@ public class UserServices {
 	public Response testService() {
 		return Response.status(Response.Status.OK).entity("Hello World").build();
 	}
-
-	/**
-	 * 
-	 * @param itemName
-	 * @return
-	 */
-	/*
-	 * @RequestMapping(value = "/viewitems", method = RequestMethod.GET,
-	 * consumes = MediaType.APPLICATION_JSON_VALUE)
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @Produces("application/json") private Response
-	 * viewItems(@RequestParam(value = "itemName") String itemName) {
-	 * 
-	 * List<?> getItems = anonymousUser.searchItems(itemName); if
-	 * (getItems.isEmpty()) { return Response.status(Response.Status.NOT_FOUND).
-	 * entity("No requested items available").build(); } else { return
-	 * Response.status(Response.Status.OK).entity(getItems).build(); } }
-	 */
 
 }

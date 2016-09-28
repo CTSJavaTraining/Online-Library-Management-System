@@ -1,6 +1,8 @@
 package com.training.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,15 +15,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.training.blayer.ViewItemsDto;
 import com.training.dao.AnonymousUserDAO;
 import com.training.entity.LibraryItems;
+import com.training.utils.LibraryConstants;
 
 /**
  * 
  * @author 447383
  *
  */
-@Component
+@Component(value = "anonymousUser")
 public class AnonymousUser implements AnonymousUserDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnonymousUser.class);
@@ -29,41 +33,64 @@ public class AnonymousUser implements AnonymousUserDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public List<LibraryItems> searchItems(String name, String itemType) {
-		Query query;
-		List<LibraryItems> resultList = Collections.emptyList();
+	@Override
+	public List<ViewItemsDto> searchItems(String itemName, int pageNo) {
+
+		// Creating empty list to store result
+		List<ViewItemsDto> viewItemsDtoList = Collections.emptyList();
+
 		try (Session session = sessionFactory.openSession()) {
+
 			session.beginTransaction();
-			query = session.createQuery("from library_items where itemType= :item and itemName = :name");
-			query.setParameter("name", name);
-			query.setParameter("item", itemType);
-			resultList = query.getResultList();
-			logger.info("Size of the result sent for search item {}", name, "is {}", resultList.size());
+
+			int startResult = (pageNo - 1) * 10;
+			// Querying all the items with the itemName
+			Query query = session.createQuery("from LibraryItems where itemName = :itemName");
+			query.setParameter("itemName", itemName);
+			query.setFirstResult(startResult);
+			query.setMaxResults(10);
+			List<LibraryItems> resultList = query.getResultList();
+
+			return viewItemsDtoList = getRequestedItems(resultList);
+
 		} catch (Exception e) {
-			logger.error(e + "Failed to retrieve the search results for {}", name);
+			logger.error(e + "Failed to retrieve the search results for {}", itemName);
 		}
-		return resultList;
+		return viewItemsDtoList;
+	}
+
+	private List<ViewItemsDto> getRequestedItems(List<LibraryItems> resultList) {
+		List<ViewItemsDto> viewItemsDtoList;
+		viewItemsDtoList = new ArrayList<>();
+
+		for (LibraryItems libraryItems : resultList) {
+			ViewItemsDto viewItemsdto = new ViewItemsDto();
+
+			viewItemsdto.setItemName(libraryItems.getItemName());
+			viewItemsdto.setItemType(libraryItems.getItemType());
+			viewItemsdto.setYear(libraryItems.getYear());
+			viewItemsdto.setPrice(libraryItems.getPrice());
+
+			viewItemsDtoList.add(viewItemsdto);
+		}
+
+		logger.info("Size of the result sent for search item is {}", viewItemsDtoList.size());
+		return viewItemsDtoList;
 	}
 
 	@Override
-	public Map<String, List<LibraryItems>> viewItemsCheck(int maxValue) {
+	public Map<String, List<ViewItemsDto>> viewItemsCheck(int pageNo) {
 
-		List<LibraryItems> resultList;
-		Map<String, List<LibraryItems>> allResults = Collections.emptyMap();
+		int startResult = (pageNo - 1) * 10;
 
-		resultList = runQuery("Books", maxValue);
-		allResults.put("Books", resultList);
-		resultList.clear();
+		Map<String, List<ViewItemsDto>> allResults = new HashMap<>();
 
-		resultList = runQuery("Movies", maxValue);
-		allResults.put("Movies", resultList);
-		resultList.clear();
+		allResults.put(LibraryConstants.BOOKS, runQuery(LibraryConstants.BOOKS, startResult));
 
-		resultList = runQuery("Music", maxValue);
-		allResults.put("Music", resultList);
-		resultList.clear();
+		allResults.put(LibraryConstants.MOVIES, runQuery(LibraryConstants.MOVIES, startResult));
+
+		allResults.put(LibraryConstants.MUSIC, runQuery(LibraryConstants.MUSIC, startResult));
 
 		return allResults;
 	}
@@ -71,27 +98,26 @@ public class AnonymousUser implements AnonymousUserDAO {
 	/**
 	 * 
 	 * @param itemType
-	 * @param maxValue
+	 * @param startResult
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<LibraryItems> runQuery(String itemType, int maxValue) {
+	public List<ViewItemsDto> runQuery(String category, int startResult) {
 
-		Query query;
-		String hqlQuery = "from library_items where itemType= :itemType";
-		List<LibraryItems> resultList = Collections.emptyList();
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 
-			query = session.createQuery(hqlQuery);
-			query.setParameter("itemType", itemType);
-			resultList = query.setMaxResults(maxValue).getResultList();
-			logger.info("Size of the result sent for Category {}", itemType, "  to view is {}", resultList.size());
+			Query query = session.createQuery("from LibraryItems where category = :itemCategory");
+			query.setParameter("itemCategory", category);
+			query.setFirstResult(startResult);
+
+			return getRequestedItems(query.setMaxResults(10).getResultList());
+
 		} catch (Exception e) {
-			logger.error(e.getMessage(), " Failed to hit table {}", itemType);
+			logger.error("Exception {} Failed to hit table {}", e, category);
 		}
-		resultList = Collections.emptyList();
-		return resultList;
+
+		return Collections.emptyList();
 
 	}
 

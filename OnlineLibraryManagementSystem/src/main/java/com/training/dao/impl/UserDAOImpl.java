@@ -1,6 +1,5 @@
 package com.training.dao.impl;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,18 +42,14 @@ public class UserDAOImpl {
 
 			session.beginTransaction();
 
+			// For user US and for Librarian LI
 			String shortUserType = userSignupDto.getRole().substring(0, 2).toUpperCase();
 
 			@SuppressWarnings("unchecked")
 			List<String> lastUserId = session.createQuery(getLatestUserId)
 					.setParameter("userIdType", shortUserType + "%").getResultList();
 
-			// Generating latest User ID
-			if (!lastUserId.isEmpty()) {
-				userSignupDto.setUserId(Utilities.idGenerator(userSignupDto.getRole(), lastUserId.get(0)));
-			} else {
-				userSignupDto.setUserId(Utilities.idGenerator(userSignupDto.getRole(), ""));
-			}
+			getNewUserID(userSignupDto, lastUserId);
 
 			UserDetails userDetails = insertUserDetails(userSignupDto);
 
@@ -67,7 +62,16 @@ public class UserDAOImpl {
 			return true;
 		} catch (Exception e) {
 			logger.error("Exception is thrown {}", e);
-			return false;
+		}
+		return false;
+	}
+
+	private void getNewUserID(UserSignupDTO userSignupDto, List<String> lastUserId) {
+		// Generating latest User ID
+		if (!lastUserId.isEmpty()) {
+			userSignupDto.setUserId(Utilities.idGenerator(userSignupDto.getRole(), lastUserId.get(0)));
+		} else {
+			userSignupDto.setUserId(Utilities.idGenerator(userSignupDto.getRole(), ""));
 		}
 	}
 
@@ -185,33 +189,37 @@ public class UserDAOImpl {
 
 			String results = query.getResultList().get(0).toString();
 
-			LoginAudit loginAudit = new LoginAudit();
-			LoginAuditId loginAuditId = new LoginAuditId();
+			return updateLoginAudit(userId, password, session, results);
+		}
+	}
 
-			loginAuditId.setUserId(userId);
-			loginAuditId.setLastLoginTime(Utilities.getCurrentDateTime());
-			loginAudit.setId(loginAuditId);
+	private boolean updateLoginAudit(String userId, String password, Session session, String results) {
+		LoginAudit loginAudit = new LoginAudit();
+		LoginAuditId loginAuditId = new LoginAuditId();
 
-			if (password.equalsIgnoreCase(results)) {
+		loginAuditId.setUserId(userId);
+		loginAuditId.setLastLoginTime(Utilities.getCurrentDateTime());
+		loginAudit.setId(loginAuditId);
 
-				loginAudit.setLoginStatus('S');
+		if (password.equalsIgnoreCase(results)) {
 
-				session.saveOrUpdate(loginAudit);
-				session.getTransaction().commit();
+			loginAudit.setLoginStatus('S');
 
-				logger.debug(" Login audit updated successfully for userId {}", userId);
+			session.saveOrUpdate(loginAudit);
+			session.getTransaction().commit();
 
-				return true;
-			} else {
+			logger.debug(" Login audit updated successfully for userId {}", userId);
 
-				loginAudit.setLoginStatus('F');
-				session.saveOrUpdate(loginAudit);
-				session.getTransaction().commit();
+			return true;
+		} else {
 
-				logger.error("login audit update failed for userId {}", userId);
+			loginAudit.setLoginStatus('F');
+			session.saveOrUpdate(loginAudit);
+			session.getTransaction().commit();
 
-				return false;
-			}
+			logger.error("login audit update failed for userId {}", userId);
+
+			return false;
 		}
 	}
 

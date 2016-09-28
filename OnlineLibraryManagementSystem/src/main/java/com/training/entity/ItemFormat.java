@@ -9,7 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -32,7 +32,7 @@ public class ItemFormat implements Serializable {
 	@Column(name = "item_type", nullable = false, length = 6)
 	private String itemType;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn(name = "item_id")
 	private LibraryItems libraryItems;
 
