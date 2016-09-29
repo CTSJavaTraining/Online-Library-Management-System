@@ -1,7 +1,7 @@
 /**
  * 
  */
-package training.dao.impl;
+package com.training.dao.impl;
 
 import static org.mockito.Mockito.when;
 
@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.training.blayer.UserSignupDTO;
+import com.training.blayer.UserSignupDto;
 import com.training.entity.UserDetails;
 import com.training.restservices.UserServices;
 
@@ -29,7 +29,7 @@ public class UserServicesTest {
 	UserDetails userdetails;
 	
 	@Mock
-	UserSignupDTO userSignupDTO;
+	UserSignupDto userSignupDTO;
 	
 	@Before
 	public void create()

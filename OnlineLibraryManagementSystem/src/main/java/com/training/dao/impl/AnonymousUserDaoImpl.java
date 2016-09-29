@@ -37,9 +37,6 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 	@Override
 	public List<ViewItemsDto> searchItems(String itemName, int pageNo) {
 
-		// Creating empty list to store result
-		List<ViewItemsDto> viewItemsDtoList = Collections.emptyList();
-
 		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
@@ -52,13 +49,12 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 			query.setMaxResults(10);
 			List<LibraryItems> resultList = query.getResultList();
 
-			viewItemsDtoList = getRequestedItems(resultList);
-			return viewItemsDtoList;
+			return getRequestedItems(resultList);
 
 		} catch (Exception e) {
 			logger.error(e + "Failed to retrieve the search results for {}", itemName);
 		}
-		return viewItemsDtoList;
+		return Collections.emptyList();
 	}
 
 	private List<ViewItemsDto> getRequestedItems(List<LibraryItems> resultList) {
@@ -84,9 +80,9 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 	public Map<String, List<ViewItemsDto>> viewItemsCheck(int pageNo) {
 
 		int startResult = (pageNo - 1) * 3;
-		
-		logger.debug("startResult start result and page num {} ",pageNo);
-		
+
+		logger.debug("startResult start result and page num {} ", pageNo);
+
 		Map<String, List<ViewItemsDto>> allResults = new HashMap<>();
 
 		allResults.put(LibraryConstants.BOOKS, runQuery(LibraryConstants.BOOKS, startResult));
