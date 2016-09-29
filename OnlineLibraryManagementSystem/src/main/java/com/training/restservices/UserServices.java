@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.training.blayer.UserSignupDTO;
 import com.training.blayer.ViewItemsDto;
 import com.training.dao.impl.AnonymousUser;
@@ -55,27 +52,16 @@ public class UserServices {
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	@ResponseBody
-	@Produces("application/json")
-	private Response getHomePageDetails() {
+	@Produces(MediaType.APPLICATION_JSON_VALUE)
+	private Map<String, List<ViewItemsDto>> getHomePageDetails(
+			@RequestParam(value = "pageno", required = false) String pageno) {
 
-		Map<String, List<ViewItemsDto>> viewMap = anonymousUser.viewItemsCheck(1);
+		if (pageno != null) {
+			return anonymousUser.viewItemsCheck(Integer.parseInt(pageno));
 
-
-		String mapAsJson = null;
-		try {
-			mapAsJson = new ObjectMapper().writeValueAsString(viewMap);
-		} catch (JsonProcessingException e) {
-			logger.error("Json exception: {}", e);
+		} else {
+			return anonymousUser.viewItemsCheck(1);
 		}
-
-		return Response.status(Response.Status.OK).entity(mapAsJson).build();
-	}
-
-	@RequestMapping(value = "/home&{pageno}", method = RequestMethod.GET)
-	@ResponseBody
-	@Produces("application/json")
-	private Response navigateHomePageDetails(@PathVariable("pageno") int pageno) {
-		return null;
 
 	}
 
