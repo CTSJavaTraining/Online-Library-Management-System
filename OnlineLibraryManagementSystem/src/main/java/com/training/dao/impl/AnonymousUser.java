@@ -82,7 +82,8 @@ public class AnonymousUser implements AnonymousUserDAO {
 	@Override
 	public Map<String, List<ViewItemsDto>> viewItemsCheck(int pageNo) {
 
-		int startResult = (pageNo - 1) * 10;
+		int startResult = (pageNo - 1) * 3;
+		System.out.println(startResult+"<--start result and page num -->"+pageNo);
 
 		Map<String, List<ViewItemsDto>> allResults = new HashMap<>();
 
@@ -111,7 +112,7 @@ public class AnonymousUser implements AnonymousUserDAO {
 			query.setParameter("itemCategory", category);
 			query.setFirstResult(startResult);
 
-			return getRequestedItems(query.setMaxResults(10).getResultList());
+			return getRequestedItems(query.setMaxResults(3).getResultList());
 
 		} catch (Exception e) {
 			logger.error("Exception {} Failed to hit table {}", e, category);
