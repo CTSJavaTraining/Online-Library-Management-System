@@ -1,16 +1,18 @@
 package com.training.blayer;
 
-public class MoviesDTO {
+/**
+ * Dto class created to set music item details
+ * 
+ * @author 542224
+ *
+ */
+public class MusicDto {
 
 	private String productions;
 
 	private String writers;
 
 	private String singers;
-
-	private String directors;
-
-	private String casts;
 
 	public String getProductions() {
 		return productions;
@@ -34,22 +36,6 @@ public class MoviesDTO {
 
 	public void setSingers(String singers) {
 		this.singers = singers;
-	}
-
-	public String getDirectors() {
-		return directors;
-	}
-
-	public void setDirectors(String directors) {
-		this.directors = directors;
-	}
-
-	public String getCasts() {
-		return casts;
-	}
-
-	public void setCasts(String casts) {
-		this.casts = casts;
 	}
 
 }

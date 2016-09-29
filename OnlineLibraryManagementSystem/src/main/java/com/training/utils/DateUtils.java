@@ -34,7 +34,7 @@ public class DateUtils implements AttributeConverter<LocalDateTime, Timestamp> {
 	@Override
 	public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {
 
-		return (attribute == null ? null : Timestamp.valueOf(attribute));
+		return attribute == null ? null : Timestamp.valueOf(attribute);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class DateUtils implements AttributeConverter<LocalDateTime, Timestamp> {
 	@Override
 	public LocalDateTime convertToEntityAttribute(Timestamp dbData) {
 
-		return (dbData == null ? null : dbData.toLocalDateTime());
+		return dbData == null ? null : dbData.toLocalDateTime();
 	}
 
 }

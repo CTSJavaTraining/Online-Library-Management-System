@@ -7,10 +7,13 @@ import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
 
 /**
+ * this interface holds abstract methods for class SignedUserDaoImpl in dao.impl
+ * package
+ * 
  * @author 447383
  *
  */
-public interface SignedUserDAO {
+public interface SignedUserDao {
 
 	/**
 	 * this method is used to insert details into liked list table
@@ -48,5 +51,14 @@ public interface SignedUserDAO {
 	 * @return
 	 */
 	public boolean likeExistance(String userId, String itemId, int likeStatus);
+
+	/**
+	 * this method is used to update the library_items table in DataBase with
+	 * rating details
+	 * 
+	 * @param itemId
+	 * @return
+	 */
+	public boolean updateRatings(String itemId);
 
 }

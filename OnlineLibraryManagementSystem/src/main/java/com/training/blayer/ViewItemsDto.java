@@ -1,6 +1,8 @@
 package com.training.blayer;
 
 /**
+ * this class is created to set item format and price details
+ * 
  * @author 447482
  *
  */
@@ -64,11 +66,11 @@ public class ViewItemsDto {
 	}
 
 	/**
-	 * @param itemType the itemType to set
+	 * @param itemType
+	 *            the itemType to set
 	 */
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
 
-	
 }

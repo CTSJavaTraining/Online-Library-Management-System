@@ -7,7 +7,7 @@ package com.training.blayer;
  * @author 447482
  *
  */
-public class DeleteItemsDTO {
+public class DeleteItemsDto {
 
 	private String itemName;
 	private String itemType;

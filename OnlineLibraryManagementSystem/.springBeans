@@ -8,8 +8,13 @@
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
 		<config>java:com.training.restservices.UserServices</config>
+		<config>java:com.training.dao.impl.AnonymousUserDaoImpl</config>
+		<config>java:com.training.dao.impl.LibrarianUserDaoImpl</config>
+		<config>java:com.training.dao.impl.UserDaoImpl</config>
+		<config>java:com.training.dao.LibrarianUserDao</config>
 	</configs>
 	<autoconfigs>
+		<config>java:com.training.restservices.LibraryServices</config>
 		<config>java:com.training.restservices.BootApplication</config>
 	</autoconfigs>
 	<configSets>

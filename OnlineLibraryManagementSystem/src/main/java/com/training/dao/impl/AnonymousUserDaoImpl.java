@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.training.blayer.ViewItemsDto;
-import com.training.dao.AnonymousUserDAO;
+import com.training.dao.AnonymousUserDao;
 import com.training.entity.LibraryItems;
 import com.training.utils.LibraryConstants;
 
@@ -26,9 +26,9 @@ import com.training.utils.LibraryConstants;
  *
  */
 @Component(value = "anonymousUser")
-public class AnonymousUser implements AnonymousUserDAO {
+public class AnonymousUserDaoImpl implements AnonymousUserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(AnonymousUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(AnonymousUserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -52,7 +52,8 @@ public class AnonymousUser implements AnonymousUserDAO {
 			query.setMaxResults(10);
 			List<LibraryItems> resultList = query.getResultList();
 
-			return viewItemsDtoList = getRequestedItems(resultList);
+			viewItemsDtoList = getRequestedItems(resultList);
+			return viewItemsDtoList;
 
 		} catch (Exception e) {
 			logger.error(e + "Failed to retrieve the search results for {}", itemName);
@@ -83,8 +84,9 @@ public class AnonymousUser implements AnonymousUserDAO {
 	public Map<String, List<ViewItemsDto>> viewItemsCheck(int pageNo) {
 
 		int startResult = (pageNo - 1) * 3;
-		System.out.println(startResult+"<--start result and page num -->"+pageNo);
-
+		
+		logger.debug("startResult start result and page num {} ",pageNo);
+		
 		Map<String, List<ViewItemsDto>> allResults = new HashMap<>();
 
 		allResults.put(LibraryConstants.BOOKS, runQuery(LibraryConstants.BOOKS, startResult));
@@ -96,12 +98,7 @@ public class AnonymousUser implements AnonymousUserDAO {
 		return allResults;
 	}
 
-	/**
-	 * 
-	 * @param itemType
-	 * @param startResult
-	 * @return
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<ViewItemsDto> runQuery(String category, int startResult) {
 

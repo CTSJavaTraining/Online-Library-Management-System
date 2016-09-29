@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.training.dao.MemberUserDAO;
+import com.training.dao.MemberUserDao;
 import com.training.entity.SubscribedList;
 import com.training.entity.WishList;
 import com.training.utils.Utilities;
@@ -22,9 +22,9 @@ import com.training.utils.Utilities;
  * @author 447383
  *
  */
-public class MemberUser extends AnonymousUser implements MemberUserDAO {
+public class MemberUserDaoImpl extends AnonymousUserDaoImpl implements MemberUserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(SignedUserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -47,9 +47,7 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 			}
 
 		} catch (Exception e) {
-			logger.error(e.getMessage(),
-					" {} Failed to hit the database to check for the rating details of the item {}", itemId,
-					"rated by user {}", memberId);
+			logger.error(" Failed to hit the database to check for the rating details of the item {}, {}", itemId, e);
 		}
 
 		return false;
@@ -83,7 +81,7 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 
 			return true;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), " {} Not able to hit Wish List table");
+			logger.error(" Not able to hit Wish List table {}", e);
 		}
 		return false;
 
@@ -117,7 +115,7 @@ public class MemberUser extends AnonymousUser implements MemberUserDAO {
 
 			return true;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), " {} Not able to hit Subscribed table");
+			logger.error("Not able to hit Subscribed table {}", e);
 		}
 
 		return false;

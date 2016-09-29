@@ -7,13 +7,16 @@ import com.training.entity.SubscribedList;
 import com.training.entity.WishList;
 
 /**
+ * this interface holds abstract methods for class MemberUserDaoImpl in dao.impl
+ * package
+ * 
  * @author 447383
  *
  */
-public interface MemberUserDAO {
+public interface MemberUserDao {
 
 	/**
-	 * this method is used to insert or update the wish list details of teh user
+	 * this method is used to insert or update the wish list details of the user
 	 * 
 	 * @param wishList
 	 * @return

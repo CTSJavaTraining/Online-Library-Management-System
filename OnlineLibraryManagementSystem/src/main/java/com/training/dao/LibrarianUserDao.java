@@ -1,16 +1,16 @@
 package com.training.dao;
 
-import com.training.blayer.DeleteItemsDTO;
-import com.training.blayer.LibraryItemsDTO;
+import com.training.blayer.DeleteItemsDto;
+import com.training.blayer.LibraryItemsDto;
 
 /**
- * interface holds abstract methods for class Librarian in dao.impl package
+ * interface holds abstract methods for class LibrarianUserDaoImpl in dao.impl package
  * 
  * @author 447383
  *
  */
 
-public interface LibrarianDAO {
+public interface LibrarianUserDao {
 
 	/**
 	 * To check availability of the item
@@ -40,7 +40,7 @@ public interface LibrarianDAO {
 	 *            and update in DB
 	 * @return
 	 */
-	public boolean addLibraryItems(LibraryItemsDTO libraryItemsDto);
+	public boolean addLibraryItems(LibraryItemsDto libraryItemsDto);
 
 	/**
 	 * 
@@ -49,5 +49,5 @@ public interface LibrarianDAO {
 	 *            in item format table
 	 * @return boolean if the item deletion is updated or not
 	 */
-	public boolean deleteLibraryItems(DeleteItemsDTO deleteItemsDto);
+	public boolean deleteLibraryItems(DeleteItemsDto deleteItemsDto);
 }

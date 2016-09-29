@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.blayer.UserSignupDTO;
+import com.training.blayer.UserSignupDto;
 import com.training.blayer.ViewItemsDto;
-import com.training.dao.impl.AnonymousUser;
-import com.training.dao.impl.UserDAOImpl;
+import com.training.dao.impl.AnonymousUserDaoImpl;
+import com.training.dao.impl.UserDaoImpl;
 import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
 
@@ -44,11 +44,11 @@ public class UserServices {
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 
 	@Autowired
-	private UserDAOImpl userDaoImpl;
+	private UserDaoImpl userDaoImpl;
 
 	@Autowired
-	@Qualifier("anonymousUser")
-	private AnonymousUser anonymousUser;
+	@Qualifier("anonymousUserDaoImpl")
+	private AnonymousUserDaoImpl anonymousUserDaoImpl;
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	@ResponseBody
@@ -57,10 +57,10 @@ public class UserServices {
 			@RequestParam(value = "pageno", required = false) String pageno) {
 
 		if (pageno != null) {
-			return anonymousUser.viewItemsCheck(Integer.parseInt(pageno));
+			return anonymousUserDaoImpl.viewItemsCheck(Integer.parseInt(pageno));
 
 		} else {
-			return anonymousUser.viewItemsCheck(1);
+			return anonymousUserDaoImpl.viewItemsCheck(1);
 		}
 
 	}
@@ -68,7 +68,7 @@ public class UserServices {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response setBasicDetails(@RequestBody UserSignupDTO userSignupDto) {
+	private Response setBasicDetails(@RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
 
@@ -90,13 +90,13 @@ public class UserServices {
 
 	/**
 	 * 
-	 * @param userdetails
+	 * @param userSignupDto
 	 * @return
 	 */
 	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response userNameExistance(@RequestBody UserSignupDTO userSignupDto) {
+	public Response userNameExistance(@RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
 
@@ -173,7 +173,7 @@ public class UserServices {
 	@Produces("application/json")
 	private Response searchService(@RequestParam("itemname") String itemName, @RequestParam("pageno") int pageNo) {
 
-		List<ViewItemsDto> viewItemsDtoList = anonymousUser.searchItems(itemName, pageNo);
+		List<ViewItemsDto> viewItemsDtoList = anonymousUserDaoImpl.searchItems(itemName, pageNo);
 
 		if (!viewItemsDtoList.isEmpty()) {
 			return Response.status(Response.Status.OK).entity(viewItemsDtoList).build();

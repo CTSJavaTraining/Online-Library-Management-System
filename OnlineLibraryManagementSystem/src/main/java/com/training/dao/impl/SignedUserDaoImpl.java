@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.training.dao.SignedUserDAO;
+import com.training.dao.SignedUserDao;
 import com.training.entity.LikedList;
 import com.training.entity.RatingTable;
 import com.training.utils.Utilities;
@@ -23,20 +23,13 @@ import com.training.utils.Utilities;
  * @author 447383
  *
  */
-public class SignedUser extends AnonymousUser implements SignedUserDAO {
+public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(SignedUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(SignedUserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	/**
-	 * this method is used to insert or update the liked_list table in data base
-	 * with the liked list details
-	 * 
-	 * @param likedList
-	 * @return
-	 */
 	@Override
 	public int insertLikedItems(LikedList likedList) {
 
@@ -82,7 +75,7 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 			}
 
 		} catch (Exception e) {
-			logger.error("not able to load the liked item details because of DB error {}", e.getMessage());
+			logger.error("not able to load the liked item details because of DB error {}", e);
 			return -1;
 		}
 
@@ -90,13 +83,6 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 	}
 
-	/**
-	 * this method is used to insert or update the rating_table table in data
-	 * base with the rating details
-	 * 
-	 * @param ratings
-	 * @return
-	 */
 	@Override
 	public boolean insertRatings(RatingTable ratings) {
 
@@ -123,7 +109,7 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 			return true;
 		} catch (Exception e) {
-			logger.error(e.getMessage(), " {} Not able to hit DB to update the rating table");
+			logger.error("Not able to hit DB to update the rating table {}", e);
 		}
 		return false;
 
@@ -135,9 +121,9 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
-			Query query = session.createQuery("from " + tableName + " where itemId = :itemId and userId= :userId");
+			Query query = session.createQuery("from tableName where itemId = :itemIds and userId= :userId");
 			query.setParameter("userId", userId);
-			query.setParameter("itemId", itemId);
+			query.setParameter("itemIds", itemId);
 			List<?> listResult = query.getResultList();
 
 			if (!(listResult.isEmpty())) {
@@ -146,9 +132,8 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 			}
 
 		} catch (Exception e) {
-			logger.error(e.getMessage(),
-					" {} Failed to hit the database to check for the rating details of the item {}", itemId,
-					"rated by user {}", userId);
+			logger.error(" Exception {} Failed to hit the database to check for the rating details of the item {}", e,
+					itemId, "rated by user {}", userId);
 		}
 
 		return false;
@@ -184,14 +169,7 @@ public class SignedUser extends AnonymousUser implements SignedUserDAO {
 
 	}
 
-	/**
-	 * This method is used to update the library_items table in DataBase with
-	 * rating details
-	 * 
-	 * @author 542224
-	 * @param itemId
-	 * @return
-	 */
+	@Override
 	public boolean updateRatings(String itemId) {
 
 		try (Session session = sessionFactory.openSession()) {
