@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.training.daoimplementation;
+package training.dao.impl;
 
 import static org.mockito.Mockito.when;
 
@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.training.blayer.UserSignupDTO;
 import com.training.entity.UserDetails;
 import com.training.restservices.UserServices;
 
@@ -27,13 +28,16 @@ public class UserServicesTest {
 	@Mock
 	UserDetails userdetails;
 	
+	@Mock
+	UserSignupDTO userSignupDTO;
+	
 	@Before
 	public void create()
 	{
 		MockitoAnnotations.initMocks(this);
 //		userServices = mock(UserServices.class);
 	//	UserDetails userdetails = mock(UserDetails.class);
-		when(userServices.userNameExistance(userdetails)).thenThrow(NumberFormatException.class);
+		when(userServices.userNameExistance(userSignupDTO)).thenThrow(NumberFormatException.class);
 	}
 	/**
 	 * @throws java.lang.Exception
