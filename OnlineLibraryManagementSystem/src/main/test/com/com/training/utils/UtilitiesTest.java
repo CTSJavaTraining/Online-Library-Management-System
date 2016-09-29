@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.training.factory;
+package com.training.utils;
 
 import static org.junit.Assert.assertEquals;
 
