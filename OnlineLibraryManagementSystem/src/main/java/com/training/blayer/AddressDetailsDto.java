@@ -1,6 +1,12 @@
 package com.training.blayer;
 
-public class AddressDetailsDTO {
+/**
+ * Dto class created to set the address details of a user
+ * 
+ * @author 542224
+ *
+ */
+public class AddressDetailsDto {
 
 	private int doorNo;
 

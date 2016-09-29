@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.training.blayer.BooksDTO;
-import com.training.blayer.DeleteItemsDTO;
-import com.training.blayer.LibraryItemsDTO;
-import com.training.blayer.MoviesDTO;
-import com.training.blayer.MusicDTO;
-import com.training.dao.LibrarianDAO;
+import com.training.blayer.BooksDto;
+import com.training.blayer.DeleteItemsDto;
+import com.training.blayer.LibraryItemsDto;
+import com.training.blayer.MoviesDto;
+import com.training.blayer.MusicDto;
+import com.training.dao.LibrarianUserDao;
 import com.training.entity.Books;
 import com.training.entity.ItemFormat;
 import com.training.entity.LibraryItems;
@@ -33,9 +33,9 @@ import com.training.utils.Utilities;
  *
  */
 @Component(value="librarianUser")
-public class LibrarianUser implements LibrarianDAO {
+public class LibrarianUserDaoImpl implements LibrarianUserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(LibrarianUser.class);
+	private static final Logger logger = LoggerFactory.getLogger(LibrarianUserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -94,7 +94,7 @@ public class LibrarianUser implements LibrarianDAO {
 	}
 
 	@Override
-	public boolean deleteLibraryItems(DeleteItemsDTO deleteItemsDto) {
+	public boolean deleteLibraryItems(DeleteItemsDto deleteItemsDto) {
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
 
@@ -117,7 +117,7 @@ public class LibrarianUser implements LibrarianDAO {
 	}
 
 	@Override
-	public boolean addLibraryItems(LibraryItemsDTO libraryItemsDto) {
+	public boolean addLibraryItems(LibraryItemsDto libraryItemsDto) {
 
 		try (Session session = sessionFactory.openSession()) {
 
@@ -148,7 +148,7 @@ public class LibrarianUser implements LibrarianDAO {
 
 	}
 
-	private void getNewItemID(LibraryItemsDTO libraryItemsDto, List<String> lastItemId) {
+	private void getNewItemID(LibraryItemsDto libraryItemsDto, List<String> lastItemId) {
 		// Generating latest Item ID
 		if (!lastItemId.isEmpty()) {
 			libraryItemsDto.setItemId(Utilities.idGenerator(libraryItemsDto.getItemType(), lastItemId.get(0)));
@@ -157,7 +157,7 @@ public class LibrarianUser implements LibrarianDAO {
 		}
 	}
 
-	private LibraryItems insertIntoLibraryItems(LibraryItemsDTO libraryItemsDto) {
+	private LibraryItems insertIntoLibraryItems(LibraryItemsDto libraryItemsDto) {
 		LibraryItems libraryItems = setItemValues(libraryItemsDto);
 
 		// Updating corresponding tables books or music or movies
@@ -179,7 +179,7 @@ public class LibrarianUser implements LibrarianDAO {
 		return libraryItems;
 	}
 
-	private void setItemFormatValues(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
+	private void setItemFormatValues(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
 		ItemFormat itemFormat = new ItemFormat();
 
 		itemFormat.setItemId(libraryItemsDto.getItemId());
@@ -196,12 +196,12 @@ public class LibrarianUser implements LibrarianDAO {
 		libraryItems.setItemFormats(itemFormat);
 	}
 
-	private void setMusicValue(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
-		Set<MusicDTO> musicList = libraryItemsDto.getMusicDetails();
+	private void setMusicValue(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
+		Set<MusicDto> musicList = libraryItemsDto.getMusicDetails();
 
 		Music music = new Music();
 
-		for (MusicDTO musicValue : musicList) {
+		for (MusicDto musicValue : musicList) {
 			music.setMusicId(libraryItemsDto.getItemId());
 			music.setProductions(musicValue.getProductions());
 			music.setSingers(musicValue.getSingers());
@@ -215,11 +215,11 @@ public class LibrarianUser implements LibrarianDAO {
 		}
 	}
 
-	private void setMovieValue(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
-		Set<MoviesDTO> moviesList = libraryItemsDto.getMovieDetails();
+	private void setMovieValue(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
+		Set<MoviesDto> moviesList = libraryItemsDto.getMovieDetails();
 		Movies movies = new Movies();
 
-		for (MoviesDTO movieValue : moviesList) {
+		for (MoviesDto movieValue : moviesList) {
 			movies.setMovieId(libraryItemsDto.getItemId());
 			movies.setCasts(movieValue.getCasts());
 			movies.setProductions(movieValue.getProductions());
@@ -235,11 +235,11 @@ public class LibrarianUser implements LibrarianDAO {
 		}
 	}
 
-	private void setBookValues(LibraryItemsDTO libraryItemsDto, LibraryItems libraryItems) {
-		Set<BooksDTO> booksList = libraryItemsDto.getBookDetails();
+	private void setBookValues(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
+		Set<BooksDto> booksList = libraryItemsDto.getBookDetails();
 		Books books = new Books();
 
-		for (BooksDTO bookValue : booksList) {
+		for (BooksDto bookValue : booksList) {
 
 			books.setBookId(libraryItemsDto.getItemId());
 			books.setAuthor(bookValue.getAuthor());
@@ -254,7 +254,7 @@ public class LibrarianUser implements LibrarianDAO {
 		}
 	}
 
-	private LibraryItems setItemValues(LibraryItemsDTO libraryItemsDto) {
+	private LibraryItems setItemValues(LibraryItemsDto libraryItemsDto) {
 
 		LibraryItems libraryItems = new LibraryItems();
 

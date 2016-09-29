@@ -7,9 +7,9 @@ import java.util.Set;
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 /**
- * LibraryItemsDTO for librarian to insert record
+ * LibraryItemsDto for librarian to insert record
  */
-public class LibraryItemsDTO {
+public class LibraryItemsDto {
 
 	private String itemId;
 
@@ -33,11 +33,11 @@ public class LibraryItemsDTO {
 
 	private String genre;
 
-	private Set<BooksDTO> bookDetails;
+	private Set<BooksDto> bookDetails;
 
-	private Set<MoviesDTO> movieDetails;
+	private Set<MoviesDto> movieDetails;
 
-	private Set<MusicDTO> musicDetails;
+	private Set<MusicDto> musicDetails;
 
 	/**
 	 * @return the itemId
@@ -207,42 +207,42 @@ public class LibraryItemsDTO {
 	/**
 	 * @return the bookDetails
 	 */
-	public Set<BooksDTO> getBookDetails() {
+	public Set<BooksDto> getBookDetails() {
 		return bookDetails;
 	}
 
 	/**
 	 * @param bookDetails the bookDetails to set
 	 */
-	public void setBookDetails(Set<BooksDTO> bookDetails) {
+	public void setBookDetails(Set<BooksDto> bookDetails) {
 		this.bookDetails = bookDetails;
 	}
 
 	/**
 	 * @return the movieDetails
 	 */
-	public Set<MoviesDTO> getMovieDetails() {
+	public Set<MoviesDto> getMovieDetails() {
 		return movieDetails;
 	}
 
 	/**
 	 * @param movieDetails the movieDetails to set
 	 */
-	public void setMovieDetails(Set<MoviesDTO> movieDetails) {
+	public void setMovieDetails(Set<MoviesDto> movieDetails) {
 		this.movieDetails = movieDetails;
 	}
 
 	/**
 	 * @return the musicDetails
 	 */
-	public Set<MusicDTO> getMusicDetails() {
+	public Set<MusicDto> getMusicDetails() {
 		return musicDetails;
 	}
 
 	/**
 	 * @param musicDetails the musicDetails to set
 	 */
-	public void setMusicDetails(Set<MusicDTO> musicDetails) {
+	public void setMusicDetails(Set<MusicDto> musicDetails) {
 		this.musicDetails = musicDetails;
 	}
 

@@ -17,15 +17,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.blayer.DeleteItemsDTO;
-import com.training.blayer.LibraryItemsDTO;
-import com.training.dao.LibrarianDAO;
+import com.training.blayer.DeleteItemsDto;
+import com.training.blayer.LibraryItemsDto;
+import com.training.dao.LibrarianUserDao;
 import com.training.entity.LibraryItems;
 import com.training.utils.LibraryConstants;
 
 /**
  * 
  * @author 447482
+ *
+ *         RestController class for LibraryServices includes inserting items in
+ *         the library,deleting items,adding item format and also checking item
+ *         availability
  *
  */
 @Component
@@ -35,13 +39,9 @@ public class LibraryServices {
 
 	private static final Logger logger = LoggerFactory.getLogger(LibraryServices.class);
 
-	
-	//private LibrarianUser librarianUser;
-	
 	@Autowired
 	@Qualifier("librarianUser")
-	private LibrarianDAO librarianDAO;
-	
+	private LibrarianUserDao librarianUserDao;
 
 	/**
 	 * 
@@ -51,17 +51,17 @@ public class LibraryServices {
 	@RequestMapping(value = "/additems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addBooks(@RequestBody LibraryItemsDTO libraryItemsDto) {
+	private Response addBooks(@RequestBody LibraryItemsDto libraryItemsDto) {
 
 		logger.debug("itemName is {}", libraryItemsDto.getItemName(), " category: {}", libraryItemsDto.getCategory());
 
-		if (!librarianDAO.itemExistence(libraryItemsDto.getItemName(),
+		if (!librarianUserDao.itemExistence(libraryItemsDto.getItemName(),
 				libraryItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 			return Response.status(Response.Status.NOT_IMPLEMENTED)
 					.entity("Same item already exists. Kindly update existing items.").build();
 		}
 
-		else if (librarianDAO.addLibraryItems(libraryItemsDto)) {
+		else if (librarianUserDao.addLibraryItems(libraryItemsDto)) {
 			return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
 		}
 
@@ -83,14 +83,14 @@ public class LibraryServices {
 	@RequestMapping(value = "/deleteitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addBooks(@RequestBody DeleteItemsDTO deleteItemsDto) {
+	private Response addBooks(@RequestBody DeleteItemsDto deleteItemsDto) {
 
 		logger.debug("itemName is {}", deleteItemsDto.getItemName(), " Type: {}", deleteItemsDto.getItemType());
 
-		if (!librarianDAO.itemExistence(deleteItemsDto.getItemName(),
+		if (!librarianUserDao.itemExistence(deleteItemsDto.getItemName(),
 				deleteItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 
-			if (librarianDAO.deleteLibraryItems(deleteItemsDto)) {
+			if (librarianUserDao.deleteLibraryItems(deleteItemsDto)) {
 				return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
 			}
 
@@ -135,7 +135,7 @@ public class LibraryServices {
 
 		logger.debug("Checking availability for the item ID : {}", itemID);
 
-		String availabilityStatus = librarianDAO.checkAvailability(itemID);
+		String availabilityStatus = librarianUserDao.checkAvailability(itemID);
 
 		if ((LibraryConstants.EXISTS).equals(availabilityStatus)) {
 			return Response.status(Response.Status.OK).entity("Item is available: " + availabilityStatus).build();

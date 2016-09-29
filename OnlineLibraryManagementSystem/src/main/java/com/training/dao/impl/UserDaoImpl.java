@@ -12,8 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.training.blayer.AddressDetailsDTO;
-import com.training.blayer.UserSignupDTO;
+import com.training.blayer.AddressDetailsDto;
+import com.training.blayer.UserSignupDto;
+import com.training.dao.UserDao;
 import com.training.entity.AddressDetails;
 import com.training.entity.LoginAudit;
 import com.training.entity.LoginAuditId;
@@ -21,23 +22,26 @@ import com.training.entity.LoginDetails;
 import com.training.entity.UserDetails;
 import com.training.utils.Utilities;
 
+/**
+ * this class handles the functionalities such as register customers details
+ * using sign up,validate user,login details and also maintains login audit for
+ * users
+ * 
+ * @author 542224
+ *
+ */
 @Component
-public class UserDAOImpl {
+public class UserDaoImpl implements UserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	private static String getLatestUserId = "SELECT userId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails) AND userId LIKE :userIdType";
 
-	/**
-	 * 
-	 * @param userSignupDto
-	 * @return
-	 */
-
-	public boolean userSignUp(UserSignupDTO userSignupDto) {
+	@Override
+	public boolean userSignUp(UserSignupDto userSignupDto) {
 		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
@@ -66,7 +70,8 @@ public class UserDAOImpl {
 		return false;
 	}
 
-	private void getNewUserID(UserSignupDTO userSignupDto, List<String> lastUserId) {
+	@Override
+	public void getNewUserID(UserSignupDto userSignupDto, List<String> lastUserId) {
 		// Generating latest User ID
 		if (!lastUserId.isEmpty()) {
 			userSignupDto.setUserId(Utilities.idGenerator(userSignupDto.getRole(), lastUserId.get(0)));
@@ -75,7 +80,8 @@ public class UserDAOImpl {
 		}
 	}
 
-	private UserDetails insertUserDetails(UserSignupDTO userSignupDto) {
+	@Override
+	public UserDetails insertUserDetails(UserSignupDto userSignupDto) {
 		UserDetails userDetails = setNewUserDetails(userSignupDto);
 
 		updatePassword(userSignupDto, userDetails);
@@ -84,10 +90,11 @@ public class UserDAOImpl {
 		return userDetails;
 	}
 
-	private void insertAddressValues(UserSignupDTO userSignupDto, UserDetails userDetails) {
-		List<AddressDetailsDTO> addresslist = userSignupDto.getAddressDetails();
+	@Override
+	public void insertAddressValues(UserSignupDto userSignupDto, UserDetails userDetails) {
+		List<AddressDetailsDto> addresslist = userSignupDto.getAddressDetails();
 
-		for (AddressDetailsDTO addressValue : addresslist) {
+		for (AddressDetailsDto addressValue : addresslist) {
 			AddressDetails addressDetails = new AddressDetails();
 
 			addressDetails.setUserDetails(userDetails);
@@ -107,7 +114,8 @@ public class UserDAOImpl {
 		}
 	}
 
-	private void updatePassword(UserSignupDTO userSignupDto, UserDetails userDetails) {
+	@Override
+	public void updatePassword(UserSignupDto userSignupDto, UserDetails userDetails) {
 		LoginDetails loginDetails = new LoginDetails();
 
 		loginDetails.setUserId(userSignupDto.getUserId());
@@ -119,7 +127,8 @@ public class UserDAOImpl {
 
 	}
 
-	private UserDetails setNewUserDetails(UserSignupDTO userSignupDto) {
+	@Override
+	public UserDetails setNewUserDetails(UserSignupDto userSignupDto) {
 		UserDetails userDetails = new UserDetails();
 
 		userDetails.setUserId(userSignupDto.getUserId());
@@ -137,6 +146,7 @@ public class UserDAOImpl {
 		return userDetails;
 	}
 
+	@Override
 	public boolean validateUser(String username) {
 		try (Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
@@ -153,11 +163,7 @@ public class UserDAOImpl {
 		}
 	}
 
-	/**
-	 * 
-	 * @param userId
-	 * @return
-	 */
+	@Override
 	public boolean validateLoginUser(String userId) {
 		logger.info("Validating username {}", userId);
 		try (Session session = sessionFactory.openSession()) {
@@ -176,6 +182,7 @@ public class UserDAOImpl {
 		return false;
 	}
 
+	@Override
 	public boolean validateLogin(String userId, String password) {
 		try (Session session = sessionFactory.openSession()) {
 
@@ -193,7 +200,8 @@ public class UserDAOImpl {
 		}
 	}
 
-	private boolean updateLoginAudit(String userId, String password, Session session, String results) {
+	@Override
+	public boolean updateLoginAudit(String userId, String password, Session session, String results) {
 		LoginAudit loginAudit = new LoginAudit();
 		LoginAuditId loginAuditId = new LoginAuditId();
 

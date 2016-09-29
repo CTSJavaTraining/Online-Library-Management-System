@@ -2,7 +2,13 @@ package com.training.blayer;
 
 import java.math.BigDecimal;
 
-public class BooksDTO {
+/**
+ * Dto class created to set details of book present in library
+ * 
+ * @author 542224
+ *
+ */
+public class BooksDto {
 
 	private String author;
 

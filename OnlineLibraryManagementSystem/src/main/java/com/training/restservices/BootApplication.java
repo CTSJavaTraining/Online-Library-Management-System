@@ -10,15 +10,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportResource;
 
 /**
- * 
- * @author 447482
- *
+ * this is the main class where the application starts
  */
 @SpringBootApplication
 @ImportResource("applicationContext.xml")
 public class BootApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(BootApplication.class);
+
+	/**
+	 * A private constructor
+	 */
+	private BootApplication() {
+		/**
+		 * this has nothing to instantiate
+		 */
+	}
 
 	/**
 	 * 
@@ -31,6 +38,7 @@ public class BootApplication {
 		}
 		SpringApplication.run(BootApplication.class, args);
 		logger.info("**************Application Starts****************/n/n/n/n");
+		
 
 	}
 

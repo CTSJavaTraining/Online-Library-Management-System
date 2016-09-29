@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.training.dao;
 
 import java.util.List;
@@ -9,12 +6,12 @@ import java.util.Map;
 import com.training.blayer.ViewItemsDto;
 
 /**
- * this class holds abstract methods for view and search the library items
+ * this interface holds abstract methods for view and search the library items
  * 
  * @author 447383
  *
  */
-public interface AnonymousUserDAO {
+public interface AnonymousUserDao {
 
 	/**
 	 * this method returns the map containing library items for view
@@ -33,4 +30,12 @@ public interface AnonymousUserDAO {
 	 * @return
 	 */
 	public List<ViewItemsDto> searchItems(String name, int pageNo);
+	
+	/**
+	 * 
+	 * @param category
+	 * @param startResult
+	 * @return
+	 */
+	public List<ViewItemsDto> runQuery(String category, int startResult);
 }

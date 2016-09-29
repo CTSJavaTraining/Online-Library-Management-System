@@ -2,7 +2,13 @@ package com.training.blayer;
 
 import java.util.List;
 
-public class UserSignupDTO {
+/**
+ * this class is created to set user sign up details
+ * 
+ * @author 542224
+ *
+ */
+public class UserSignupDto {
 
 	private String userId;
 
@@ -24,7 +30,7 @@ public class UserSignupDTO {
 
 	private String preferredNotify;
 
-	private List<AddressDetailsDTO> addressDetails;
+	private List<AddressDetailsDto> addressDetails;
 
 	private String password;
 
@@ -204,7 +210,7 @@ public class UserSignupDTO {
 	 * 
 	 * @return the addressDetails
 	 */
-	public List<AddressDetailsDTO> getAddressDetails() {
+	public List<AddressDetailsDto> getAddressDetails() {
 		return addressDetails;
 	}
 
@@ -213,7 +219,7 @@ public class UserSignupDTO {
 	 * @param addressDetails
 	 *            the addressDetails to set
 	 */
-	public void setAddressDetails(List<AddressDetailsDTO> addressDetails) {
+	public void setAddressDetails(List<AddressDetailsDto> addressDetails) {
 		this.addressDetails = addressDetails;
 	}
 

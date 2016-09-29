@@ -1,6 +1,7 @@
 package com.training.utils;
 
 /**
+ * this class consists of constant Strings that can be accessed
  * 
  * @author 542224
  *
