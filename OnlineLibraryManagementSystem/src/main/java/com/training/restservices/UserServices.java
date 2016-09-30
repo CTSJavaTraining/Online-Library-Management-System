@@ -24,7 +24,6 @@ import com.training.blayer.UserSignupDto;
 import com.training.blayer.ViewItemsDto;
 import com.training.dao.impl.AnonymousUserDaoImpl;
 import com.training.dao.impl.UserDaoImpl;
-import com.training.entity.LikedList;
 import com.training.entity.LoginDetails;
 
 /**
@@ -53,7 +52,7 @@ public class UserServices {
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	@ResponseBody
 	@Produces(MediaType.APPLICATION_JSON_VALUE)
-	private Map<String, List<ViewItemsDto>> getHomePageDetails(
+	public Map<String, List<ViewItemsDto>> getHomePageDetails(
 			@RequestParam(value = "pageno", required = false) String pageno) {
 
 		if (pageno != null) {
@@ -68,7 +67,7 @@ public class UserServices {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response setBasicDetails(@RequestBody UserSignupDto userSignupDto) {
+	public Response setBasicDetails(@RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
 
@@ -123,7 +122,7 @@ public class UserServices {
 	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
+	public Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
 
 		logger.info("Validating user for logging in {},{}", loginDetails.getUserId(), loginDetails.getPassword());
 
@@ -150,6 +149,7 @@ public class UserServices {
 		}
 	}
 
+
 	/**
 	 * 
 	 * @param likedList
@@ -158,7 +158,7 @@ public class UserServices {
 	@RequestMapping(value = "/likeitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response setLikeItems(@RequestBody LikedList likedList) {
+	public Response setLikeItems() {
 
 		return Response.status(Response.Status.OK).entity("Liked").build();
 	}
@@ -171,7 +171,7 @@ public class UserServices {
 	@RequestMapping(value = "/searchitems", method = RequestMethod.GET)
 	@ResponseBody
 	@Produces("application/json")
-	private Response searchService(@RequestParam("itemname") String itemName, @RequestParam("pageno") int pageNo) {
+	public Response searchService(@RequestParam("itemname") String itemName, @RequestParam("pageno") int pageNo) {
 
 		List<ViewItemsDto> viewItemsDtoList = anonymousUserDaoImpl.searchItems(itemName, pageNo);
 

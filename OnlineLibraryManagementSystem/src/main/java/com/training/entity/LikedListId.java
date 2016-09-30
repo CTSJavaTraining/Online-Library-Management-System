@@ -41,6 +41,7 @@ public class LikedListId implements Serializable {
 		this.itemId = itemId;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other)
 			return true;
@@ -50,12 +51,14 @@ public class LikedListId implements Serializable {
 			return false;
 		LikedListId castOther = (LikedListId) other;
 
+		
 		return ((this.getUserId() == castOther.getUserId()) || (this.getUserId() != null
 				&& castOther.getUserId() != null && this.getUserId().equals(castOther.getUserId())))
 				&& ((this.getItemId() == castOther.getItemId()) || (this.getItemId() != null
 						&& castOther.getItemId() != null && this.getItemId().equals(castOther.getItemId())));
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.training.blayer.DeleteItemsDto;
 import com.training.blayer.LibraryItemsDto;
 import com.training.dao.LibrarianUserDao;
-import com.training.entity.LibraryItems;
 import com.training.utils.LibraryConstants;
 
 /**
@@ -51,7 +50,7 @@ public class LibraryServices {
 	@RequestMapping(value = "/additems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addBooks(@RequestBody LibraryItemsDto libraryItemsDto) {
+	public Response addBooks(@RequestBody LibraryItemsDto libraryItemsDto) {
 
 		logger.debug("itemName is {}", libraryItemsDto.getItemName(), " category: {}", libraryItemsDto.getCategory());
 
@@ -77,13 +76,13 @@ public class LibraryServices {
 
 	/**
 	 * 
-	 * @param libraryItems
+	 * @param deleteItemsDto
 	 * @return
 	 */
 	@RequestMapping(value = "/deleteitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	private Response addBooks(@RequestBody DeleteItemsDto deleteItemsDto) {
+	public Response addBooks(@RequestBody DeleteItemsDto deleteItemsDto) {
 
 		logger.debug("itemName is {}", deleteItemsDto.getItemName(), " Type: {}", deleteItemsDto.getItemType());
 
@@ -120,7 +119,7 @@ public class LibraryServices {
 	@ResponseBody
 
 	@Produces("application/json")
-	private Response addItemFormat(@RequestBody LibraryItems libraryItems) {
+	public Response addItemFormat() {
 
 		return Response.status(Response.Status.OK).entity("Successfully updated item format.").build();
 
@@ -131,7 +130,7 @@ public class LibraryServices {
 	@ResponseBody
 
 	@Produces("application/json")
-	private Response checkItemAvailablity(@RequestParam("itemID") String itemID) {
+	public Response checkItemAvailablity(@RequestParam("itemID") String itemID) {
 
 		logger.debug("Checking availability for the item ID : {}", itemID);
 

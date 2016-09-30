@@ -42,6 +42,7 @@ public class LoginAuditId implements Serializable {
 		this.lastLoginTime = lastLoginTime;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other)
 			return true;
@@ -58,6 +59,7 @@ public class LoginAuditId implements Serializable {
 								&& this.getLastLoginTime().equals(castOther.getLastLoginTime())));
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 
