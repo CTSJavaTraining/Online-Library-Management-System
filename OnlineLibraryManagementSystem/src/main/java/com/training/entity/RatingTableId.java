@@ -9,7 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- * RatingTableId 
+ * RatingTableId
  */
 @Embeddable
 public class RatingTableId implements Serializable {

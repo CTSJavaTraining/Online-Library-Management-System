@@ -30,7 +30,7 @@ public interface AnonymousUserDao {
 	 * @return
 	 */
 	public List<ViewItemsDto> searchItems(String name, int pageNo);
-	
+
 	/**
 	 * 
 	 * @param category

@@ -27,18 +27,18 @@ public class UserServicesTest {
 	UserServices userServices;
 	@Mock
 	UserDetails userdetails;
-	
+
 	@Mock
 	UserSignupDto userSignupDTO;
-	
+
 	@Before
-	public void create()
-	{
+	public void create() {
 		MockitoAnnotations.initMocks(this);
-//		userServices = mock(UserServices.class);
-	//	UserDetails userdetails = mock(UserDetails.class);
+		// userServices = mock(UserServices.class);
+		// UserDetails userdetails = mock(UserDetails.class);
 		when(userServices.userNameExistance(userSignupDTO)).thenThrow(NumberFormatException.class);
 	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */

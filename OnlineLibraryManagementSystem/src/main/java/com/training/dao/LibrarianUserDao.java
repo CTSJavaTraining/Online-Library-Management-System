@@ -4,7 +4,8 @@ import com.training.blayer.DeleteItemsDto;
 import com.training.blayer.LibraryItemsDto;
 
 /**
- * interface holds abstract methods for class LibrarianUserDaoImpl in dao.impl package
+ * interface holds abstract methods for class LibrarianUserDaoImpl in dao.impl
+ * package
  * 
  * @author 447383
  *

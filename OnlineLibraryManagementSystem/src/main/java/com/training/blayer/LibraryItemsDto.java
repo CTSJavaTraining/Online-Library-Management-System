@@ -212,7 +212,8 @@ public class LibraryItemsDto {
 	}
 
 	/**
-	 * @param bookDetails the bookDetails to set
+	 * @param bookDetails
+	 *            the bookDetails to set
 	 */
 	public void setBookDetails(Set<BooksDto> bookDetails) {
 		this.bookDetails = bookDetails;
@@ -226,7 +227,8 @@ public class LibraryItemsDto {
 	}
 
 	/**
-	 * @param movieDetails the movieDetails to set
+	 * @param movieDetails
+	 *            the movieDetails to set
 	 */
 	public void setMovieDetails(Set<MoviesDto> movieDetails) {
 		this.movieDetails = movieDetails;
@@ -240,12 +242,11 @@ public class LibraryItemsDto {
 	}
 
 	/**
-	 * @param musicDetails the musicDetails to set
+	 * @param musicDetails
+	 *            the musicDetails to set
 	 */
 	public void setMusicDetails(Set<MusicDto> musicDetails) {
 		this.musicDetails = musicDetails;
 	}
-
-
 
 }

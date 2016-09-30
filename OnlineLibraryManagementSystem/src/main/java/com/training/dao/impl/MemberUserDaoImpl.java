@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.training.dao.MemberUserDao;
 import com.training.entity.SubscribedList;
+import com.training.entity.SubscribedListId;
 import com.training.entity.WishList;
+import com.training.entity.WishListId;
 import com.training.utils.Utilities;
 
 /**
@@ -24,24 +26,23 @@ import com.training.utils.Utilities;
  */
 public class MemberUserDaoImpl extends AnonymousUserDaoImpl implements MemberUserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(SignedUserDaoImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemberUserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	@Override
 	public boolean findExistance(int memberId, String itemId, String tableName) {
-		Query query;
 		String hqlQuery = "from " + tableName + " where itemId = :itemId and memberID= :userId";
 		try (Session session = sessionFactory.openSession()) {
 
 			session.beginTransaction();
-			query = session.createQuery(hqlQuery);
+			Query query = session.createQuery(hqlQuery);
 			query.setParameter("userId", memberId);
 			query.setParameter("itemId", itemId);
 			List<?> listResult = query.getResultList();
 
-			if (!(listResult.isEmpty())) {
+			if (!listResult.isEmpty()) {
 				logger.info("Hit {}", tableName, "and got info on item {}", itemId, "by {}", memberId);
 				return true;
 			}
@@ -59,25 +60,22 @@ public class MemberUserDaoImpl extends AnonymousUserDaoImpl implements MemberUse
 		try (Session session = sessionFactory.openSession()) {
 
 			Transaction transaction = session.beginTransaction();
-			logger.info("Session opened to store the wishList for the item {}", wishList.getId().getItemId(), " by {}",
-					wishList.getId().getMemberId());
+			WishListId id = wishList.getId();
+			logger.info("Session opened to store the wishList for the item {}", id.getItemId(), " by {}",
+					id.getMemberId());
 
-			boolean checkExistence = findExistance(wishList.getId().getMemberId(), wishList.getId().getItemId(),
-					"rating_table");
-
-			if (!checkExistence) {
+			if (!findExistance(id.getMemberId(), id.getItemId(), "rating_table")) {
 				wishList.setcreatedTime(Utilities.getCurrentDateTime());
 			}
 			wishList.setmodifiedTime(Utilities.getCurrentDateTime());
 
 			session.saveOrUpdate(wishList);
-			logger.info("The wishList updated for item{}", wishList.getId().getItemId(), " by{}",
-					wishList.getId().getMemberId(), "has been persisted");
+			logger.info("The wishList updated for item{}", id.getItemId(), " by {}", id.getMemberId(),
+					"has been persisted");
 
 			transaction.commit();
-			logger.info("The details of item{}", wishList.getId().getItemId(),
-					" wished by{} is stored in wish list table", wishList.getId().getMemberId(),
-					"has been commited to DB");
+			logger.info("The details of item{}", id.getItemId(), " wished by{} is stored in wish list table",
+					id.getMemberId(), "has been commited to DB");
 
 			return true;
 		} catch (Exception e) {
@@ -94,24 +92,21 @@ public class MemberUserDaoImpl extends AnonymousUserDaoImpl implements MemberUse
 
 			Transaction transaction = session.beginTransaction();
 
-			logger.info("Session opened to store the wishList for the item {}", subscribedList.getId().getItemId(),
-					"by {}", subscribedList.getId().getMemberId());
-
-			boolean checkExistence = findExistance(subscribedList.getId().getMemberId(),
-					subscribedList.getId().getItemId(), "subscribed item table");
-
-			if (!checkExistence) {
+			SubscribedListId id = subscribedList.getId();
+			logger.info("Session opened to store the wishList for the item {}", id.getItemId(), "by {}",
+					id.getMemberId());
+			// TODO:Will not work, Is there an table with "subscribed item
+			// table" available???
+			if (!findExistance(id.getMemberId(), id.getItemId(), "subscribed item table")) {
 				subscribedList.setcreatedTime(Utilities.getCurrentDateTime());
 			}
 			subscribedList.setmodifiedTime(Utilities.getCurrentDateTime());
 
 			session.saveOrUpdate(subscribedList);
-			logger.info("The item{}", subscribedList.getId().getItemId(), " subscribed by{}",
-					subscribedList.getId().getMemberId(), "has been persisted");
-
+			logger.info("The item{}", id.getItemId(), " subscribed by{}", id.getMemberId(), "has been persisted");
+			// TODO: Write a meaningful log file
 			transaction.commit();
-			logger.info("The item{}", subscribedList.getId().getItemId(), "subscribed by{}",
-					subscribedList.getId().getMemberId(), "has been commited to DB");
+			logger.info("The item{}", id.getItemId(), "subscribed by{}", id.getMemberId(), "has been commited to DB");
 
 			return true;
 		} catch (Exception e) {

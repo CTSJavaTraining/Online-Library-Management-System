@@ -32,15 +32,13 @@ import com.training.utils.Utilities;
  * @author 447383
  *
  */
-@Component(value="librarianUser")
+@Component(value = "librarianUser")
 public class LibrarianUserDaoImpl implements LibrarianUserDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(LibrarianUserDaoImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;
-
-	private static String getLatestItemId = "SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems) AND itemId LIKE :itemIdType";
 
 	@Override
 	public String checkAvailability(String itemId) {
@@ -123,7 +121,7 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 
 			session.beginTransaction();
 			String shortItemType = libraryItemsDto.getItemType().substring(0, 2).toUpperCase();
-
+			String getLatestItemId = "SELECT itemId FROM LibraryItems where createdTime=(SELECT max(createdTime) FROM LibraryItems) AND itemId LIKE :itemIdType";
 			@SuppressWarnings("unchecked")
 			List<String> lastItemId = session.createQuery(getLatestItemId)
 					.setParameter("itemIdType", shortItemType + "%").getResultList();
@@ -148,6 +146,11 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @param lastItemId
+	 */
 	private void getNewItemID(LibraryItemsDto libraryItemsDto, List<String> lastItemId) {
 		// Generating latest Item ID
 		if (!lastItemId.isEmpty()) {
@@ -157,20 +160,25 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 		}
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @return
+	 */
 	private LibraryItems insertIntoLibraryItems(LibraryItemsDto libraryItemsDto) {
 		LibraryItems libraryItems = setItemValues(libraryItemsDto);
 
 		// Updating corresponding tables books or music or movies
 
-		if ((LibraryConstants.BOOKS).equalsIgnoreCase(libraryItemsDto.getCategory())) {
+		if (LibraryConstants.BOOKS.equalsIgnoreCase(libraryItemsDto.getCategory())) {
 			setBookValues(libraryItemsDto, libraryItems);
 		}
 
-		else if ((LibraryConstants.MOVIES).equalsIgnoreCase(libraryItemsDto.getCategory())) {
+		else if (LibraryConstants.MOVIES.equalsIgnoreCase(libraryItemsDto.getCategory())) {
 			setMovieValue(libraryItemsDto, libraryItems);
 		}
 
-		else if ((LibraryConstants.MUSIC).equalsIgnoreCase(libraryItemsDto.getCategory())) {
+		else if (LibraryConstants.MUSIC.equalsIgnoreCase(libraryItemsDto.getCategory())) {
 			setMusicValue(libraryItemsDto, libraryItems);
 		}
 
@@ -179,6 +187,11 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 		return libraryItems;
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @param libraryItems
+	 */
 	private void setItemFormatValues(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
 		ItemFormat itemFormat = new ItemFormat();
 
@@ -196,12 +209,16 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 		libraryItems.setItemFormats(itemFormat);
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @param libraryItems
+	 */
 	private void setMusicValue(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
 		Set<MusicDto> musicList = libraryItemsDto.getMusicDetails();
 
-		Music music = new Music();
-
 		for (MusicDto musicValue : musicList) {
+			Music music = new Music();
 			music.setMusicId(libraryItemsDto.getItemId());
 			music.setProductions(musicValue.getProductions());
 			music.setSingers(musicValue.getSingers());
@@ -215,11 +232,16 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 		}
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @param libraryItems
+	 */
 	private void setMovieValue(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
 		Set<MoviesDto> moviesList = libraryItemsDto.getMovieDetails();
-		Movies movies = new Movies();
 
 		for (MoviesDto movieValue : moviesList) {
+			Movies movies = new Movies();
 			movies.setMovieId(libraryItemsDto.getItemId());
 			movies.setCasts(movieValue.getCasts());
 			movies.setProductions(movieValue.getProductions());
@@ -235,12 +257,16 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 		}
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @param libraryItems
+	 */
 	private void setBookValues(LibraryItemsDto libraryItemsDto, LibraryItems libraryItems) {
 		Set<BooksDto> booksList = libraryItemsDto.getBookDetails();
-		Books books = new Books();
 
 		for (BooksDto bookValue : booksList) {
-
+			Books books = new Books();
 			books.setBookId(libraryItemsDto.getItemId());
 			books.setAuthor(bookValue.getAuthor());
 			books.setPublishers(bookValue.getPublishers());
@@ -254,6 +280,11 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 		}
 	}
 
+	/**
+	 * 
+	 * @param libraryItemsDto
+	 * @return
+	 */
 	private LibraryItems setItemValues(LibraryItemsDto libraryItemsDto) {
 
 		LibraryItems libraryItems = new LibraryItems();

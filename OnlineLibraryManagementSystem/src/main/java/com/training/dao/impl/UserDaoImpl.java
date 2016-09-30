@@ -38,8 +38,6 @@ public class UserDaoImpl implements UserDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	private static String getLatestUserId = "SELECT userId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails) AND userId LIKE :userIdType";
-
 	@Override
 	public boolean userSignUp(UserSignupDto userSignupDto) {
 		try (Session session = sessionFactory.openSession()) {
@@ -48,7 +46,7 @@ public class UserDaoImpl implements UserDao {
 
 			// For user US and for Librarian LI
 			String shortUserType = userSignupDto.getRole().substring(0, 2).toUpperCase();
-
+			String getLatestUserId = "SELECT userId FROM UserDetails where createdTime=(SELECT max(createdTime) FROM UserDetails) AND userId LIKE :userIdType";
 			@SuppressWarnings("unchecked")
 			List<String> lastUserId = session.createQuery(getLatestUserId)
 					.setParameter("userIdType", shortUserType + "%").getResultList();
@@ -94,9 +92,9 @@ public class UserDaoImpl implements UserDao {
 	public void insertAddressValues(UserSignupDto userSignupDto, UserDetails userDetails) {
 		List<AddressDetailsDto> addresslist = userSignupDto.getAddressDetails();
 
+		List<AddressDetails> addressDetailsList = new LinkedList<>();
 		for (AddressDetailsDto addressValue : addresslist) {
 			AddressDetails addressDetails = new AddressDetails();
-
 			addressDetails.setUserDetails(userDetails);
 			addressDetails.setDoorno(addressValue.getDoorNo());
 			addressDetails.setStreetName(addressValue.getStreetName());
@@ -106,10 +104,7 @@ public class UserDaoImpl implements UserDao {
 			addressDetails.setPinCode(addressValue.getPinCode());
 			addressDetails.setCreatedTime(Utilities.getCurrentDateTime());
 			addressDetails.setModifiedTime(Utilities.getCurrentDateTime());
-
-			List<AddressDetails> addressDetailsList = new LinkedList<>();
 			addressDetailsList.add(addressDetails);
-
 			userDetails.setAddressDetails(addressDetailsList);
 		}
 	}
@@ -174,9 +169,11 @@ public class UserDaoImpl implements UserDao {
 			query.setMaxResults(1);
 
 			if (query.getResultList().isEmpty()) {
+				// TODO: Which user???
 				logger.info("User does not exist");
 				return true;
 			}
+			// TODO: Which user???
 			logger.info("userexists");
 		}
 		return false;
@@ -208,7 +205,7 @@ public class UserDaoImpl implements UserDao {
 		loginAuditId.setUserId(userId);
 		loginAuditId.setLastLoginTime(Utilities.getCurrentDateTime());
 		loginAudit.setId(loginAuditId);
-
+		// TODO:variable name results??
 		if (password.equalsIgnoreCase(results)) {
 
 			loginAudit.setLoginStatus('S');

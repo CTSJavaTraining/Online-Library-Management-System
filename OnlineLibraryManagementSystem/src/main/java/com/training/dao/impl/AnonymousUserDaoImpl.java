@@ -48,18 +48,18 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 			query.setFirstResult(startResult);
 			query.setMaxResults(10);
 			List<LibraryItems> resultList = query.getResultList();
-
-			return getRequestedItems(resultList);
+			if (!resultList.isEmpty()) {
+				return getRequestedItems(resultList);
+			}
 
 		} catch (Exception e) {
-			logger.error(e + "Failed to retrieve the search results for {}", itemName);
+			logger.error("Failed to retrieve the search results for {}", itemName, e);
 		}
 		return Collections.emptyList();
 	}
 
 	private List<ViewItemsDto> getRequestedItems(List<LibraryItems> resultList) {
-		List<ViewItemsDto> viewItemsDtoList;
-		viewItemsDtoList = new ArrayList<>();
+		List<ViewItemsDto> viewItemsDtoList = new ArrayList<>();
 
 		for (LibraryItems libraryItems : resultList) {
 			ViewItemsDto viewItemsdto = new ViewItemsDto();

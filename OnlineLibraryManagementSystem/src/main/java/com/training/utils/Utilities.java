@@ -43,8 +43,9 @@ public class Utilities {
 
 			logger.info("Latest Category ID is {} ", lastId);
 
-			stringBuilder.append(categoryType.substring(0, 2).toUpperCase()); // Example: LI
-																// or DV
+			stringBuilder.append(categoryType.substring(0, 2).toUpperCase()); // Example:
+																				// LI
+			// or DV
 
 			// Converting "US111111" to integer 111111 and adding 1 to 111112
 			// which is then converted to String
