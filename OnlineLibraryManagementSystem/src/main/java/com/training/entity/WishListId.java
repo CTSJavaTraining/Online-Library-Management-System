@@ -50,7 +50,7 @@ public class WishListId implements Serializable {
 		if (!(other instanceof WishListId))
 			return false;
 		WishListId castOther = (WishListId) other;
-
+		
 		return (this.getMemberId() == castOther.getMemberId())
 				&& ((this.getItemId() == castOther.getItemId()) || (this.getItemId() != null
 						&& castOther.getItemId() != null && this.getItemId().equals(castOther.getItemId())));
