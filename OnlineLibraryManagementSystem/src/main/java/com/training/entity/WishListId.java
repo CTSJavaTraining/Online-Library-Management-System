@@ -41,6 +41,7 @@ public class WishListId implements Serializable {
 		this.itemId = itemId;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other)
 			return true;
@@ -55,6 +56,7 @@ public class WishListId implements Serializable {
 						&& castOther.getItemId() != null && this.getItemId().equals(castOther.getItemId())));
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 
