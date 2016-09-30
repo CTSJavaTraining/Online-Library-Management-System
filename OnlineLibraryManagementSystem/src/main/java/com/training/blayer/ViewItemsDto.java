@@ -1,5 +1,11 @@
 package com.training.blayer;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * this class is created to set item format and price details
  * 
@@ -8,9 +14,18 @@ package com.training.blayer;
  */
 public class ViewItemsDto {
 
+	@NotBlank(message = "itemName must not be blank!")
 	private String itemName;
+
+	@NotBlank(message = "price must not be blank!")
+	@Min(value = 10, message = "Minimum price should be atleast 10")
 	private int price;
+
+	@DateTimeFormat(pattern="YYYY")
 	private int year;
+
+	@NotBlank(message = "itemType must not be blank!")
+	@Size(min = 2, max = 10, message = "itemType must be atleast 2 characters long and max of 10 characters")
 	private String itemType;
 
 	/**

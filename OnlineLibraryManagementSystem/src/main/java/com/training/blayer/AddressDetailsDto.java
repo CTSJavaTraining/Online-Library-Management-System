@@ -1,5 +1,9 @@
 package com.training.blayer;
 
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Dto class created to set the address details of a user
  * 
@@ -8,16 +12,23 @@ package com.training.blayer;
  */
 public class AddressDetailsDto {
 
+	@NotBlank(message = "doorNo must not be blank!")
+	@Min(value = 1, message = "doorNo not valid!")
 	private int doorNo;
 
 	private String streetName;
 
+	@NotBlank(message = "pinCode must not be blank!")
+	@Min(value = 1000, message = "pinCode is not valid!")
 	private int pinCode;
 
+	@NotBlank(message = "city must not be blank!")
 	private String city;
 
+	@NotBlank(message = "state must not be blank!")
 	private String state;
 
+	@NotBlank(message = "country must not be blank!")
 	private String country;
 
 	public int getDoorNo() {

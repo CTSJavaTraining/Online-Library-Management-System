@@ -2,6 +2,8 @@ package com.training.blayer;
 
 import java.math.BigDecimal;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Dto class created to set details of book present in library
  * 
@@ -10,8 +12,10 @@ import java.math.BigDecimal;
  */
 public class BooksDto {
 
+	@NotBlank(message = "author must not be blank!")
 	private String author;
 
+	@NotBlank(message = "publishers must not be blank!")
 	private String publishers;
 
 	private BigDecimal editionNo;
