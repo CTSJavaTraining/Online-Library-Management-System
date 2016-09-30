@@ -4,6 +4,12 @@ package com.training.blayer;
 import java.util.Date;
 import java.util.Set;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
 
 /**
@@ -13,22 +19,35 @@ public class LibraryItemsDto {
 
 	private String itemId;
 
+	@NotBlank(message = "itemName must not be blank!")
+	@Size(min = 2, max = 20, message = "itemName must be atleast 2 characters long and max of 20 characters")
 	private String itemName;
 
+	@DateTimeFormat(pattern="YYYY")
 	private Integer year;
 
+	@NotBlank(message = "price must not be blank!")
+	@Min(value = 10, message = "Minimum price should be atleast 10")
 	private int price;
 
+	@NotBlank(message = "description must not be blank!")
 	private String description;
 
+	@NotBlank(message = "itemType must not be blank!")
+	@Size(min = 2, max = 10, message = "itemType must be atleast 2 characters long and max of 10 characters")
 	private String itemType;
 
+	@DateTimeFormat(pattern = "YYYY-MM-dd")
 	private Date dateAdded;
 
+	@NotBlank(message = "noOfCopiesOrUrl must not be blank!")
 	private String noOfCopiesOrUrl;
 
+	@NotBlank(message = "category must not be blank!")
 	private String category;
 
+	@NotBlank(message = "releaseDate must not be blank!")
+	@DateTimeFormat(pattern = "YYYY-MM-dd")
 	private Date releaseDate;
 
 	private String genre;

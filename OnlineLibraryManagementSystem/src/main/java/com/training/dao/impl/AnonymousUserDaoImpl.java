@@ -25,7 +25,7 @@ import com.training.utils.LibraryConstants;
  * @author 447383
  *
  */
-@Component(value = "anonymousUser")
+@Component(value = "anonymousUserDaoImpl")
 public class AnonymousUserDaoImpl implements AnonymousUserDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(AnonymousUserDaoImpl.class);

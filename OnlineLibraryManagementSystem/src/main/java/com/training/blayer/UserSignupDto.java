@@ -2,6 +2,12 @@ package com.training.blayer;
 
 import java.util.List;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * this class is created to set user sign up details
  * 
@@ -12,28 +18,42 @@ public class UserSignupDto {
 
 	private String userId;
 
+	@NotBlank(message = "username must not be blank!")
+	@Size(min = 4, max = 15, message = "username must be atleast 4 characters long and max of 15 characters")
 	private String userName;
 
+	@NotBlank(message = "Role must not be blank!")
 	private String role;
 
+	@Min(value = 10, message = "age should be atleast be 10")
 	private int age;
 
+	@NotBlank(message = "Gender must not be blank!")
 	private String gender;
 
+	@NotBlank(message = "Email should not be null")
+	@Email(message = "invalid email address. Example: abcdefgh@****.***")
 	private String emailId;
 
 	private int mobileNo;
 
 	private int alternateContactNo;
 
+	@NotBlank(message = "Please enter preferred languages")
 	private String languages;
 
+	@NotBlank(message = "Preferred notification should not be empty")
+	@Size(min = 3, max = 6, message = "preferred notification should be atlead 3 characters in length and max of 6 characters")
 	private String preferredNotify;
 
 	private List<AddressDetailsDto> addressDetails;
 
+	@NotBlank(message = "password must not be blank!")
+	@Size(min = 4, max = 15, message = "password must be atleast 4 characters long and max of 15 characters")
 	private String password;
 
+	@NotBlank(message = "password must not be blank!")
+	@Size(min = 4, max = 15, message = "password must be atleast 4 characters long and max of 15 characters")
 	private String confirmPassword;
 
 	/**

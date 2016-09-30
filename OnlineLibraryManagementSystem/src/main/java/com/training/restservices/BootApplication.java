@@ -21,9 +21,9 @@ public class BootApplication {
 	/**
 	 * A private constructor
 	 */
-	private BootApplication() {
+	public BootApplication() {
 		/**
-		 * this has nothing to instantiate
+		 * thi-s has nothing to instantiate
 		 */
 	}
 
