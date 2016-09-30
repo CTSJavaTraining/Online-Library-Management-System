@@ -21,7 +21,7 @@ public interface SignedUserDao {
 	 * @param likedList
 	 * @return
 	 */
-	public int insertLikedItems(LikedList likedList);
+	public boolean insertLikedItems(LikedList likedList);
 
 	/**
 	 * this method is used to insert details into ratings table

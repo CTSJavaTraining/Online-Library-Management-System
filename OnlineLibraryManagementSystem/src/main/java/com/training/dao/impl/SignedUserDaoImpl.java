@@ -16,6 +16,7 @@ import com.training.entity.LikedList;
 import com.training.entity.LikedListId;
 import com.training.entity.RatingTable;
 import com.training.entity.RatingTableId;
+import com.training.utils.LibraryConstants;
 import com.training.utils.Utilities;
 
 /**
@@ -33,7 +34,7 @@ public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUse
 	private SessionFactory sessionFactory;
 
 	@Override
-	public int insertLikedItems(LikedList likedList) {
+	public boolean insertLikedItems(LikedList likedList) {
 
 		try (Session session = sessionFactory.openSession()) {
 
@@ -50,8 +51,8 @@ public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUse
 
 				// Check if this is the first like by the user for this item. If
 				// not, add modified time.
-				// TODO:Move table name to constant file
-				if (!findExistance(id.getUserId(), id.getItemId(), "LikedList")) {
+
+				if (!findExistance(id.getUserId(), id.getItemId(), LibraryConstants.LIKEDLISTTABLE)) {
 
 					likedList.setcreatedTime(Utilities.getCurrentDateTime());
 				}
@@ -61,22 +62,16 @@ public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUse
 				session.saveOrUpdate(likedList);
 
 				logger.info("The item {}", id.getItemId(), "liked by user {}", id.getUserId(), "has been persisted");
-				// TODO: what is the difference b/w persisted and commited?? and
-				// write a meaningful log
+
 				transaction.commit();
 
-				logger.info("The item{}", id.getItemId(), "liked by user {} ", id.getUserId(),
-						"has been commited to DB");
-				// TODO: what does 1,0 & -1 means??
-				return 1;
+				return true;
 			}
 
 		} catch (Exception e) {
 			logger.error("not able to load the liked item details because of DB error {}", e);
-			return -1;
 		}
-
-		return 0;
+		return false;
 
 	}
 
@@ -88,21 +83,16 @@ public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUse
 			RatingTableId id = ratings.getId();
 			logger.info("Session opened to store the ratings for the item {}", id.getItemId(), "rated by {}",
 					id.getUserId());
-			// TODO: Move table name to constant file and it should be a POJO
-			// class name
 
-			if (!findExistance(id.getUserId(), id.getItemId(), "rating_table")) {
+			if (!findExistance(id.getUserId(), id.getItemId(), LibraryConstants.RATINGTABLE)) {
 				ratings.setcreatedTime(Utilities.getCurrentDateTime());
 			}
 			ratings.setmodifiedTime(Utilities.getCurrentDateTime());
 
 			session.saveOrUpdate(ratings);
 			logger.info("The ratings for item{}", id.getItemId(), "given by{}", id.getUserId(), "has been persisted");
+
 			transaction.commit();
-			// TODO: what is the difference b/w persisted and commited?? and
-			// write a meaningful log
-			logger.info("The details of item{}", id.getItemId(), "rated by{}", id.getUserId(),
-					"has been commited to DB");
 
 			return true;
 		} catch (Exception e) {
@@ -115,25 +105,23 @@ public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUse
 	@Override
 	public boolean findExistance(String userId, String itemId, String tableName) {
 
+		String hqlQuery = "from "+ tableName +" where itemId = :itemIds and userId= :userId";
 		try (Session session = sessionFactory.openSession()) {
-
+			
 			session.beginTransaction();
-			// TODO: what is tableName means????
-			Query query = session.createQuery("from tableName where itemId = :itemIds and userId= :userId");
+			Query query = session.createQuery(hqlQuery);
 			query.setParameter("userId", userId);
 			query.setParameter("itemIds", itemId);
 			List<?> listResult = query.getResultList();
 
 			if (!(listResult.isEmpty())) {
-				// TODO: logging
 				logger.info("Hit {} ", tableName, "and got info on item {}", itemId, "by {}", userId);
 				return true;
 			}
 
 		} catch (Exception e) {
-			// TODO: meaning ful logging
-			logger.error(" Exception {} Failed to hit the database to check for the rating details of the item {}", e,
-					itemId, "rated by user {}", userId);
+
+			logger.error("Exception thrown on trying to find a record in table {}, {} ", tableName, e);
 		}
 
 		return false;
@@ -179,10 +167,8 @@ public class SignedUserDaoImpl extends AnonymousUserDaoImpl implements SignedUse
 					"UPDATE LibraryItems set rating=(select avg(rating) from RatingTable where itemId= :itemId");
 			query.setParameter("itemId", itemId);
 
-			int rowsAffected = query.executeUpdate();
-			// TODO: meaning??
-			logger.debug("rows affected {}", rowsAffected);
-
+			query.executeUpdate();
+			
 			logger.info("The rating for item{}", itemId, " updated successfully in library items table");
 			return true;
 
