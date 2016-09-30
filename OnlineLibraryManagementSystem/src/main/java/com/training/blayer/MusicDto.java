@@ -1,5 +1,7 @@
 package com.training.blayer;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Dto class created to set music item details
  * 
@@ -8,10 +10,13 @@ package com.training.blayer;
  */
 public class MusicDto {
 
+	@NotBlank(message = "productions must not be blank!")
 	private String productions;
 
+	@NotBlank(message = "writers must not be blank!")
 	private String writers;
 
+	@NotBlank(message = "singers must not be blank!")
 	private String singers;
 
 	public String getProductions() {

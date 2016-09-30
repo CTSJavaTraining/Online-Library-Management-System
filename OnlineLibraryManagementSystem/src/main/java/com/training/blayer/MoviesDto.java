@@ -1,5 +1,7 @@
 package com.training.blayer;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Dto class created to set movie details
  * 
@@ -8,8 +10,10 @@ package com.training.blayer;
  */
 public class MoviesDto {
 
+	@NotBlank(message = "productions must not be blank!")
 	private String productions;
 
+	@NotBlank(message = "writers must not be blank!")
 	private String writers;
 
 	private String singers;
