@@ -3,6 +3,7 @@ package com.training.restservices;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -67,7 +68,7 @@ public class UserServices {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response setBasicDetails(@RequestBody UserSignupDto userSignupDto) {
+	public Response setBasicDetails(@Valid @RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
 

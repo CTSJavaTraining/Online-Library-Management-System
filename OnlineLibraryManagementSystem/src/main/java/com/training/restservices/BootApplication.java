@@ -19,15 +19,6 @@ public class BootApplication {
 	private static final Logger logger = LoggerFactory.getLogger(BootApplication.class);
 
 	/**
-	 * A private constructor
-	 */
-	private BootApplication() {
-		/**
-		 * this has nothing to instantiate
-		 */
-	}
-
-	/**
 	 * 
 	 * @param args
 	 */
@@ -36,6 +27,7 @@ public class BootApplication {
 		if (AuthConfigFactory.getFactory() == null) {
 			AuthConfigFactory.setFactory(new AuthConfigFactoryImpl());
 		}
+
 		SpringApplication.run(BootApplication.class, args);
 		logger.info("**************Application Starts****************/n/n/n/n");
 

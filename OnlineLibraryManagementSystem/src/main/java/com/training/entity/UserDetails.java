@@ -50,10 +50,10 @@ public class UserDetails implements Serializable {
 	private String emailId;
 
 	@Column(name = "mobile_no", unique = true, nullable = false)
-	private int mobileNo;
+	private String mobileNo;
 
 	@Column(name = "alternate_contact_no")
-	private Integer alternateContactNo;
+	private String alternateContactNo;
 
 	@Column(name = "languages", nullable = false, length = 100)
 	private String languages;
@@ -132,19 +132,19 @@ public class UserDetails implements Serializable {
 		this.emailId = emailId;
 	}
 
-	public int getMobileNo() {
+	public String getMobileNo() {
 		return mobileNo;
 	}
 
-	public void setMobileNo(int mobileNo) {
+	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
 
-	public Integer getAlternateContactNo() {
+	public String getAlternateContactNo() {
 		return alternateContactNo;
 	}
 
-	public void setAlternateContactNo(Integer alternateContactNo) {
+	public void setAlternateContactNo(String alternateContactNo) {
 		this.alternateContactNo = alternateContactNo;
 	}
 

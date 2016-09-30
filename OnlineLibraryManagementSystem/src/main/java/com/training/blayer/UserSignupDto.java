@@ -2,6 +2,14 @@ package com.training.blayer;
 
 import java.util.List;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * this class is created to set user sign up details
  * 
@@ -12,28 +20,47 @@ public class UserSignupDto {
 
 	private String userId;
 
+	@NotBlank(message = "username must not be blank!")
+	@Size(min = 4, max = 15, message = "username must be atleast 4 characters long and max of 15 characters")
 	private String userName;
 
+	@NotBlank(message = "Role must not be blank!")
 	private String role;
 
+	@Min(value = 10, message = "age should be atleast 10")
 	private int age;
 
+	@NotBlank(message = "Gender must not be blank!")
 	private String gender;
 
+	@NotBlank(message = "Email should not be null")
+	@Email(message = "invalid email address. Example: abcdefgh@****.***")
 	private String emailId;
 
-	private int mobileNo;
+	@NotBlank(message = "Mobile number should not be empty")
+	@Pattern(regexp = "^[789]\\d{9}$", message = "Invalid mobile number")
+	@Size(min = 10, max = 10, message = "Mobile number should be exactly 10 digits")
+	private String mobileNo;
 
-	private int alternateContactNo;
+	@Pattern(regexp = "^[789]\\d{9}$", message = "Invalid alternate contact number")
+	@Size(min = 10, max = 10, message = "Alternate Mobile number should be exactly 10 digits")
+	
+	private String alternateContactNo;
 
+	@NotBlank(message = "Please enter preferred languages, languages should not be blank")
 	private String languages;
 
+	@NotBlank(message = "Preferred notification should not be empty")
+	@Size(min = 3, max = 6, message = "preferred notification should be atlead 3 characters in length and max of 6 characters")
 	private String preferredNotify;
 
+	@NotEmpty(message = "Please enter address details")
 	private List<AddressDetailsDto> addressDetails;
 
+	@NotBlank(message = "Password should not be blank")
 	private String password;
 
+	@NotBlank(message = "Confirm Password should not be blank")
 	private String confirmPassword;
 
 	/**
@@ -142,7 +169,7 @@ public class UserSignupDto {
 	 * 
 	 * @return the mobileNo
 	 */
-	public int getMobileNo() {
+	public String getMobileNo() {
 		return mobileNo;
 	}
 
@@ -151,7 +178,7 @@ public class UserSignupDto {
 	 * @param mobileNo
 	 *            the mobileNo to set
 	 */
-	public void setMobileNo(int mobileNo) {
+	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
 
@@ -159,7 +186,7 @@ public class UserSignupDto {
 	 * 
 	 * @return the alternateContactNo
 	 */
-	public int getAlternateContactNo() {
+	public String getAlternateContactNo() {
 		return alternateContactNo;
 	}
 
@@ -168,7 +195,7 @@ public class UserSignupDto {
 	 * @param alternateContactNo
 	 *            the alternateContactNo to set
 	 */
-	public void setAlternateContactNo(int alternateContactNo) {
+	public void setAlternateContactNo(String alternateContactNo) {
 		this.alternateContactNo = alternateContactNo;
 	}
 
