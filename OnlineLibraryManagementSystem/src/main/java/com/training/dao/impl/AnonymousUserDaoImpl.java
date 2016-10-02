@@ -47,6 +47,7 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 			query.setParameter("itemName", itemName);
 			query.setFirstResult(startResult);
 			query.setMaxResults(10);
+
 			List<LibraryItems> resultList = query.getResultList();
 			if (!resultList.isEmpty()) {
 				return getRequestedItems(resultList);

@@ -3,6 +3,11 @@ package com.training.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * 
+ * @author
+ * @param <T>
+ */
 @JsonInclude(value = Include.NON_EMPTY)
 public class Response<T> {
 

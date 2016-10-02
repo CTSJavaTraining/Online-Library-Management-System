@@ -1,5 +1,10 @@
 package com.training.response;
 
+/**
+ * 
+ * @author
+ *
+ */
 public class ErrorBean {
 	private String code;
 	private String message;

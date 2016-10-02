@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +25,8 @@ import com.training.blayer.ViewItemsDto;
 import com.training.dao.impl.AnonymousUserDaoImpl;
 import com.training.dao.impl.UserDaoImpl;
 import com.training.entity.LoginDetails;
+import com.training.response.Response;
+import com.training.response.Status;
 
 /**
  * 
@@ -50,69 +51,51 @@ public class UserServices {
 	@Qualifier("anonymousUserDaoImpl")
 	private AnonymousUserDaoImpl anonymousUserDaoImpl;
 
+	/**
+	 * 
+	 * @param pageno
+	 * @return
+	 */
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	@ResponseBody
 	@Produces(MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, List<ViewItemsDto>> getHomePageDetails(
+	public Response<Map<String, List<ViewItemsDto>>> getHomePageDetails(
 			@RequestParam(value = "pageno", required = false) String pageno) {
 
+		Response<Map<String, List<ViewItemsDto>>> response = new Response<>();
 		if (pageno != null) {
-			return anonymousUserDaoImpl.viewItemsCheck(Integer.parseInt(pageno));
+			response.setData(anonymousUserDaoImpl.viewItemsCheck(Integer.parseInt(pageno)));
 
 		} else {
-			return anonymousUserDaoImpl.viewItemsCheck(1);
+			response.setData(anonymousUserDaoImpl.viewItemsCheck(1));
 		}
-
+		return response;
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response setBasicDetails(@Valid @RequestBody UserSignupDto userSignupDto) {
+	public Response<String> setBasicDetails(@Valid @RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
 
 		// If true, user does not exist. So new user is created
+		Response<String> response = new Response<>();
 		if (userDaoImpl.validateUser(username)) {
 
 			// If true, new user is updated into DB.
 			if (userDaoImpl.userSignUp(userSignupDto)) {
-				return Response.status(Response.Status.OK).entity("Successfully saved your information").build();
+				response.setMessage("Sucessfully saved user information");
+				response.setStatus(Status.OK);
 			} else {
-				return Response.status(Response.Status.BAD_GATEWAY)
-						.entity("Error creating user. Please try again later!!").build();
+				response.setMessage("Error creating user. Please try again later!");
+				response.setStatus(Status.EXPECTATION_FAILED);
 			}
 
 		} else {
-			return Response.status(Response.Status.CONFLICT).entity("User :" + username + " already exists ").build();
+			response.setMessage("User already exists!");
 		}
-	}
-
-	/**
-	 * 
-	 * @param userSignupDto
-	 * @return
-	 */
-	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Produces("application/json")
-	public Response userNameExistance(@RequestBody UserSignupDto userSignupDto) {
-
-		String username = userSignupDto.getUserName();
-
-		if (!username.isEmpty()) {
-
-			if (userDaoImpl.validateUser(username)) {
-				return Response.status(Response.Status.OK).entity("User does not exist").build();
-			} else {
-				return Response.status(Response.Status.CONFLICT).entity("User exist").build();
-			}
-		}
-
-		else {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Username should not be blank").build();
-		}
-
+		return response;
 	}
 
 	/**
@@ -123,64 +106,88 @@ public class UserServices {
 	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response validateLoginDetails(@RequestBody LoginDetails loginDetails) {
+	public Response<String> validateLoginDetails(@RequestBody LoginDetails loginDetails) {
 
 		logger.info("Validating user for logging in {},{}", loginDetails.getUserId(), loginDetails.getPassword());
 
 		String userId = loginDetails.getUserId();
 
 		String password = loginDetails.getPassword();
-
+		Response<String> response = new Response<>();
 		if ((!userId.isEmpty()) && (!password.isEmpty())) {
 
 			if (userDaoImpl.validateLoginUser(userId)) {
-				return Response.status(Response.Status.NOT_FOUND).entity("User does not exist. Please signup").build();
+				response.setMessage("User does not exist. Please signup");
 			} else {
 
 				if (userDaoImpl.validateLogin(userId, password)) {
-					return Response.status(Response.Status.OK).entity("User " + userId + " logged in successfully")
-							.build();
+					response.setMessage("User " + userId + " logged in successfully");
 				} else {
-					return Response.status(Response.Status.BAD_REQUEST).entity("Incorrect Login Details").build();
+					response.setMessage("Incorrect Login Details");
 				}
 			}
 		} else {
-			return Response.status(Response.Status.BAD_REQUEST).entity("userId or password should not be empty")
-					.build();
+			response.setMessage("User name and password should not be empty");
 		}
+		return response;
 	}
-
 
 	/**
 	 * 
-	 * @param likedList
+	 * @param userSignupDto
 	 * @return
 	 */
-	@RequestMapping(value = "/likeitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response setLikeItems() {
+	public Response<String> userNameExistance(@RequestBody UserSignupDto userSignupDto) {
 
-		return Response.status(Response.Status.OK).entity("Liked").build();
+		String username = userSignupDto.getUserName();
+
+		Response<String> response = new Response<>();
+		if (!username.isEmpty()) {
+
+			if (userDaoImpl.validateUser(username)) {
+				response.setMessage("User does not exist!!!");
+			} else {
+				response.setMessage("User exist");
+			}
+		}
+
+		else {
+			response.setMessage("User name should not be blank");
+		}
+		return response;
 	}
 
 	/**
 	 * 
-	 * @param libraryitems
+	 * @param itemName
+	 * @param pageNo
 	 * @return
 	 */
 	@RequestMapping(value = "/searchitems", method = RequestMethod.GET)
 	@ResponseBody
 	@Produces("application/json")
-	public Response searchService(@RequestParam("itemname") String itemName, @RequestParam("pageno") int pageNo) {
+	public Response<List<ViewItemsDto>> searchService(@RequestParam("itemname") String itemName,
+			@RequestParam(value = "pageno", required = false) String pageNo) {
 
-		List<ViewItemsDto> viewItemsDtoList = anonymousUserDaoImpl.searchItems(itemName, pageNo);
+		Response<List<ViewItemsDto>> response = new Response<>();
+
+		List<ViewItemsDto> viewItemsDtoList;
+
+		if (pageNo != null) {
+			viewItemsDtoList = anonymousUserDaoImpl.searchItems(itemName, Integer.parseInt(pageNo));
+		} else {
+			viewItemsDtoList = anonymousUserDaoImpl.searchItems(itemName, 1);
+		}
 
 		if (!viewItemsDtoList.isEmpty()) {
-			return Response.status(Response.Status.OK).entity(viewItemsDtoList).build();
+			response.setData(viewItemsDtoList);
 		} else {
-			return Response.status(Response.Status.OK).entity("No items available of name:" + itemName).build();
+			response.setMessage("Requested item does not exist");
 		}
+		return response;
 	}
 
 	/**
@@ -188,8 +195,11 @@ public class UserServices {
 	 * @return
 	 */
 	@RequestMapping("/test")
-	public Response testService() {
-		return Response.status(Response.Status.OK).entity("Hello World").build();
+	public Response<String> testService() {
+		Response<String> response = new Response<>();
+		response.setMessage("Hello World!! Test");
+
+		return response;
 	}
 
 }

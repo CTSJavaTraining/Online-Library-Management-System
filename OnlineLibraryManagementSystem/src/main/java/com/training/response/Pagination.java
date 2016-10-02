@@ -1,5 +1,10 @@
 package com.training.response;
 
+/**
+ * 
+ * @author
+ *
+ */
 public class Pagination {
 
 	private int pageCount;

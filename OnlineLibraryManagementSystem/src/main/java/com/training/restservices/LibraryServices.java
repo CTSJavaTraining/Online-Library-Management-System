@@ -82,7 +82,7 @@ public class LibraryServices {
 	@RequestMapping(value = "/deleteitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
-	public Response addBooks(@RequestBody DeleteItemsDto deleteItemsDto) {
+	public Response deleteItemAvailable(@RequestBody DeleteItemsDto deleteItemsDto) {
 
 		logger.debug("itemName is {}", deleteItemsDto.getItemName(), " Type: {}", deleteItemsDto.getItemType());
 
@@ -110,27 +110,13 @@ public class LibraryServices {
 
 	/**
 	 * 
-	 * @param libraryItems
+	 * @param itemID
 	 * @return
 	 */
-
-	@RequestMapping(value = "/additemformat", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-
-	@ResponseBody
-
-	@Produces("application/json")
-	public Response addItemFormat() {
-
-		return Response.status(Response.Status.OK).entity("Successfully updated item format.").build();
-
-	}
-
 	@RequestMapping(value = "/itemavailability", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-
 	@ResponseBody
-
 	@Produces("application/json")
-	public Response checkItemAvailablity(@RequestParam("itemID") String itemID) {
+	public Response checkItemAvailablity(@RequestParam("itemid") String itemID) {
 
 		logger.debug("Checking availability for the item ID : {}", itemID);
 

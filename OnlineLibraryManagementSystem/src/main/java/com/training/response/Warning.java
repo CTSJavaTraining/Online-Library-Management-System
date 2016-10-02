@@ -1,5 +1,10 @@
 package com.training.response;
 
+/**
+ * 
+ * @author
+ *
+ */
 public class Warning {
 	private String code;
 	private String message;
