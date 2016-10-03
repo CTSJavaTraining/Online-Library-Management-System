@@ -47,7 +47,7 @@ public class UtilitiesTest {
 		assertEquals("US111112", Utilities.idGenerator("US", "US111111"));
 		assertEquals("MM00013", Utilities.idGenerator("MM", "MM00012"));
 		assertEquals("MM100013", Utilities.idGenerator("MM", "MM100012"));
-		assertEquals("L12345", Utilities.idGenerator("L", "LL12344"));
+		assertEquals("LI123456", Utilities.idGenerator("L", "LL12344"));
 	}
 
 	@Test(expected = NumberFormatException.class)

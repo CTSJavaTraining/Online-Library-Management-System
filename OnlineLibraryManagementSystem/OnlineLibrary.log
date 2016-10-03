@@ -1,0 +1,101 @@
+2016-10-03 17:16:09 INFO  BootApplication:48 - Starting BootApplication on PC334623 with PID 5004 (D:\Vignesh-repo\Online-Library-Management-System\OnlineLibraryManagementSystem\target\classes started by 447482 in D:\Vignesh-repo\Online-Library-Management-System\OnlineLibraryManagementSystem)
+2016-10-03 17:16:09 DEBUG BootApplication:51 - Running with Spring Boot v1.4.0.RELEASE, Spring v4.3.2.RELEASE
+2016-10-03 17:16:09 INFO  BootApplication:659 - No active profile set, falling back to default profiles: default
+2016-10-03 17:16:09 INFO  AnnotationConfigEmbeddedWebApplicationContext:581 - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@22f9e2: startup date [Mon Oct 03 17:16:09 IST 2016]; root of context hierarchy
+2016-10-03 17:16:10 DEBUG logging:19 - Logging Provider: org.jboss.logging.Log4jLoggerProvider
+2016-10-03 17:16:10 INFO  Version:30 - HV000001: Hibernate Validator 5.2.4.Final
+2016-10-03 17:16:10 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from class path resource [applicationContext.xml]
+2016-10-03 17:16:10 INFO  PropertySourcesPlaceholderConfigurer:172 - Loading properties file from class path resource [online-library.properties]
+2016-10-03 17:16:11 INFO  AutowiredAnnotationBeanPostProcessor:155 - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2016-10-03 17:16:11 INFO  PostProcessorRegistrationDelegate$BeanPostProcessorChecker:328 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$ddeb9023] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2016-10-03 17:16:11 INFO  TomcatEmbeddedServletContainer:88 - Tomcat initialized with port(s): 8080 (http)
+2016-10-03 17:16:11 INFO  ContextLoader:276 - Root WebApplicationContext: initialization completed in 1600 ms
+2016-10-03 17:16:11 INFO  ServletRegistrationBean:190 - Mapping servlet: 'dispatcherServlet' to [/]
+2016-10-03 17:16:11 INFO  FilterRegistrationBean:258 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2016-10-03 17:16:11 INFO  FilterRegistrationBean:258 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2016-10-03 17:16:11 INFO  FilterRegistrationBean:258 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2016-10-03 17:16:11 INFO  FilterRegistrationBean:258 - Mapping filter: 'requestContextFilter' to: [/*]
+2016-10-03 17:16:11 INFO  DriverManagerDataSource:133 - Loaded JDBC driver: com.mysql.jdbc.Driver
+2016-10-03 17:16:11 INFO  Version:37 - HHH000412: Hibernate Core {5.2.0.Final}
+2016-10-03 17:16:11 INFO  Environment:213 - HHH000206: hibernate.properties not found
+2016-10-03 17:16:11 INFO  Environment:318 - HHH000021: Bytecode provider name : javassist
+2016-10-03 17:16:11 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2016-10-03 17:16:12 INFO  Dialect:152 - HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2016-10-03 17:16:13 INFO  RequestMappingHandlerAdapter:534 - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@22f9e2: startup date [Mon Oct 03 17:16:09 IST 2016]; root of context hierarchy
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/deleteitems],methods=[DELETE],consumes=[application/json]}" onto public javax.ws.rs.core.Response com.training.restservices.LibraryServices.deleteItemAvailable(com.training.dto.DeleteItemsDto)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/itemavailability],methods=[GET],consumes=[application/json]}" onto public javax.ws.rs.core.Response com.training.restservices.LibraryServices.checkItemAvailablity(java.lang.String)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/additems],methods=[POST],consumes=[application/json]}" onto public javax.ws.rs.core.Response com.training.restservices.LibraryServices.addBooks(com.training.dto.LibraryItemsDto)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/signup],methods=[POST],consumes=[application/json]}" onto public com.training.response.Response<java.lang.String> com.training.restservices.UserServices.setBasicDetails(com.training.dto.UserSignupDto)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/searchitems],methods=[GET]}" onto public com.training.response.Response<java.util.List<com.training.dto.ViewItemsDto>> com.training.restservices.UserServices.searchService(java.lang.String,java.lang.String)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/test]}" onto public com.training.response.Response<java.lang.String> com.training.restservices.UserServices.testService()
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/home],methods=[GET]}" onto public com.training.response.Response<java.util.Map<java.lang.String, java.util.List<com.training.dto.ViewItemsDto>>> com.training.restservices.UserServices.getHomePageDetails(java.lang.String)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/login],methods=[PUT],consumes=[application/json]}" onto public com.training.response.Response<java.lang.String> com.training.restservices.UserServices.validateLoginDetails(com.training.entity.LoginDetails)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/uservalidation],methods=[PUT],consumes=[application/json]}" onto public com.training.response.Response<java.lang.String> com.training.restservices.UserServices.userNameExistance(com.training.dto.UserSignupDto)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2016-10-03 17:16:13 INFO  RequestMappingHandlerMapping:543 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2016-10-03 17:16:13 INFO  SimpleUrlHandlerMapping:354 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-10-03 17:16:13 INFO  SimpleUrlHandlerMapping:354 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-10-03 17:16:13 INFO  SimpleUrlHandlerMapping:354 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2016-10-03 17:16:13 INFO  AnnotationMBeanExporter:431 - Registering beans for JMX exposure on startup
+2016-10-03 17:16:13 INFO  TomcatEmbeddedServletContainer:186 - Tomcat started on port(s): 8080 (http)
+2016-10-03 17:16:13 INFO  BootApplication:57 - Started BootApplication in 4.156 seconds (JVM running for 4.777)
+2016-10-03 17:16:13 INFO  BootApplication:25 - **************Application Starts****************/n/n/n/n
+2016-10-03 17:42:22 INFO  DispatcherServlet:489 - FrameworkServlet 'dispatcherServlet': initialization started
+2016-10-03 17:42:22 INFO  DispatcherServlet:508 - FrameworkServlet 'dispatcherServlet': initialization completed in 24 ms
+2016-10-03 17:42:22 DEBUG AnonymousUserDaoImpl:85 - startResult start result and page num 2 
+2016-10-03 17:42:22 DEBUG QueryTranslatorFactoryInitiator:45 - QueryTranslatorFactory : org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory@1f326fe
+2016-10-03 17:42:22 INFO  QueryTranslatorFactoryInitiator:47 - HHH000397: Using ASTQueryTranslatorFactory
+2016-10-03 17:42:22 DEBUG QueryTranslatorImpl:278 - parse() - HQL: from com.training.entity.LibraryItems where category = :itemCategory
+2016-10-03 17:42:22 DEBUG QueryTranslatorImpl:296 - --- HQL AST ---
+ \-[QUERY] Node: 'query'
+    +-[SELECT_FROM] Node: 'SELECT_FROM'
+    |  \-[FROM] Node: 'from'
+    |     \-[RANGE] Node: 'RANGE'
+    |        \-[DOT] Node: '.'
+    |           +-[DOT] Node: '.'
+    |           |  +-[DOT] Node: '.'
+    |           |  |  +-[IDENT] Node: 'com'
+    |           |  |  \-[IDENT] Node: 'training'
+    |           |  \-[IDENT] Node: 'entity'
+    |           \-[IDENT] Node: 'LibraryItems'
+    \-[WHERE] Node: 'where'
+       \-[EQ] Node: '='
+          +-[IDENT] Node: 'category'
+          \-[COLON] Node: ':'
+             \-[IDENT] Node: 'itemCategory'
+
+2016-10-03 17:42:22 DEBUG ErrorCounter:95 - throwQueryException() : no errors
+2016-10-03 17:42:22 DEBUG HqlSqlBaseWalker:124 - select << begin [level=1, statement=select]
+2016-10-03 17:42:22 DEBUG FromElement:146 - FromClause{level=1} : com.training.entity.LibraryItems (<no alias>) -> libraryite0_
+2016-10-03 17:42:22 DEBUG FromReferenceNode:60 - Resolved : {synthetic-alias} -> {synthetic-alias}
+2016-10-03 17:42:22 DEBUG DotNode:661 - getDataType() : category -> org.hibernate.type.StringType@15a5c6b
+2016-10-03 17:42:22 DEBUG FromReferenceNode:60 - Resolved : {synthetic-alias}.category -> libraryite0_.category
+2016-10-03 17:42:22 DEBUG HqlSqlBaseWalker:128 - select : finishing up [level=1, statement=select]
+2016-10-03 17:42:22 DEBUG HqlSqlWalker:725 - processQuery() :  ( SELECT ( FromClause{level=1} library_items libraryite0_ ) ( where ( = ( libraryite0_.category {synthetic-alias} category ) ? ) ) )
+2016-10-03 17:42:22 DEBUG HqlSqlWalker:1001 - Derived SELECT clause created.
+2016-10-03 17:42:22 DEBUG JoinProcessor:169 - Using FROM fragment [library_items libraryite0_]
+2016-10-03 17:42:22 DEBUG HqlSqlBaseWalker:132 - select >> end [level=1, statement=select]
+2016-10-03 17:42:22 DEBUG QueryTranslatorImpl:265 - --- SQL AST ---
+ \-[SELECT] QueryNode: 'SELECT'  querySpaces (library_items)
+    +-[SELECT_CLAUSE] SelectClause: '{derived select clause}'
+    |  +-[SELECT_EXPR] SelectExpressionImpl: 'libraryite0_.item_id as item_id1_3_' {FromElement{explicit,not a collection join,not a fetch join,fetch non-lazy properties,classAlias=null,role=null,tableName=library_items,tableAlias=libraryite0_,origin=null,columns={,className=com.training.entity.LibraryItems}}}
+    |  \-[SQL_TOKEN] SqlFragment: 'libraryite0_.category as category2_3_, libraryite0_.c_time as c_time3_3_, libraryite0_.date_added as date_add4_3_, libraryite0_.description as descript5_3_, libraryite0_.item_name as item_nam6_3_, libraryite0_.item_type as item_typ7_3_, libraryite0_.m_time as m_time8_3_, libraryite0_.price as price9_3_, libraryite0_.rating as rating10_3_, libraryite0_.year as year11_3_'
+    +-[FROM] FromClause: 'from' FromClause{level=1, fromElementCounter=1, fromElements=1, fromElementByClassAlias=[], fromElementByTableAlias=[libraryite0_], fromElementsByPath=[], collectionJoinFromElementsByPath=[], impliedElements=[]}
+    |  \-[FROM_FRAGMENT] FromElement: 'library_items libraryite0_' FromElement{explicit,not a collection join,not a fetch join,fetch non-lazy properties,classAlias=null,role=null,tableName=library_items,tableAlias=libraryite0_,origin=null,columns={,className=com.training.entity.LibraryItems}}
+    \-[WHERE] SqlNode: 'where'
+       \-[EQ] BinaryLogicOperatorNode: '='
+          +-[DOT] DotNode: 'libraryite0_.category' {propertyName=category,dereferenceType=PRIMITIVE,getPropertyPath=category,path={synthetic-alias}.category,tableAlias=libraryite0_,className=com.training.entity.LibraryItems,classAlias=null}
+          |  +-[IDENT] IdentNode: '{synthetic-alias}' {originalText={synthetic-alias}}
+          |  \-[IDENT] IdentNode: 'category' {originalText=category}
+          \-[NAMED_PARAM] ParameterNode: '?' {name=itemCategory, expectedType=org.hibernate.type.StringType@15a5c6b}
+
+2016-10-03 17:42:22 DEBUG ErrorCounter:95 - throwQueryException() : no errors
+2016-10-03 17:42:22 DEBUG QueryTranslatorImpl:247 - HQL: from com.training.entity.LibraryItems where category = :itemCategory
+2016-10-03 17:42:22 DEBUG QueryTranslatorImpl:248 - SQL: select libraryite0_.item_id as item_id1_3_, libraryite0_.category as category2_3_, libraryite0_.c_time as c_time3_3_, libraryite0_.date_added as date_add4_3_, libraryite0_.description as descript5_3_, libraryite0_.item_name as item_nam6_3_, libraryite0_.item_type as item_typ7_3_, libraryite0_.m_time as m_time8_3_, libraryite0_.price as price9_3_, libraryite0_.rating as rating10_3_, libraryite0_.year as year11_3_ from library_items libraryite0_ where libraryite0_.category=?
+2016-10-03 17:42:22 DEBUG ErrorCounter:95 - throwQueryException() : no errors
+2016-10-03 17:42:22 INFO  AnonymousUserDaoImpl:76 - Size of the result sent for search item is 3
+2016-10-03 17:42:22 INFO  AnonymousUserDaoImpl:76 - Size of the result sent for search item is 0
+2016-10-03 17:42:22 INFO  AnonymousUserDaoImpl:76 - Size of the result sent for search item is 0
+2016-10-03 18:41:32 INFO  SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin:125 - Application shutdown requested.
+2016-10-03 18:41:32 INFO  AnnotationConfigEmbeddedWebApplicationContext:982 - Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@22f9e2: startup date [Mon Oct 03 17:16:09 IST 2016]; root of context hierarchy
+2016-10-03 18:41:32 INFO  AnnotationMBeanExporter:449 - Unregistering JMX-exposed beans on shutdown

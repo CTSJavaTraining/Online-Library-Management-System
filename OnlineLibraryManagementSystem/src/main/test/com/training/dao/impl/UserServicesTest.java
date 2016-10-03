@@ -31,6 +31,7 @@ public class UserServicesTest {
 	@Mock
 	UserSignupDto userSignupDTO;
 
+	@SuppressWarnings("unchecked")
 	@Before
 	public void create() {
 		MockitoAnnotations.initMocks(this);

@@ -23,7 +23,6 @@ public class BootApplication {
 
 		SpringApplication.run(BootApplication.class, args);
 		logger.info("**************Application Starts****************/n/n/n/n");
-
 	}
 
 }
