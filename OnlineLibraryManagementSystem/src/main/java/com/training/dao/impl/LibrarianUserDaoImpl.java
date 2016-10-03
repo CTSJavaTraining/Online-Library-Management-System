@@ -98,7 +98,7 @@ public class LibrarianUserDaoImpl implements LibrarianUserDao {
 
 			Query query = session.createQuery(
 					"UPDATE ItemFormat SET available= :available WHERE itemId= (SELECT itemId from LibraryItems WHERE itemName = :itemName AND itemType = :itemType)");
-			query.setParameter("available", "Item Deleted");
+			query.setParameter("available", "0");
 			query.setParameter("itemName", deleteItemsDto.getItemName());
 			query.setParameter("itemType", deleteItemsDto.getItemType());
 

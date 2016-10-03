@@ -90,7 +90,7 @@ public class LibraryServices {
 				deleteItemsDto.getItemType().substring(0, 2).toUpperCase())) {
 
 			if (librarianUserDao.deleteLibraryItems(deleteItemsDto)) {
-				return Response.status(Response.Status.OK).entity("Successfully updated item details.").build();
+				return Response.status(Response.Status.OK).entity("Successfully updated item details as available to 0.").build();
 			}
 
 			else {
