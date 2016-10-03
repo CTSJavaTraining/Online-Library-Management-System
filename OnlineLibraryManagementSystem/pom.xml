@@ -54,11 +54,6 @@
 
 		<!-- Response status -->
 
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javax.version}</version>
-		</dependency>
 
 		<!-- Hibernate Core -->
 
