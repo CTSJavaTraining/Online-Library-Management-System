@@ -1,4 +1,4 @@
-package com.training.blayer;
+package com.training.dto;
 // default package
 
 import java.util.Date;

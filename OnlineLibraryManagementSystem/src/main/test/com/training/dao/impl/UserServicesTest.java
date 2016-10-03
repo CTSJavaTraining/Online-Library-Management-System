@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.training.blayer.UserSignupDto;
+import com.training.dto.UserSignupDto;
 import com.training.entity.UserDetails;
 import com.training.restservices.UserServices;
 

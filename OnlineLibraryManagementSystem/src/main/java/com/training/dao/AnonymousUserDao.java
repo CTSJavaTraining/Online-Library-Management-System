@@ -3,7 +3,7 @@ package com.training.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.training.blayer.ViewItemsDto;
+import com.training.dto.ViewItemsDto;
 
 /**
  * this interface holds abstract methods for view and search the library items

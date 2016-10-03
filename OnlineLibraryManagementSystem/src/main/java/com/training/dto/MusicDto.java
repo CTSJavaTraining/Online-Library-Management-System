@@ -1,4 +1,4 @@
-package com.training.blayer;
+package com.training.dto;
 
 import org.hibernate.validator.constraints.NotBlank;
 

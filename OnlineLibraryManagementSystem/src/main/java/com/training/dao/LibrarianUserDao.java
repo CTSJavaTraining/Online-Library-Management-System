@@ -1,7 +1,7 @@
 package com.training.dao;
 
-import com.training.blayer.DeleteItemsDto;
-import com.training.blayer.LibraryItemsDto;
+import com.training.dto.DeleteItemsDto;
+import com.training.dto.LibraryItemsDto;
 
 /**
  * interface holds abstract methods for class LibrarianUserDaoImpl in dao.impl

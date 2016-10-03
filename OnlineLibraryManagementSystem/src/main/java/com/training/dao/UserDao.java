@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import com.training.blayer.UserSignupDto;
+import com.training.dto.UserSignupDto;
 import com.training.entity.UserDetails;
 
 /**

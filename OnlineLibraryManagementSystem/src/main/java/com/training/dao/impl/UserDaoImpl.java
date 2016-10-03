@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.training.blayer.AddressDetailsDto;
-import com.training.blayer.UserSignupDto;
 import com.training.dao.UserDao;
+import com.training.dto.AddressDetailsDto;
+import com.training.dto.UserSignupDto;
 import com.training.entity.AddressDetails;
 import com.training.entity.LoginAudit;
 import com.training.entity.LoginAuditId;

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.blayer.DeleteItemsDto;
-import com.training.blayer.LibraryItemsDto;
 import com.training.dao.LibrarianUserDao;
+import com.training.dto.DeleteItemsDto;
+import com.training.dto.LibraryItemsDto;
 import com.training.utils.LibraryConstants;
 
 /**
@@ -79,7 +79,7 @@ public class LibraryServices {
 	 * @param deleteItemsDto
 	 * @return
 	 */
-	@RequestMapping(value = "/deleteitems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/deleteitems", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Produces("application/json")
 	public Response deleteItemAvailable(@RequestBody DeleteItemsDto deleteItemsDto) {

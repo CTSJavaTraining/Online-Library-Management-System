@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.training.blayer.UserSignupDto;
-import com.training.blayer.ViewItemsDto;
 import com.training.dao.impl.AnonymousUserDaoImpl;
 import com.training.dao.impl.UserDaoImpl;
+import com.training.dto.UserSignupDto;
+import com.training.dto.ViewItemsDto;
 import com.training.entity.LoginDetails;
 import com.training.response.Response;
 import com.training.response.Status;
