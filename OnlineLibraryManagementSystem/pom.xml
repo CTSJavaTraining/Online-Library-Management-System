@@ -19,7 +19,6 @@
 			<id>id1</id>
 			<url>http://repo.maven.apache.org/maven2</url>
 		</repository>
-		
 	</repositories>
 
 	<properties>
