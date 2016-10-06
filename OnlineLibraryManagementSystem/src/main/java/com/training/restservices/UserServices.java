@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.slf4j.Logger;
@@ -11,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,7 +39,7 @@ import com.training.response.Status;
  *         library
  */
 
-@ComponentScan
+@Component
 @RestController
 @EnableAutoConfiguration
 public class UserServices {
@@ -194,9 +196,12 @@ public class UserServices {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/test")
+	@Path("test")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON_VALUE)
 	public Response<String> testService() {
 		Response<String> response = new Response<>();
+		System.out.println("Calling inside userservices");
 		response.setMessage("Hello World!! Test");
 
 		return response;

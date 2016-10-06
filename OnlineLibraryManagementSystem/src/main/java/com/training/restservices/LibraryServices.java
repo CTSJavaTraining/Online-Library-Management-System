@@ -48,7 +48,6 @@ public class LibraryServices {
 	 * @return
 	 */
 	@RequestMapping(value = "/additems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	@Produces("application/json")
 	public Response addBooks(@RequestBody LibraryItemsDto libraryItemsDto) {
 
@@ -56,7 +55,7 @@ public class LibraryServices {
 
 		if (!librarianUserDao.itemExistence(libraryItemsDto.getItemName(),
 				libraryItemsDto.getItemType().substring(0, 2).toUpperCase())) {
-			return Response.status(Response.Status.NOT_IMPLEMENTED)
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Same item already exists. Kindly update existing items.").build();
 		}
 
@@ -68,7 +67,7 @@ public class LibraryServices {
 
 			logger.error("Error occured when updating Item Name: {}", libraryItemsDto.getItemName());
 
-			return Response.status(Response.Status.BAD_GATEWAY).entity("Item could not be updated. Please try again.")
+			return Response.status(Response.Status.BAD_REQUEST).entity("Item could not be updated. Please try again.")
 					.build();
 
 		}
@@ -94,7 +93,7 @@ public class LibraryServices {
 			}
 
 			else {
-				return Response.status(Response.Status.BAD_GATEWAY)
+				return Response.status(Response.Status.BAD_REQUEST)
 						.entity("Error occured when deleting item!! Please try again later!!!!").build();
 			}
 		}
@@ -126,7 +125,7 @@ public class LibraryServices {
 			return Response.status(Response.Status.OK).entity("Item is available: " + availabilityStatus).build();
 
 		} else if ((LibraryConstants.ERROR).equals(availabilityStatus)) {
-			return Response.status(Response.Status.BAD_GATEWAY).entity("Error occured. Please try again").build();
+			return Response.status(Response.Status.BAD_REQUEST).entity("Error occured. Please try again").build();
 		}
 
 		return Response.status(Response.Status.BAD_REQUEST).entity("Item is not available").build();
