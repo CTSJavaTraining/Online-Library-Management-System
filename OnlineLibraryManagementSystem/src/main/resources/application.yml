@@ -1,11 +1,8 @@
 ############################################# SPRING BOOT CONFIGURATION #####################################################
 ##########################################Spring Boot Application properties for and keystore configuration############
 server:
-  port: 8090
+  port: 8080
   
-#  jsp-servlet.class-name: org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet
-  #jsp-servlet.init-parameters:
-    #jaxrs.serviceClasses: com.training.restservices.UserServices
 #ssl.enabled: true
 #ssl.key-store: springboottest.keystore
 #ssl.key-store-password: javatest

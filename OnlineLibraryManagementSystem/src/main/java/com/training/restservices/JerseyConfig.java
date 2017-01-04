@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JerseyConfig /*extends ResourceConfig*/ {
 	public JerseyConfig() {
-		//register(Service.class);
+		/*
+		 * register(Service.class);
+		 */
 	}
 }

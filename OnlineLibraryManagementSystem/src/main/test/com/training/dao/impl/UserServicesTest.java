@@ -3,15 +3,15 @@
  */
 package com.training.dao.impl;
 
-import static org.mockito.Mockito.when;
+//import static org.mockito.Mockito.when;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+//import org.mockito.Mock;
+//import org.mockito.MockitoAnnotations;
 
 import com.training.dto.UserSignupDto;
 import com.training.entity.UserDetails;
@@ -23,21 +23,21 @@ import com.training.restservices.UserServices;
  */
 public class UserServicesTest {
 
-	@Mock
+//	@Mock
 	UserServices userServices;
-	@Mock
+	//@Mock
 	UserDetails userdetails;
 
-	@Mock
+	//@Mock
 	UserSignupDto userSignupDTO;
 
 	@SuppressWarnings("unchecked")
 	@Before
 	public void create() {
-		MockitoAnnotations.initMocks(this);
+		//MockitoAnnotations.initMocks(this);
 		// userServices = mock(UserServices.class);
 		// UserDetails userdetails = mock(UserDetails.class);
-		when(userServices.userNameExistance(userSignupDTO)).thenThrow(NumberFormatException.class);
+		//when(userServices.userNameExistance(userSignupDTO)).thenThrow(NumberFormatException.class);
 	}
 
 	/**

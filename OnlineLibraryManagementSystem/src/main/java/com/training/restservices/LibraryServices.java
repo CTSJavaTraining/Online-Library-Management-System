@@ -44,7 +44,7 @@ public class LibraryServices {
 
 	/**
 	 * 
-	 * @param libraryItems
+	 * @param libraryItemsDto
 	 * @return
 	 */
 	@RequestMapping(value = "/additems", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

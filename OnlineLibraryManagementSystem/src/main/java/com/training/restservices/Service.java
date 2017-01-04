@@ -15,9 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Service {
 
-	public Service() {
-		System.out.println("Loaded $#$#$#$#$#$#$#$#");
-	}
+	private static final String HELLO = "hello";
 	/**
 	 * 
 	 * @return
@@ -26,6 +24,6 @@ public class Service {
 	@Path("check")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String check() {
-		return "hello";
+		return HELLO;
 	}
 }

@@ -58,9 +58,8 @@ public class UserServices {
 	 * @param pageno
 	 * @return
 	 */
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = "/home", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Produces(MediaType.APPLICATION_JSON_VALUE)
 	public Response<Map<String, List<ViewItemsDto>>> getHomePageDetails(
 			@RequestParam(value = "pageno", required = false) String pageno) {
 
@@ -74,9 +73,8 @@ public class UserServices {
 		return response;
 	}
 
-	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Produces("application/json")
 	public Response<String> setBasicDetails(@Valid @RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
@@ -105,9 +103,8 @@ public class UserServices {
 	 * @param loginDetails
 	 * @return
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Produces("application/json")
 	public Response<String> validateLoginDetails(@RequestBody LoginDetails loginDetails) {
 
 		logger.info("Validating user for logging in {},{}", loginDetails.getUserId(), loginDetails.getPassword());
@@ -139,9 +136,8 @@ public class UserServices {
 	 * @param userSignupDto
 	 * @return
 	 */
-	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/uservalidation", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Produces("application/json")
 	public Response<String> userNameExistance(@RequestBody UserSignupDto userSignupDto) {
 
 		String username = userSignupDto.getUserName();
@@ -168,9 +164,8 @@ public class UserServices {
 	 * @param pageNo
 	 * @return
 	 */
-	@RequestMapping(value = "/searchitems", method = RequestMethod.GET)
+	@RequestMapping(value = "/searchitems", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Produces("application/json")
 	public Response<List<ViewItemsDto>> searchService(@RequestParam("itemname") String itemName,
 			@RequestParam(value = "pageno", required = false) String pageNo) {
 
@@ -196,12 +191,10 @@ public class UserServices {
 	 * 
 	 * @return
 	 */
-	@Path("test")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "\test", produces= MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
 	public Response<String> testService() {
 		Response<String> response = new Response<>();
-		System.out.println("Calling inside userservices");
 		response.setMessage("Hello World!! Test");
 
 		return response;

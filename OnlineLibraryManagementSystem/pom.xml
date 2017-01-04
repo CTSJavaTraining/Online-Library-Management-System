@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Online Library Management System</name>
 	<description>Describes online library functionalities</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -24,7 +24,6 @@
 	<properties>
 		<sonar.host.url>http://10.242.133.153:9000/</sonar.host.url>
 		<hibernate.version>5.2.0.Final</hibernate.version>
-		<start-class>com.training.entity.SignupService</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javax.version>7.0</javax.version>
 		<java.version>1.8</java.version>
@@ -42,13 +41,13 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito.varsion}</version>
 			<scope>test</scope>
 		</dependency>
-
+ -->
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>
@@ -92,7 +91,7 @@
 		<!-- <dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-spring-boot-starter-jaxrs</artifactId> 
 			<version>3.1.7</version> </dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-servlet</artifactId>
 			<version>1.14</version>
@@ -113,7 +112,7 @@
 			<artifactId>cxf-rt-rs-client</artifactId>
 			<version>3.1.7</version>
 		</dependency>
-
+ -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>

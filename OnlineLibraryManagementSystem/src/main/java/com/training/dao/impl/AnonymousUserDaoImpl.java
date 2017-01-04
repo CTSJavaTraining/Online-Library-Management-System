@@ -62,7 +62,9 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 	private List<ViewItemsDto> getRequestedItems(List<LibraryItems> resultList) {
 		List<ViewItemsDto> viewItemsDtoList = new ArrayList<>();
 
-		for (LibraryItems libraryItems : resultList) {
+		//Changed from enhanced for loop to internal for loop of Java 8 Collection API.
+		
+		resultList.forEach((LibraryItems libraryItems) -> {
 			ViewItemsDto viewItemsdto = new ViewItemsDto();
 
 			viewItemsdto.setItemName(libraryItems.getItemName());
@@ -71,7 +73,7 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 			viewItemsdto.setPrice(libraryItems.getPrice());
 
 			viewItemsDtoList.add(viewItemsdto);
-		}
+		});
 
 		logger.info("Size of the result sent for search item is {}", viewItemsDtoList.size());
 		return viewItemsDtoList;
@@ -95,8 +97,8 @@ public class AnonymousUserDaoImpl implements AnonymousUserDao {
 		return allResults;
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
+	@Override
 	public List<ViewItemsDto> runQuery(String category, int startResult) {
 
 		try (Session session = sessionFactory.openSession()) {

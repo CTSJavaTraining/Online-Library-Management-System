@@ -1,4 +1,4 @@
-package com.training.entity;
+ 	package com.training.entity;
 // default package
 
 // Generated Sep 13, 2016 5:13:51 PM by Hibernate Tools 5.1.0.Beta1
