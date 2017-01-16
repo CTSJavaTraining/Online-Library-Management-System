@@ -22,31 +22,31 @@ import org.junit.runner.RunWith;
 @RunWith(JUnit4ClassRunner.class)
 public class UtilitiesTest {
 
-	/**
+/*	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@Before
 	public void setUp() throws Exception {
 		System.out.println("Going to create object...");
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@After
 	public void tearDown() throws Exception {
 		assertEquals("US111112", Utilities.idGenerator("US", "US111111"));
@@ -59,5 +59,5 @@ public class UtilitiesTest {
 	public void test() {
 		assertEquals("MM100013", Utilities.idGenerator("MM", "MM1A0012"));
 	}
-
+*/
 }

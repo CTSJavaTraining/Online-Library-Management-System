@@ -23,7 +23,7 @@ import com.training.restservices.UserServices;
  */
 public class UserServicesTest {
 
-//	@Mock
+/*//	@Mock
 	UserServices userServices;
 	//@Mock
 	UserDetails userdetails;
@@ -40,30 +40,30 @@ public class UserServicesTest {
 		//when(userServices.userNameExistance(userSignupDTO)).thenThrow(NumberFormatException.class);
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@Before
 	public void setUp() throws Exception {
 	}
 
-	/**
+	*//**
 	 * @throws java.lang.Exception
-	 */
+	 *//*
 	@After
 	public void tearDown() throws Exception {
 	}
@@ -71,5 +71,5 @@ public class UserServicesTest {
 	@Test
 	public void test() {
 	}
-
+*/
 }
